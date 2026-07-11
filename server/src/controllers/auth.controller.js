@@ -63,11 +63,12 @@ export const login = async (req, res) => {
         }
 
         if (!user.authProviders.includes('local')) {
-            const provider = user.authProviders[0]; // Grab the primary OAuth provider ('google'/'github')
-            const providerName = provider.charAt(0).toUpperCase() + provider.slice(1); // Capitalize for a cleaner UI message
-            
-            return res.status(401).json({ 
-                message: `Please log in using ${providerName}.` 
+            const providerNames = user.authProviders
+                .map(provider => provider.charAt(0).toUpperCase() + provider.slice(1))
+                .join(" / ");
+
+            return res.status(401).json({
+                message: `Please log in using ${providerNames}.`
             });
         }
 
@@ -122,7 +123,7 @@ export const syncOAuth = async (req, res) => {
         let uniqueUsername = baseUsername;
         let usernameExists = await User.findOne({ username: uniqueUsername });
         let counter = 1;
-        
+
         while (usernameExists) {
             uniqueUsername = `${baseUsername}${counter}`;
             usernameExists = await User.findOne({ username: uniqueUsername });

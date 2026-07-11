@@ -36,11 +36,11 @@ export const authOptions = {
           });
           
           const data = await res.json();
-          
+
           if (!res.ok) {
             throw new Error(data.message || "Authentication failed");
           }
-          
+
           return data;
         } catch (error) {
           throw new Error(error.message);
@@ -63,7 +63,7 @@ export const authOptions = {
               providerId: account.providerAccountId,
             }),
           });
-          
+
           const backendUser = await res.json();
           if (res.ok && backendUser) {
             user.id = backendUser._id;
