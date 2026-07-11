@@ -1,4 +1,4 @@
-import localFont from 'next/font/local';
+import localFont from 'next/font/local'
 
 const googleSans = localFont({
   src: '../../public/fonts/GoogleSans-VariableFont_GRAD,opsz,wght.ttf',
@@ -6,8 +6,9 @@ const googleSans = localFont({
 });
 
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar"
+import Footer from "@/components/Footer"
+import AuthProvider from '@/components/AuthProvider';
 
 export const metadata = {
   title: "Shine AI",
@@ -18,9 +19,11 @@ export default function RootLayout({ children }) {
   return (
     <html>
       <body className="font-sans min-h-full flex flex-col relative">
-        <Navbar/>
-        {children}
-        <Footer/>
+        <AuthProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

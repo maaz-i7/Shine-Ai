@@ -49,7 +49,7 @@
 - **Helmet** – Secure HTTP headers
 - **CORS** – Cross-Origin Resource Sharing middleware
 - **crypto** – to generate secret strings
-- **oauth** – to facilitate login sessions
+- **next-auth** – to facilitate login sessions
 
 ### Utilities
 - **Morgan** – HTTP request logger

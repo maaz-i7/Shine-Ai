@@ -1,20 +1,35 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 import dotenv from "dotenv"
 
 dotenv.config()
 
-const connectDB = async () => {
-    try {
-        const conn = await mongoose.connect(process.env.MONGO_URI, {
-            autoIndex: true,
-        })
-        console.log(`🍃 MongoDB connected successfully ${conn.connection.host}`)
-    }
-    catch (err) {
-        console.log("❌ Failed to connect to MongoDB")
-        console.log(err.message)
-        process.exit(1)
-    }
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  throw new Error("Please define the MONGO_URI environment variable inside .env");
 }
 
-export default connectDB
+let cached = global.mongoose;
+
+if (!cached) {
+    cached = global.mongoose = { conn: null, promise: null };
+}
+
+async function connectDB() {
+    if (cached.conn) {
+        return cached.conn;
+    }
+
+    if (!cached.promise) {
+        const opts = { bufferCommands: false };
+        cached.promise = mongoose.connect(MONGO_URI, opts).then((mongoose) => {
+            console.log(`🍃 MongoDB connected successfully: ${mongoose.connection.host}`);
+            return mongoose;
+        });
+    }
+
+    cached.conn = await cached.promise;
+    return cached.conn;
+}
+
+export default connectDB;

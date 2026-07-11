@@ -1,101 +1,84 @@
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
-import User from "../models/user.model"
+import User from "../models/user.model.js"
+import bcrypt from 'bcryptjs';
 
-// Helper: Generate JWT & Set Cookie
-const generateTokenAndSetCookie = (userId, res) => {
-    const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-        expiresIn: '15d',
-    });
-
-    res.cookie('jwt', token, {
-        maxAge: 15 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-        sameSite: 'strict',
-        secure: process.env.NODE_ENV !== 'development',
-    });
-};
-
-export const signup = async (req, res) => {
+export const loginUser = async (req, res) => {
     try {
-        const { name, username, email, password } = req.body
+        const { identifier, password } = req.body;
 
-        if (!name || !username || !email || !password) {
-            return res.status(400).json({ error: "All fields are required " })
-        }
-
-        const existingUser = await User.findOne({
-            $or: [{ email }, { username }]
-        })
-
-        if (existingUser) {
-            if (existingUser.email === email) return res.status(400).json({ error: "Email is already registered" })
-            if (existingUser.username === username) return res.status(400).json({ error: "Username is already taken" })
-        }
-
-        const salt = await bcrypt.genSalt(10)
-        const hashedPassword = await bcrypt.hash(password, salt)
-
-        const newUser = new User({
-            name,
-            username,
-            email,
-            password: hashedPassword,
-            authProviders: ['local'],
-        })
-
-        if (newUser) {
-            await newUser.save()
-            generateTokenAndSetCookie(newUser._id, res)
-        }
-        else {
-            res.status(400).json({ error: "Invalid user data" })
-        }
-    }
-    catch (error) {
-        console.error('Error in signup controller:', error.message);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-}
-
-export const login = async (req, res) => {
-    try {
-        const { login, password } = req.body
-        const user = User.findOne({
+        const user = await User.findOne({
             $or: [
-                { email: login.toLowerCase() },
-                { username: login.toLowerCase() }
+                { email: identifier.toLowerCase() },
+                { username: identifier.toLowerCase() }
             ]
-        })
+        });
 
         if (!user) {
-            return res.status(400).json({ error: "Invalid login credentials" })
+            return res.status(401).json({ message: "Invalid credentials" });
         }
 
-        if (!user.password) {
-            return res.status(400).json({
-                error: `Please login through ${user.authProviders.join('/')}`
-            })
+        // Conflict Resolution: User exists, but didn't sign up with a password
+        if (!user.authProviders.includes('local')) {
+            const provider = user.authProviders[0]; // Grab the primary OAuth provider ('google'/'github')
+            const providerName = provider.charAt(0).toUpperCase() + provider.slice(1); // Capitalize for a cleaner UI message
+            
+            return res.status(401).json({ 
+                message: `Please log in using ${providerName}.` 
+            });
         }
 
-        const isPasswordCorrect = await bcrypt.compare(user.password, password)
-        if (!isPasswordCorrect) {
-            return res.status(400).json({ error: "Invalid login credentials" })
+        // 3. Verify password for local users
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: "Invalid credentials" });
         }
 
-        generateTokenAndSetCookie(user._id, res)
-
-        res.status(200).json({
-            _id: user._id,
-            name: user.name,
-            username: user.username,
-            email: user.email,
-            avatar: user.avatar,
-            authProviders: user.authProviders
-        })
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error", error: error.message });
     }
-    catch (error) {
-        console.error('Error in login controller:', error.message)
-        res.status(500).json({ error: "Internal server error"})
+};
+
+export const handleOAuth = async (req, res) => {
+    try {
+        const { email, name, avatar, provider, providerId } = req.body;
+
+        let user = await User.findOne({ email });
+
+        if (user) {
+            if (!user.authProviders.includes(provider)) {
+                user.authProviders.push(provider);
+                if (provider === 'google') user.googleId = providerId;
+                if (provider === 'github') user.githubId = providerId;
+                await user.save();
+            }
+            return res.status(200).json(user);
+        }
+
+        // New user from OAuth: generate a unique username from email
+        const baseUsername = email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g, '');
+        let uniqueUsername = baseUsername;
+        let usernameExists = await User.findOne({ username: uniqueUsername });
+        let counter = 1;
+        
+        while (usernameExists) {
+            uniqueUsername = `${baseUsername}${counter}`;
+            usernameExists = await User.findOne({ username: uniqueUsername });
+            counter++;
+        }
+
+        // Create new user
+        const newUser = await User.create({
+            name,
+            email,
+            username: uniqueUsername,
+            avatar: avatar || '',
+            authProviders: [provider],
+            googleId: provider === 'google' ? providerId : undefined,
+            githubId: provider === 'github' ? providerId : undefined,
+        });
+
+        res.status(201).json(newUser);
+    } catch (error) {
+        res.status(500).json({ message: "OAuth Sync Failed", error: error.message });
     }
-}
+};
