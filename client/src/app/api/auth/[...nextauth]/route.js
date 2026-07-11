@@ -52,7 +52,7 @@ export const authOptions = {
     async signIn({ user, account, profile }) {
       if (account?.provider === "google" || account?.provider === "github") {
         try {
-          const res = await fetch(`${BACKEND_URL}/api/auth/oauth`, {
+          const res = await fetch(`${BACKEND_URL}/api/auth/oauth-sync`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
