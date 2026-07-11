@@ -1,10 +1,3 @@
-import localFont from 'next/font/local'
-
-const googleSans = localFont({
-  src: '../../public/fonts/GoogleSans-VariableFont_GRAD,opsz,wght.ttf',
-  variable: '--font-google-sans',
-});
-
 import "./globals.css";
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
@@ -18,7 +11,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html>
-      <body className="font-sans min-h-full flex flex-col relative">
+      <body className="min-h-full flex flex-col relative">
         <AuthProvider>
           <Navbar />
           {children}

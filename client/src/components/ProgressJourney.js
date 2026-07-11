@@ -49,7 +49,7 @@ function Icon({ type, active }) {
           width: 20,
           height: 20,
           borderRadius: "50%",
-          background: active ? "#fde047" : "#4b5563",
+          background: active ? "#fcfd35" : "#4b5563",
           boxShadow: active
             ? `
               0 0 8px #fde047,
@@ -121,7 +121,7 @@ export default function ProgressJourney() {
     <div
       style={{
         width: "100%",
-        background: "#000000",
+        background: "#1a1a1a",
         padding: "18px 14px",
         marginTop: "-80px",
         display: "flex",

@@ -25,6 +25,12 @@
   --font-sans: "Google Sans", sans-serif;
 }
 
+@theme {
+  --color-primary: #1A1A1A;
+  --color-secondary: #282828;
+  --color-tertiary: #262626;
+}
+
 body {
   background: black;
   color: white;

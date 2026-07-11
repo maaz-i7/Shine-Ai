@@ -35,6 +35,7 @@
 ### Frontend
 - **React** – Component-based UI library
 - **Next.js** – Full-stack React framework
+- **react-hook-form** – For handling forms
 
 ### Backend
 - **Node.js** – JavaScript runtime

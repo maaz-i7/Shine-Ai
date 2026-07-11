@@ -3,7 +3,7 @@ import logo from "../../public/images/logo-no-bg.png";
 
 export default function Navbar() {
     return (
-        <nav className="w-screen bg-black/60 backdrop-blur-md border-b border-white/10 flex items-center justify-between top-0 sticky">
+        <nav className="w-screen bg-secondary flex items-center justify-between top-0 sticky">
             <div className="">
                 <Image loading="eager" className="w-15" src={logo} alt="logo" />
             </div>
