@@ -22,7 +22,7 @@ export default function Navbar() {
                     <Link href="/"><li>Home</li></Link>
                     <li>About</li>
                     <li>Contact</li>
-                    <Link href={user ? "/profile" : "/login"}>
+                    <Link href={user ? "/dashboard" : "/login"}>
                         {user ? (
                             <Image
                                 src={avatar || "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"}

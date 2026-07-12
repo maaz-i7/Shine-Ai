@@ -35,7 +35,7 @@ export default function AuthPage() {
       if (res?.error) {
         setAuthError(res.error);
       } else {
-        router.push('/');
+        router.push('/dashboard');
         router.refresh();
       }
     } else {
@@ -69,7 +69,7 @@ export default function AuthPage() {
         if (loginRes?.error) {
           setAuthError(loginRes.error);
         } else {
-          router.push('/');
+          router.push('/dashboard');
           router.refresh();
         }
       } catch (err) {
@@ -79,7 +79,7 @@ export default function AuthPage() {
   };
 
   const handleOAuth = (provider) => {
-    signIn(provider, { callbackUrl: '/' });
+    signIn(provider, { callbackUrl: '/dashboard' });
   };
 
   const toggleMode = () => {
