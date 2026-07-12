@@ -123,11 +123,13 @@ export default function ProgressJourney() {
         width: "100%",
         background: "#1a1a1a",
         padding: "18px 14px",
-        marginTop: "-80px",
+        marginTop: "-380px",
         display: "flex",
         justifyContent: "center",
         fontFamily:
           "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        position: "relative", // Add this
+        zIndex: 10,           // Add this
       }}
     >
       <style>{`
