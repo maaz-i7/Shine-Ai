@@ -63,7 +63,7 @@ export default function App() {
             // Inner circle for the "Shine" state - removed shadow
             icon: (
                 <div 
-                    className={`w-[10px] h-[10px] rounded-full bg-yellow-400 transition-all duration-500 ease-in-out ${activeNodes[1] ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`} 
+                    className={`w-2.5 h-2.5 rounded-full bg-yellow-400 transition-all duration-500 ease-in-out ${activeNodes[1] ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`} 
                 />
             )
         },
@@ -82,7 +82,7 @@ export default function App() {
             // Updated green, removed shadow
             activeClasses: 'border-[#28c244] text-[#28c244]',
             icon: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="w-[12px] h-[12px]">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
                     <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
             )
@@ -99,7 +99,7 @@ export default function App() {
                     
                     {/* Background & Progress Lines */}
                     {/* Positioned exactly between the centers of the first and last nodes (10px inward for 20px nodes) */}
-                    <div className="absolute top-1/2 -translate-y-1/2 left-[10px] right-[10px] h-[2px] bg-neutral-800 rounded-full z-0">
+                    <div className="absolute top-1/2 -translate-y-1/2 left-2.5 right-2.5 h-0.5 bg-neutral-800 rounded-full z-0">
                         <div 
                             // Updated green, removed shadow
                             className="h-full bg-[#28c244] rounded-full"
