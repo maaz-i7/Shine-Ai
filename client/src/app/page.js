@@ -1,5 +1,5 @@
 import Image from "next/image";
-import heroBg from "../../public/images/hero-bg.png"
+import heroBg from "../../public/images/hero-logo-no-bg.png"
 import ProgressJourney from "@/components/ProgressJourney";
 
 export default function Home() {
