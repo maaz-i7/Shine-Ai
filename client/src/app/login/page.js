@@ -117,8 +117,8 @@ export default function AuthPage() {
                   {...register("username", {
                     required: "Username is required",
                     pattern: {
-                      value: /^[a-zA-Z0-9_]+$/,
-                      message: "Only letters, numbers, and underscores allowed"
+                      value: /^[a-zA-Z0-9_.]+$/,
+                      message: "Only letters, numbers, underscores and dots are allowed"
                     }
                   })}
                   className="w-full text-sm px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"

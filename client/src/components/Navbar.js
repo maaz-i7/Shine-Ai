@@ -3,7 +3,7 @@
 import Image from "next/image";
 import logo from "../../public/images/logo-no-bg.png";
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 export default function Navbar() {
 

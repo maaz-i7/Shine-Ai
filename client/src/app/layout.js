@@ -4,7 +4,7 @@ import Footer from "@/components/Footer"
 import AuthProvider from '@/components/AuthProvider';
 
 export const metadata = {
-  title: "Shine AI",
+  title: "Shine Ai",
   description: "AI assisted coding platform",
 };
 
