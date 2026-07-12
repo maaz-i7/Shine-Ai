@@ -13,9 +13,9 @@ export default function Navbar() {
     const avatar = user?.image
 
     return (
-        <nav className="w-screen bg-secondary z-10 flex items-center justify-between top-0 sticky">
+        <nav className="w-screen bg-secondary z-10 flex items-center justify-between top-0 sticky p-2">
             <div className="ml-2">
-                <Image loading="eager" className="w-15" src={logo} alt="logo" />
+                <Image loading="eager" className="w-12" src={logo} alt="logo" />
             </div>
             <div>
                 <ul className="flex w-80 justify-around items-center">

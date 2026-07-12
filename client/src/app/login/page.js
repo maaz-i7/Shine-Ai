@@ -97,13 +97,6 @@ export default function AuthPage() {
           <Image loading="eager" className="w-25" src={logo} alt="logo" />
         </div>
 
-        {/* Error Banner */}
-        {authError && (
-          <div className="bg-red-300 px-3 border-l-4 border-red-500 p-1 rounded-md">
-            <p className="text-sm text-red-700 font-medium">{authError}</p>
-          </div>
-        )}
-
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 mt-8">
 
@@ -111,7 +104,6 @@ export default function AuthPage() {
           {!isLogin && (
             <>
               <div>
-                {/* <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label> */}
                 <input
                   {...register("name", { required: "Name is required" })}
                   className="w-full text-sm px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
@@ -121,7 +113,6 @@ export default function AuthPage() {
               </div>
 
               <div>
-                {/* <label className="block text-sm font-medium text-gray-700 mb-1">Username</label> */}
                 <input
                   {...register("username", {
                     required: "Username is required",
@@ -137,7 +128,6 @@ export default function AuthPage() {
               </div>
 
               <div>
-                {/* <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label> */}
                 <input
                   type="email"
                   {...register("email", {
@@ -158,7 +148,6 @@ export default function AuthPage() {
           {/* LOG IN ONLY FIELD */}
           {isLogin && (
             <div>
-              {/* <label className="block text-sm font-medium text-gray-700 mb-1">Email or Username</label> */}
               <input
                 {...register("identifier", { required: "This field is required" })}
                 className="w-full p-3 border text-sm border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
@@ -170,7 +159,6 @@ export default function AuthPage() {
 
           {/* UNIVERSAL PASSWORD FIELD */}
           <div>
-            {/* <label className="block text-sm font-medium text-gray-700 mb-1">Password</label> */}
             <input
               type="password"
               {...register("password", {
@@ -183,13 +171,20 @@ export default function AuthPage() {
             {errors.password && <span className="text-red-500 text-xs mt-1 block">{errors.password.message}</span>}
           </div>
 
+          {/* Error Banner */}
+          {authError && (
+            <div className="text-center">
+              <p className="text-sm text-red-700 font-medium">{authError}</p>
+            </div>
+          )}
+
           {/* Submit Button */}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm cursor-pointer font-medium text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-70 transition-colors"
+            className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm cursor-pointer font-medium text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-70 disabled:cursor-not-allowed transition-colors"
           >
-            {isSubmitting ? 'Processing...' : (isLogin ? 'Sign In' : 'Create Account')}
+            {(isLogin ? 'Sign In' : 'Create Account')}
           </button>
         </form>
 

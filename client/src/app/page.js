@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <main className="h-1000 bg-primary">
 
-      <div className="relative w-175 h-175 mx-auto overflow-hidden">
+      <div className="relative w-175 h-100 mx-auto overflow-hidden">
         <video
           autoPlay
           muted
@@ -17,16 +17,16 @@ export default function Home() {
         </video>
 
         {/* Top */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#1a1a1a] to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-linear-to-b from-[#1a1a1a] to-transparent" />
 
         {/* Bottom */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#1a1a1a] to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-[#1a1a1a] to-transparent" />
 
         {/* Left */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-[#1a1a1a] to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-linear-to-r from-[#1a1a1a] to-transparent" />
 
         {/* Right */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-[#1a1a1a] to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-linear-to-l from-[#1a1a1a] to-transparent" />
       </div>
 
       <ProgressJourney />
