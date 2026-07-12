@@ -108,7 +108,7 @@ export const syncOAuth = async (req, res) => {
                 if (provider === 'github') user.githubId = providerId;
                 await user.save();
             }
-            // Return stripped user object
+
             return res.status(200).json({
                 _id: user._id,
                 name: user.name,
@@ -118,7 +118,8 @@ export const syncOAuth = async (req, res) => {
             });
         }
 
-        // New user from OAuth: generate a unique username from email
+        // If the user does not exist, create one
+
         const baseUsername = normalizedEmail.split('@')[0].replace(/[^a-z0-9]/g, '');
         let uniqueUsername = baseUsername;
         let usernameExists = await User.findOne({ username: uniqueUsername });
@@ -130,7 +131,6 @@ export const syncOAuth = async (req, res) => {
             counter++;
         }
 
-        // Create new user
         const newUser = await User.create({
             name,
             email: normalizedEmail,
@@ -141,7 +141,6 @@ export const syncOAuth = async (req, res) => {
             githubId: provider === 'github' ? providerId : undefined,
         });
 
-        // Return stripped user object
         res.status(201).json({
             _id: newUser._id,
             name: newUser.name,
