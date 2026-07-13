@@ -1,6 +1,5 @@
 import "./globals.css";
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
+import LayoutWrapper from "@/components/LayoutWrapper";
 import AuthProvider from '@/components/AuthProvider';
 
 export const metadata = {
@@ -13,9 +12,9 @@ export default function RootLayout({ children }) {
     <html>
       <body className="min-h-full font-sans flex flex-col relative">
         <AuthProvider>
-          <Navbar />
-          {children}
-          <Footer />
+          <LayoutWrapper>
+            {children}
+          </LayoutWrapper>
         </AuthProvider>
       </body>
     </html>
