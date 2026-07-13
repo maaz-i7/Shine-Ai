@@ -2,6 +2,7 @@
 import { useSession } from "next-auth/react"
 import { signOut } from "next-auth/react";
 import Image from "next/image";
+import ProjectCard from "@/components/ProjectCard.js"
 
 export default function () {
 
@@ -20,8 +21,8 @@ export default function () {
   };
 
   return (
-    <div className="w-screen flex">
-      <div className="w-1/4 h-screen bg-primary">
+    <div className="w-screen flex font-sans">
+      <div className="w-1/4 h-screen bg-primary border-r border-white/10">
         <div className="p-10 flex flex-col h-screen">
           <div className="flex">
             <div>
@@ -48,8 +49,15 @@ export default function () {
           </div>
         </div>
       </div>
-      <div className="flex-1 h-screen bg-black">
-
+      <div className="flex-1 h-screen bg-primary">
+        <div className="flex w-full justify-between items-center p-5 border-b border-white/10">
+          <div className="text-3xl font-bold">Problems</div>
+          <button className="mr-5 border-gray-500 border p-2 px-5 rounded flex items-center justify-center cursor-pointer">
+            New Problem 
+            <span className="text-2xl ml-2">+</span>
+          </button>
+        </div>
+        <ProjectCard/>
       </div>
     </div>
   )
