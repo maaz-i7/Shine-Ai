@@ -15,7 +15,7 @@ export default function Component() {
         </div>
         <div className="flex w-full mt-5 items-center justify-between">
           <div className="flex w-fit gap-5 justify-between items-center">
-            <div className="text-gray-300 bg-[#3C3C3C] text-sm flex items-center justify-center rounded-2xl p-1 px-3">C++</div>
+            <div className="text-[#3adcd7] bg-[#3C3C3C] text-sm flex items-center justify-center rounded-2xl p-1 px-3">C++</div>
             <div className="text-[#C69D24] bg-[#3C3C3C] text-sm flex items-center justify-center rounded-2xl p-1 px-3">Medium</div>
             <div className="text-gray-400 text-[15px]">2 months ago</div>
             <div className="flex">
@@ -42,7 +42,7 @@ export default function Component() {
             <StarRating />
           </div>
         </div>
-        <div className>
+        <div>
           <div className="mt-5 mb-2 text-sm text-gray-300">Problem Tags</div>
           <div className="flex">
             <div className="text-gray-300 w-fit bg-[#3C3C3C] ml-1 mr-1 text-sm flex items-center justify-center rounded-2xl p-1 px-3">Array</div>
