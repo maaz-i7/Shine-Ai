@@ -71,4 +71,4 @@ These routes are automatically generated and managed by NextAuth inside the Next
 - **Morgan** – HTTP request logger
 - **dotenv** – Environment variable management
 - **JSON Web Token (JWT)** – Stateless authentication using JSON Web Tokens
-feature/monaco-editor
+- **Lucide React** – Modern customizable SVG icon library for React components and UI icons.
