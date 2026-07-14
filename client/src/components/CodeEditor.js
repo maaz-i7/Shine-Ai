@@ -15,27 +15,20 @@ import {
   Loader2
 } from 'lucide-react';
 
-const LANGUAGES = [
-  { id: 'cpp', name: 'C++' },
-  { id: 'python', name: 'Python' },
-  { id: 'java', name: 'Java' },
-  { id: 'c', name: 'C' },
-  { id: 'javascript', name: 'JavaScript' },
-  { id: 'go', name: 'Go' },
-  { id: 'rust', name: 'Rust' },
-  { id: 'csharp', name: 'C#' },
-  { id: 'php', name: 'PHP' },
-  { id: 'ruby', name: 'Ruby' },
-  { id: 'typescript', name: 'TypeScript' },
-  { id: 'sql', name: 'SQL' },
-  { id: 'shell', name: 'Shell/Bash' },
-  { id: 'json', name: 'JSON' },
-  { id: 'html', name: 'HTML' },
-  { id: 'css', name: 'CSS' },
-  { id: 'xml', name: 'XML' },
-  { id: 'yaml', name: 'YAML' },
-  { id: 'markdown', name: 'Markdown' },
-]
+export const LANGUAGES = [
+  { id: "cpp", name: "C++", compiler: "g++-15" },
+  { id: "python", name: "Python", compiler: "python-3.14" },
+  { id: "java", name: "Java", compiler: "openjdk-25" },
+  { id: "c", name: "C", compiler: "gcc-15" },
+  { id: "go", name: "Go", compiler: "go-1.26" },
+  { id: "rust", name: "Rust", compiler: "rust-1.93" },
+  { id: "csharp", name: "C#", compiler: "dotnet-csharp-9" },
+  { id: "typescript", name: "TypeScript", compiler: "typescript-deno" },
+  { id: "php", name: "PHP", compiler: "php-8.5" },
+  { id: "ruby", name: "Ruby", compiler: "ruby-4.0" },
+  { id: "haskell", name: "Haskell", compiler: "haskell-9.12" },
+  { id: "fsharp", name: "F#", compiler: "dotnet-fsharp-9" },
+];
 
 const THEMES = [
   { id: 'vs-dark', name: 'Dark (VS Code)' },
@@ -141,43 +134,29 @@ function App() {
   }, []);
 
   const handleRunCode = async () => {
-    if (isRunning) return;
-
-    setIsRunning(true);
-
     try {
-      const res = await fetch(
-        "https://api.onlinecompiler.io/api/run-code-sync/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-API-Key": "e1704d8f9929e9b5613262c7b850c2eb", // replace with the header name required by the API
-          },
-          body: JSON.stringify({
-            compiler: "g++-15",
-            code,
-            input: "",
-          }),
-        }
-      );
+      setIsRunning(true)
+      const compiler = LANGUAGES.find(lang => lang.id === language)?.compiler
+      const input = ""
+      const backendUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/execute`
+      const response = await fetch(backendUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ compiler, code, input }),
+      });
 
-      if (!res.ok) {
-        throw new Error(`Request failed: ${res.status}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await res.json();
-
-      console.log(data);
-
-      // Example:
-      // setOutput(data.output);
-      // setError(data.error);
-
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsRunning(false);
+      const data = await response.json();
+      console.log(data)
+      setIsRunning(false)
+    } catch (error) {
+      console.error("Failed to run code:", error);
+      setIsRunning(false)
     }
   };
 
@@ -249,11 +228,18 @@ function App() {
     a.href = url;
 
     const extensions = {
-      javascript: 'js', typescript: 'ts', python: 'py',
-      html: 'html', css: 'css', json: 'json', java: 'java',
-      c: 'c', cpp: 'cpp', csharp: 'cs', php: 'php', ruby: 'rb',
-      go: 'go', rust: 'rs', sql: 'sql', xml: 'xml', yaml: 'yml',
-      markdown: 'md', shell: 'sh'
+      python: "py",
+      c: "c",
+      cpp: "cpp",
+      java: "java",
+      csharp: "cs",
+      fsharp: "fs",
+      php: "php",
+      ruby: "rb",
+      haskell: "hs",
+      go: "go",
+      rust: "rs",
+      typescript: "ts",
     };
 
     a.download = `script.${extensions[language] || 'txt'}`;

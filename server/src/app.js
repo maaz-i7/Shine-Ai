@@ -5,6 +5,7 @@ import morgan from "morgan"
 
 import indexRoutes from "./routes/index.routes.js"
 import authRoutes from "./routes/auth.routes.js"
+import codeController from "../src/controllers/code.controller.js"
 
 const app = express()
 
@@ -16,5 +17,6 @@ app.use(express.urlencoded({ extended: true}))
 
 app.use('/', indexRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/execute', codeController)
 
 export default app
