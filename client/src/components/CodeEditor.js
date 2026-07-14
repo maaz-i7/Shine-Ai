@@ -43,7 +43,7 @@ const THEMES = [
 
 const TAB_SIZES = [2, 4, 8];
 
-export default function App() {
+function App() {
   const [language, setLanguage] = useState('cpp');
   const [theme, setTheme] = useState('vs-dark');
   const [tabSize, setTabSize] = useState(2);
@@ -331,3 +331,5 @@ export default function App() {
     </div>
   );
 }
+
+export default React.memo(App);

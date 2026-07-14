@@ -5,7 +5,7 @@ export default function Component() {
         <div className="p-5 h-screen overflow-y-auto minimal-scrollbar pt-10">
             <div className="font-bold text-2xl">Leetcode - 3756. Concatenate Non-Zero Digits and Multiply by Sum II</div>
             <div className="flex w-full justify-between gap-2 mt-3 mb-5 items-center">
-                <div className="text-[#C69D24] bg-[#3C3C3C] w-fit flex items-center justify-center rounded-2xl p-1 px-3 text-[14px]">Medium</div>
+                <div className="text-[#C69D24] bg-[#3C3C3C] w-fit flex items-center justify-center rounded-2xl px-2 p-0.5 text-[14px]">Medium</div>
                 <div className="flex">
                     <div className="mr-1 text-gray-300 text-[14px]">Solved</div>
                     <svg

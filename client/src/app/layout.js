@@ -10,7 +10,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html>
-      <body className="min-h-full font-sans flex flex-col relative">
+      <body className="min-h-full bg-primary font-sans flex flex-col relative">
         <AuthProvider>
           <LayoutWrapper>
             {children}
