@@ -4,22 +4,22 @@ import { useRef, useState } from "react";
 import CodeEditor from "@/components/CodeEditor.js";
 import ProblemSection from "@/components/ProblemSection.js";
 import Console from "@/components/Console.js";
-import RightPanel from "@/components/AiSection.js";
+import AiSection from "@/components/AiSection.js";
 
 export default function Layout() {
-    const containerRef = useRef(null);
 
+    const containerRef = useRef(null);
     const editorRef = useRef(null);
     const consoleRef = useRef(null);
 
     const [leftWidth, setLeftWidth] = useState(450);
     const [rightWidth, setRightWidth] = useState(300);
+    const [consoleHeight, setConsoleHeight] = useState(220);
 
     const [isRightOpen, setIsRightOpen] = useState(false);
-    const [isDraggingRight, setIsDraggingRight] = useState(false);
-
     const [isConsoleOpen, setIsConsoleOpen] = useState(false);
-    const [consoleHeight, setConsoleHeight] = useState(220);
+    
+    const [isDraggingRight, setIsDraggingRight] = useState(false);
 
     const MINIMIZED_CONSOLE_HEIGHT = 36;
     const MINIMIZED_WIDTH = 36;
@@ -178,7 +178,7 @@ export default function Layout() {
             />
 
             {/* Right Panel */}
-            <RightPanel
+            <AiSection
                 isRightOpen={isRightOpen}
                 setIsRightOpen={setIsRightOpen}
                 rightWidth={rightWidth}
