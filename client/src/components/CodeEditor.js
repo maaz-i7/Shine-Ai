@@ -41,8 +41,8 @@ const TAB_SIZES = [2, 4, 8];
 function App() {
   const [language, setLanguage] = useState('cpp');
   const [theme, setTheme] = useState('vs-dark');
-  const [tabSize, setTabSize] = useState(2);
-  const [fontSize, setFontSize] = useState(14);
+  const [tabSize, setTabSize] = useState(4);
+  const [fontSize, setFontSize] = useState(16);
   const [code, setCode] = useState('');
   const [isCopied, setIsCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -257,7 +257,7 @@ function App() {
         <div className="flex flex-wrap items-center gap-3">
 
           {/* Language Selector */}
-          <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5 focus-within:ring-2 focus-within:ring-blue-500">
+          <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5">
             <Code2 className="w-4 h-4 text-gray-400 mr-2" />
             <select
               value={language}
@@ -273,7 +273,7 @@ function App() {
           </div>
 
           {/* Theme Selector */}
-          <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5 focus-within:ring-2 focus-within:ring-blue-500">
+          <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5">
             {theme === 'vs-dark' || theme === 'hc-black' ? (
               <Moon className="w-4 h-4 text-gray-400 mr-2" />
             ) : (
@@ -293,7 +293,7 @@ function App() {
           </div>
 
           {/* Indentation (Tab Size) Selector */}
-          <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5 focus-within:ring-2 focus-within:ring-blue-500">
+          <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5">
             <AlignLeft className="w-4 h-4 text-gray-400 mr-2" />
             <select
               value={tabSize}

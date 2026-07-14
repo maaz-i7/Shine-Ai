@@ -1,17 +1,14 @@
 "use client";
 
-import TestCase from "@/components/TestCase.js"
-import { useState } from "react";
-
 const testCases = [
-`5 4 3
+  `5 4 3
 1 5 3 6 2
 1 2 3
 2 4 5
 5 3 1
 4 1 2`,
 
-`6 5 2
+  `6 5 2
 8 3 9 1 7 4
 1 6 5
 2 5 8
@@ -19,13 +16,13 @@ const testCases = [
 6 1 7
 4 2 9`,
 
-`4 3 1
+  `4 3 1
 10 20 30 40
 1 2 5
 2 4 6
 4 1 3`,
 
-`7 6 4
+  `7 6 4
 5 2 8 6 1 9 3
 1 7 4
 2 6 8
@@ -34,126 +31,69 @@ const testCases = [
 5 2 1
 7 3 9`,
 
-`8 5 3
+  `8 5 3
 12 5 9 4 8 7 2 6
 1 8 4
 2 7 5
 3 6 8
 4 5 1
 8 1 9`,
-
-`5 5 2
-9 4 1 8 7
-1 5 2
-2 4 6
-3 5 7
-4 2 3
-5 1 5`,
-
-`9 4 5
-2 4 6 8 1 3 5 7 9
-1 9 5
-2 8 4
-3 7 2
-4 6 9`,
-
-`3 3 1
-11 22 33
-1 2 3
-2 3 4
-3 1 5`,
-
-`10 6 2
-7 1 9 3 5 2 8 6 4 10
-1 10 5
-2 9 7
-3 8 2
-4 7 8
-5 6 1
-10 1 9`,
-
-`6 4 3
-15 12 9 6 3 18
-1 6 2
-2 5 4
-3 4 8
-6 1 7`,
-
-`7 5 1
-14 13 12 11 10 9 8
-1 7 9
-2 6 3
-3 5 6
-4 2 8
-7 1 4`,
-
-`5 3 2
-100 200 300 400 500
-1 5 5
-2 4 2
-5 3 8`,
-
-`8 6 4
-1 3 5 7 9 11 13 15
-1 8 3
-2 7 5
-3 6 7
-4 5 9
-5 4 2
-8 2 6`,
-
-`4 4 2
-21 42 63 84
-1 4 3
-2 3 5
-3 2 7
-4 1 9`,
-
-`9 5 3
-6 1 8 2 7 3 9 4 5
-1 9 2
-2 8 4
-3 7 6
-4 6 8
-9 1 1`,
-
-`6 6 2
-31 27 19 44 55 60
-1 6 5
-2 5 8
-3 4 2
-4 3 7
-5 2 6
-6 1 9`,
-
-`7 4 1
-3 6 9 12 15 18 21
-1 7 4
-2 6 5
-3 5 6
-7 1 2`,
-
-`5 4 2
-17 23 11 29 31
-1 5 8
-2 4 3
-3 2 5
-5 1 7`,
-
-`8 3 3
-2 4 8 16 32 64 128 256
-1 8 1
-2 7 2
-8 1 3`,
-
-`10 5 4
-9 18 27 36 45 54 63 72 81 90
-1 10 5
-2 9 6
-3 8 7
-4 7 8
-5 6 9`
 ];
+
+const outputCases = ['10', '27', '32', '19', '34']
+const expOutputCases = ['20', '27', '32', '19', '34']
+
+import TestCase from "@/components/TestCase.js"
+import { useState } from "react";
+
+const CheckIcon = ({ className = "w-4 h-4" }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+  >
+    <path
+      d="M7.29417 12.9577L10.5048 16.1681L17.6729 9"
+      stroke="currentColor"
+      strokeWidth={2.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <circle
+      cx={12}
+      cy={12}
+      r={10}
+      stroke="currentColor"
+      strokeWidth={2}
+    />
+  </svg>
+);
+
+const CopyIcon = ({ className = "w-4 h-4 text-gray-400 hover:text-white cursor-pointer" }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    className={className}
+  >
+    <rect
+      x="9"
+      y="9"
+      width="11"
+      height="11"
+      rx="2"
+      stroke="currentColor"
+      strokeWidth={2}
+    />
+    <path
+      d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+    />
+  </svg>
+);
 
 export default function Console({
   isConsoleOpen,
@@ -163,7 +103,29 @@ export default function Console({
 }) {
 
   const [open, setOpen] = useState(null);
-  const [copied, setCopied] = useState(null);
+  const [caseInd, setCaseInd] = useState(0);
+  const [copiedTestCase, setCopiedTestCase] = useState(null);
+  const [copiedOutput, setCopiedOutput] = useState(false);
+  const [copiedExpected, setCopiedExpected] = useState(false);
+  const [output, setOutput] = useState('');
+  const [expOutput, setExpOutput] = useState('');
+
+  const handleCopy = async (e, text, type, index = null) => {
+    e.stopPropagation();
+
+    await navigator.clipboard.writeText(text);
+
+    if (type === "testcase") {
+      setCopiedTestCase(index);
+      setTimeout(() => setCopiedTestCase(null), 1500);
+    } else if (type === "output") {
+      setCopiedOutput(true);
+      setTimeout(() => setCopiedOutput(false), 1500);
+    } else if (type === "expected") {
+      setCopiedExpected(true);
+      setTimeout(() => setCopiedExpected(false), 1500);
+    }
+  };
 
   return (
     <div style={{ height: isConsoleOpen ? CONSOLE_HEIGHT : MINIMIZED_CONSOLE_HEIGHT, }}
@@ -181,27 +143,65 @@ export default function Console({
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-scroll minimal-scrollbar p-3 text-sm h-1000">
-            <div className="text-xl mb-5">Test Cases</div>
-            <div className="flex flex-wrap items-start">
-              {testCases.map((tc, i) => (
-                <TestCase
+          <div className="flex-1 overflow-y-scroll minimal-scrollbar p-3 text-sm">
+            <div className="text-xl mb-3">Test Cases</div>
+            <div className="flex flex-wrap items-start h-50 overflow-y-scroll minimal-scrollbar">
+              {
+                testCases.map((tc, i) => (<TestCase
                   key={i}
                   title={`Test Case ${i + 1}`}
                   testCase={tc}
                   open={open === i}
-                  setOpen={() => setOpen(open === i ? null : i)}
-                  copied={copied === i}
-                  handleCopy={async (e) => {
-                    e.stopPropagation();
-
-                    await navigator.clipboard.writeText(tc);
-
-                    setCopied(i);
-                    setTimeout(() => setCopied(null), 1500);
+                  setOpen={() => {
+                    setOpen(open === i ? null : i);
+                    setCaseInd(i);
+                    setOutput(outputCases[i]);
+                    setExpOutput(expOutputCases[i]);
                   }}
-                />
-              ))}
+                  copied={copiedTestCase === i}
+                  handleCopy={(e) => handleCopy(e, tc, "testcase", i)}
+                />))
+              }
+
+            </div>
+            <div className="h-100">
+              <div className="text-xl mb-3 mt-3">Results</div>
+              <div className="w-full flex">
+                <div className="w-1/2 rounded-lg bg-secondary p-5 mr-1 h-fit">
+                  <div className="text-base mb-2">
+                    <div className="flex">
+                      <div>Output</div>
+                      <button
+                        onClick={(e) => handleCopy(e, output, "output")}
+                        className="rounded p-1 hover:bg-white/10 ml-auto"
+                      >
+                        {copiedOutput ? <CheckIcon /> : <CopyIcon />}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="bg-primary p-2 min-h-10 max-h-70 overflow-auto minimal-scrollbar">
+                    <pre>{output}</pre>
+                  </div>
+                </div>
+                <div className="w-1/2 rounded-lg bg-secondary p-5 ml-1 h-fit">
+                  <div className="flex">
+                    <div className="text-base mb-2">Expected</div>
+                    <button
+                      onClick={(e) => handleCopy(e, expOutput, "expected")}
+                      className="rounded p-1 hover:bg-white/10 ml-auto"
+                    >
+                      {copiedExpected ? <CheckIcon /> : <CopyIcon />}
+                    </button>
+                  </div>
+                  <div className="bg-primary p-2 min-h-10 max-h-70 overflow-auto minimal-scrollbar">
+                    <pre>{expOutput}</pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="text-xl mb-3 mt-3">Console</div>
+              <div className="w-full h-100 bg-[#0c1d0a]"></div>
             </div>
           </div>
         </>
