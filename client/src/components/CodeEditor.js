@@ -1,16 +1,18 @@
 "use client"
 
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Settings, 
-  Code2, 
-  Moon, 
-  Sun, 
+import {
+  Settings,
+  Code2,
+  Moon,
+  Sun,
   AlignLeft,
   Download,
   Copy,
   Check,
-  Type
+  Type,
+  Play,
+  Loader2
 } from 'lucide-react';
 
 const LANGUAGES = [
@@ -51,7 +53,8 @@ function App() {
   const [code, setCode] = useState('');
   const [isCopied, setIsCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  
+  const [isRunning, setIsRunning] = useState(false);
+
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
   const editorInstanceRef = useRef(null);
@@ -62,11 +65,11 @@ function App() {
 
     const initMonaco = () => {
       if (!isMounted) return;
-      window.require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' }});
+      window.require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
       window.require(['vs/editor/editor.main'], () => {
         if (!isMounted) return;
         monacoRef.current = window.monaco;
-        
+
         if (editorRef.current && !editorInstanceRef.current) {
           editorInstanceRef.current = window.monaco.editor.create(editorRef.current, {
             value: code,
@@ -88,8 +91,11 @@ function App() {
             autoClosingQuotes: 'always',
             autoSurround: 'languageDefined',
             tabSize: tabSize,
+            indentSize: tabSize,
+            insertSpaces: true,
+            detectIndentation: false,
             minimap: { enabled: true, scale: 0.75 },
-            
+
             // Explicitly disable all suggestions and hints
             quickSuggestions: false,
             suggestOnTriggerCharacters: false,
@@ -97,7 +103,7 @@ function App() {
             snippetSuggestions: 'none',
             parameterHints: { enabled: false }
           });
-          
+
           setIsLoading(false);
 
           editorInstanceRef.current.onDidChangeModelContent(() => {
@@ -120,7 +126,7 @@ function App() {
         script.onload = initMonaco;
         document.body.appendChild(script);
       } else {
-         existingScript.addEventListener('load', initMonaco);
+        existingScript.addEventListener('load', initMonaco);
       }
     }
 
@@ -134,12 +140,53 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleRunCode = async () => {
+    if (isRunning) return;
+
+    setIsRunning(true);
+
+    try {
+      const res = await fetch(
+        "https://api.onlinecompiler.io/api/run-code-sync/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-API-Key": "e1704d8f9929e9b5613262c7b850c2eb", // replace with the header name required by the API
+          },
+          body: JSON.stringify({
+            compiler: "g++-15",
+            code,
+            input: "",
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error(`Request failed: ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      console.log(data);
+
+      // Example:
+      // setOutput(data.output);
+      // setError(data.error);
+
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsRunning(false);
+    }
+  };
+
   const handleLanguageChange = (e) => {
     const newLang = e.target.value;
     setLanguage(newLang);
     const newCode = '';
     setCode(newCode);
-    
+
     if (monacoRef.current && editorInstanceRef.current) {
       monacoRef.current.editor.setModelLanguage(editorInstanceRef.current.getModel(), newLang);
       editorInstanceRef.current.setValue(newCode);
@@ -157,8 +204,15 @@ function App() {
   const handleTabSizeChange = (e) => {
     const newSize = Number(e.target.value);
     setTabSize(newSize);
-    if (editorInstanceRef.current) {
-      editorInstanceRef.current.getModel().updateOptions({ tabSize: newSize });
+
+    const model = editorInstanceRef.current?.getModel();
+    if (model) {
+      model.updateOptions({
+        tabSize: newSize,
+        indentSize: newSize,
+        insertSpaces: true,
+        detectIndentation: false,
+      });
     }
   };
 
@@ -193,7 +247,7 @@ function App() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    
+
     const extensions = {
       javascript: 'js', typescript: 'ts', python: 'py',
       html: 'html', css: 'css', json: 'json', java: 'java',
@@ -201,7 +255,7 @@ function App() {
       go: 'go', rust: 'rs', sql: 'sql', xml: 'xml', yaml: 'yml',
       markdown: 'md', shell: 'sh'
     };
-    
+
     a.download = `script.${extensions[language] || 'txt'}`;
     document.body.appendChild(a);
     a.click();
@@ -211,11 +265,11 @@ function App() {
 
   return (
     <div className="flex flex-col h-screen w-full bg-[#1e1e1e] border-x border-t border-gray-800 rounded-t-lg overflow-hidden shadow-2xl">
-      
+
       {/* Top Toolbar */}
       <div className="flex flex-wrap items-center justify-between px-4 py-3 bg-[#252526] border-b border-[#333333] gap-y-3">
         <div className="flex flex-wrap items-center gap-3">
-          
+
           {/* Language Selector */}
           <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5 focus-within:ring-2 focus-within:ring-blue-500">
             <Code2 className="w-4 h-4 text-gray-400 mr-2" />
@@ -283,6 +337,27 @@ function App() {
               ))}
             </select>
           </div>
+          <button
+            onClick={handleRunCode}
+            disabled={isRunning}
+            className={`flex items-center gap-2 w-20 h-8 justify-center rounded-md transition-all duration-200 text-white
+            ${isRunning
+                ? "bg-yellow-600 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700 cursor-pointer"
+              }`}
+          >
+            {isRunning ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+
+              </>
+            ) : (
+              <>
+                <Play className="w-4 h-4" />
+                Run
+              </>
+            )}
+          </button>
         </div>
 
         {/* Action Buttons */}

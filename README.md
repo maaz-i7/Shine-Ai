@@ -43,6 +43,7 @@ These routes are automatically generated and managed by NextAuth inside the Next
 | `/`             | Landing page introducing Shine AI and its features.                         | Public    |
 | `/login`        | Sign in or Sign up using email/username & password or OAuth (Google/GitHub).           | Public    |
 | `/dashboard`    | User dashboard displaying personalized content and recent activity.         | Protected |
+| `/canvas`    | Playground where user solves problem with AI assistance         | Protected |
 
 
 ## 🛠️ Technologies Used
