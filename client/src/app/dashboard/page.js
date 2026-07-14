@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react"
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import ProjectCard from "@/components/ProblemCard.js"
+import Link from "next/link";
 
 export default function () {
 
@@ -52,12 +53,14 @@ export default function () {
       <div className="flex-1 h-screen bg-primary">
         <div className="flex w-full justify-between items-center p-5 border-b border-white/10">
           <div className="text-3xl font-bold">Problems</div>
-          <button className="mr-5 border-gray-500 border p-2 px-5 rounded flex items-center justify-center cursor-pointer">
-            New Problem 
-            <span className="text-2xl ml-2">+</span>
-          </button>
+          <Link href={"/problems/new"}>
+            <button className="mr-5 border-gray-500 border hover:bg-gray-800 transition-colors p-2 px-5 rounded flex items-center justify-center cursor-pointer">
+              New Problem
+              <span className="text-2xl ml-2">+</span>
+            </button>
+          </Link>
         </div>
-        <ProjectCard/>
+        <ProjectCard />
       </div>
     </div>
   )
