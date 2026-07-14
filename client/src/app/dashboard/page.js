@@ -2,7 +2,7 @@
 import { useSession } from "next-auth/react"
 import { signOut } from "next-auth/react";
 import Image from "next/image";
-import ProjectCard from "@/components/ProjectCard.js"
+import ProjectCard from "@/components/ProblemCard.js"
 
 export default function () {
 

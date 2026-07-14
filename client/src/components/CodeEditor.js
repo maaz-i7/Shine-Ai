@@ -305,7 +305,7 @@ export default function App() {
       </div>
 
       {/* Editor Container */}
-      <div className="flex-1 relative bg-[#1e1e1e]">
+      <div className="flex-1 mt-5 relative bg-[#1e1e1e]">
         {isLoading && (
           <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#1e1e1e] text-gray-400">
             Initializing Editor...

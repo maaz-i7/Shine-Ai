@@ -1,5 +1,4 @@
-import Image from "next/image";
-import heroBg from "../../public/images/hero-logo-no-bg.png"
+import Link from "next/link";
 import ProgressJourney from "@/components/ProgressJourney";
 
 export default function Home() {
@@ -32,7 +31,7 @@ export default function Home() {
       <ProgressJourney />
 
       <div className="w-screen flex justify-center mt-10">
-        <button className="bg-blue-500 text-[15px] w-50 font-bold p-4 px-6 m-5 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-blue-600">&lt;Canvas/&gt;</button>
+        <Link href={"/canvas"}><button className="bg-blue-500 text-[15px] w-50 font-bold p-4 px-6 m-5 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-blue-600">&lt;Canvas/&gt;</button></Link>
         <button className="bg-yellow-500 text-[15px] w-50 font-bold p-4 px-6 m-5 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-yellow-600">Register</button>
       </div>
     </main>
