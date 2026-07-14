@@ -24,6 +24,8 @@ export default function Layout() {
     const MINIMIZED_CONSOLE_HEIGHT = 36;
     const MINIMIZED_WIDTH = 36;
 
+    const frame = useRef(null);
+
     const startConsoleDrag = () => {
         let latestHeight = consoleHeight;
 
@@ -35,17 +37,25 @@ export default function Layout() {
 
             latestHeight = height;
 
-            // Update DOM directly (no React re-render)
-            if (consoleRef.current) {
-                consoleRef.current.style.height = `${height}px`;
-            }
+            // Instant DOM resize
+            consoleRef.current.style.height = `${height}px`;
+            editorRef.current.style.height = `calc(100% - ${height}px - 4px)`;
 
-            if (editorRef.current) {
-                editorRef.current.style.height = `calc(100% - ${height}px - 4px)`;
+            // React update at most once per frame
+            if (!frame.current) {
+                frame.current = requestAnimationFrame(() => {
+                    setConsoleHeight(latestHeight);
+                    frame.current = null;
+                });
             }
         };
 
         const stop = () => {
+            if (frame.current) {
+                cancelAnimationFrame(frame.current);
+                frame.current = null;
+            }
+
             setConsoleHeight(latestHeight);
 
             window.removeEventListener("mousemove", handleMove);
