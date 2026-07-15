@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import 'katex/dist/katex.min.css';
+
 
 /* @theme inline {
   --color-background: var(--background);
@@ -59,4 +62,23 @@ body {
 
 .minimal-scrollbar::-webkit-scrollbar-corner {
   background: transparent;
+}
+
+.prose code::before {
+  content: none !important;
+}
+.prose code::after {
+  content: none !important;
+}
+
+.prose code {
+  font-weight: 500 !important; 
+}
+
+.problem-markdown :not(pre) > code {
+    @apply bg-[#2d2d2d] text-white px-1.5 py-0.5 rounded border border-gray-700 font-mono text-[0.9em];
+}
+
+.problem-markdown pre code {
+    @apply bg-transparent border-0 p-0 text-gray-300;
 }

@@ -75,3 +75,5 @@ These routes are automatically generated and managed by NextAuth inside the Next
 - **JSON Web Token (JWT)** – Stateless authentication using JSON Web Tokens
 - **Lucide React** – Modern customizable SVG icon library for React components and UI icons.
 - **Monaco editor** – for integrating an IDE
+- **react-markdown** – Markdown rendering in React components
+- **remark-gfm** – GitHub Flavored Markdown support for tables, checklists, and more

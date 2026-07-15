@@ -1,90 +1,208 @@
-"use client"
+"use client";
 
-export default function Component() {
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import rehypeRaw from "rehype-raw";
+import "katex/dist/katex.min.css";
+
+const content =
+`
+In this challenge, you will be given an array \`B\` and must determine an array \`A\`. There is a special rule: For all \`i\`, \`A[i] <= B[i]\`. That is, \`A[i]\` can be any number you choose such that \`1 <= A[i] <= B[i]\`. Your task is to select a series of \`A[i]\` given \`B[i]\` such that the sum of the absolute difference of consecutive pairs of \`A\` is maximized. This will be the array's cost, and will be represented by the variable \`S\` below.
+
+The equation can be written:
+
+$$S = \\sum_{i=2}^{N} \\vert{}A[i] - A[i - 1]\\vert{}$$
+
+For example, if the array \`B = [1, 2, 3]\`, we know that \`1 <= A[1] <= 1\`, \`1 <= A[2] <= 2\`, and \`1 <= A[3] <= 3\`. Arrays meeting those guidelines are:
+
+\`\`\`
+[1,1,1], [1,1,2], [1,1,3]
+[1,2,1], [1,2,2], [1,2,3]
+
+\`\`\`
+
+Our calculations for the arrays are as follows:
+
+\`\`\`
+|1-1| + |1-1| = 0   |1-1| + |2-1| = 1   |1-1| + |3-1| = 2
+|2-1| + |1-2| = 2   |2-1| + |2-2| = 1   |2-1| + |3-2| = 2
+
+\`\`\`
+
+The maximum value obtained is \`2\`.
+
+### Function Description
+
+Complete the cost function in the editor below. It should return the maximum value that can be obtained.
+
+cost has the following parameter(s):
+
+* \`B\`: an array of integers
+
+---
+
+### Input Format
+
+The first line contains the integer \`t\`, the number of test cases.
+
+Each of the next \`t\` pairs of lines is a test case where:
+
+* The first line contains an integer \`n\`, the length of \`B\`
+* The next line contains \`n\` space-separated integers \`B[i]\`
+
+### Constraints
+
+* \`1 <= t <= 20\`
+* \`1 < n <= 10^5\`
+* \`1 <= B[i] <= 100\`
+* <code>1 &lt; n &lt;= 10<sup>5</sup></code>
+### Output Format
+
+For each test case, print the maximum sum on a separate line.
+
+### Sample Input
+
+\`\`\`
+1
+5
+10 1 10 1 10
+
+\`\`\`
+
+### Sample Output
+
+\`\`\`
+36
+
+\`\`\`
+
+### Explanation
+
+The maximum sum occurs when \`A[1]=A[3]=A[5]=10\` and \`A[2]=A[4]=1\`. That is
+
+\`|1 - 10| + |10 - 1| + |1 - 10| + |10 - 1| = 36\`.
+`
+
+export default function ProblemSection({ }) {
     return (
-        <div className="p-5 h-screen overflow-y-auto minimal-scrollbar pt-10">
-            <div className="font-bold text-2xl">Leetcode - 3756. Concatenate Non-Zero Digits and Multiply by Sum II</div>
-            <div className="flex w-full justify-between gap-2 mt-3 mb-5 items-center">
-                <div className="text-[#C69D24] bg-[#3C3C3C] w-fit flex items-center justify-center rounded-2xl px-2 p-0.5 text-[14px]">Medium</div>
-                <div className="flex">
-                    <div className="mr-1 text-gray-300 text-[14px]">Solved</div>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 14 14"
-                        width="1em"
-                        height="1em"
-                        fill="none"
-                        className="mt-0.5 w-4 text-[#28a252]"
-                    >
-                        <path
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1.2}
-                            d="M12.598 7a5.6 5.6 0 11-3.15-5.037m2.1 1.537l-4.9 4.9-1.4-1.4"
-                        />
-                    </svg>
-                </div>
-            </div>
+        <div className="problem-markdown text-white leading-8 minimal-scrollbar text-[15px] font-sans wrap-break-word h-screen overflow-y-scroll p-5">
+            <ReactMarkdown
+                remarkPlugins={[remarkGfm, remarkMath]}
+                rehypePlugins={[rehypeRaw, rehypeKatex]}
+                components={{
+                    h1: ({ children }) => (
+                        <h1 className="text-4xl font-bold mb-6">
+                            {children}
+                        </h1>
+                    ),
 
-            {/* Problem Statement formatted */}
-            <div className="mt-3 text-[15px] text-white leading-7">
-                <p>
-                    You are given a string <span className="highlight-bg">s</span> of length{" "}
-                    <span className="highlight-bg">m</span> consisting of digits. You are also
-                    given a 2D integer array{" "}
-                    <span className="highlight-bg">queries</span>, where
-                </p>
+                    h2: ({ children }) => (
+                        <h2 className="text-3xl font-semibold mt-10 mb-4">
+                            {children}
+                        </h2>
+                    ),
 
-                <div className="mt-2 ml-5">
-                    <ul className="list-disc space-y-2">
-                        <li>
-                            <span className="highlight-bg">queries[i] = [l<sub>i</sub>, r<sub>i</sub>]</span>
-                        </li>
-                    </ul>
-                </div>
+                    h3: ({ children }) => (
+                        <h3 className="text-2xl font-semibold mt-8 mb-3">
+                            {children}
+                        </h3>
+                    ),
 
-                <p className="mt-4">
-                    For each query, consider the substring{" "}
-                    <span className="highlight-bg">s[l<sub>i</sub>...r<sub>i</sub>]</span> and
-                    perform the following operations:
-                </p>
+                    p: ({ children }) => (
+                        <p className="mb-4 leading-8">
+                            {children}
+                        </p>
+                    ),
 
-                <div className="mt-3 ml-5">
-                    <ol className="list-decimal space-y-3">
-                        <li>
-                            Form a new integer <span className="highlight-bg">x</span> by
-                            concatenating all the <strong>non-zero</strong> digits from the
-                            substring while preserving their original order.
-                            <ul className="list-disc ml-6 mt-2">
-                                <li>
-                                    If the substring contains no non-zero digits, then{" "}
-                                    <span className="highlight-bg">x = 0</span>.
-                                </li>
-                            </ul>
-                        </li>
+                    ul: ({ children }) => (
+                        <ul className="list-disc ml-7 mb-5 space-y-2">
+                            {children}
+                        </ul>
+                    ),
 
-                        <li>
-                            Compute <span className="highlight-bg">sum</span>, the sum of the digits
-                            of <span className="highlight-bg">x</span>.
-                        </li>
+                    ol: ({ children }) => (
+                        <ol className="list-decimal ml-7 mb-5 space-y-2">
+                            {children}
+                        </ol>
+                    ),
 
-                        <li>
-                            The answer for the query is:
-                            <div className="mt-2">
-                                <span className="highlight-bg font-semibold">
-                                    x × sum
-                                </span>
-                            </div>
-                        </li>
-                    </ol>
-                </div>
+                    li: ({ children }) => (
+                        <li>{children}</li>
+                    ),
 
-                <p className="mt-5">
-                    Return an array containing the answer for each query in the same order.
-                </p>
-            </div>
+                    blockquote: ({ children }) => (
+                        <blockquote className="border-l-4 border-gray-600 pl-4 italic text-gray-300 my-4">
+                            {children}
+                        </blockquote>
+                    ),
 
+                    table: ({ children }) => (
+                        <div className="overflow-x-auto my-6">
+                            <table className="border-collapse border border-gray-700">
+                                {children}
+                            </table>
+                        </div>
+                    ),
+
+                    thead: ({ children }) => (
+                        <thead className="bg-[#202020]">
+                            {children}
+                        </thead>
+                    ),
+
+                    tbody: ({ children }) => (
+                        <tbody>{children}</tbody>
+                    ),
+
+                    tr: ({ children }) => (
+                        <tr className="border-b border-gray-700">
+                            {children}
+                        </tr>
+                    ),
+
+                    hr: () => (
+                        <hr className="my-8 border-0 h-px bg-gray-700" />
+                    ),
+
+                    th: ({ children }) => (
+                        <th className="border border-gray-700 px-4 py-2 text-left font-semibold">
+                            {children}
+                        </th>
+                    ),
+
+                    td: ({ children }) => (
+                        <td className="border border-gray-700 px-4 py-2">
+                            {children}
+                        </td>
+                    ),
+
+                    
+
+                    pre({ children }) {
+                        return (
+                            <pre
+                                className="
+                                    bg-[#1e1e1e]
+                                    border
+                                    border-gray-700
+                                    rounded-lg
+                                    p-4
+                                    overflow-x-auto
+                                    minimal-scrollbar
+                                    my-5
+                                    text-sm
+                                "
+                            >
+                                {children}
+                            </pre>
+                        );
+                    },
+                }}
+            >
+                {content}
+            </ReactMarkdown>
         </div>
-    )
+    );
 }
