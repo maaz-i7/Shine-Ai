@@ -22,7 +22,7 @@ export default function () {
   };
 
   return (
-    <div className="w-screen flex">
+    <div className="w-screen flex font-sans">
       <div className="w-1/4 h-screen bg-primary border-r border-white/10">
         <div className="p-10 flex flex-col h-screen">
           <div className="flex">

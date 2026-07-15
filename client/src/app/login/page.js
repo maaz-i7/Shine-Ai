@@ -89,7 +89,7 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="h-fit pb-100 flex justify-center bg-primary px-4 sm:px-6 lg:px-8">
+    <div className="h-fit pb-100 font-sans flex justify-center bg-primary px-4 sm:px-6 lg:px-8">
       <div className={`max-w-md w-full space-y-8 bg-secondary pb-10 pt-5 px-10 rounded-2xl shadow-xl ${isLogin ? "mt-10" : "mt-5"}`}>
 
         {/* Header */}
