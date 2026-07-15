@@ -114,7 +114,7 @@ export default function App() {
 
                     {/* Nodes */}
                     {nodes.map((node) => (
-                        <div key={node.id} className="relative z-10 flex flex-col items-center">
+                        <div key={node.id} className="relative z-0 flex flex-col items-center">
                             
                             {/* Circle Node (20px diameter / w-5 h-5) */}
                             <div className={`
