@@ -227,7 +227,7 @@ export default function App() {
                                     <button
                                         type="button"
                                         onClick={triggerFileInput}
-                                        className="w-30 h-30 flex flex-col items-center justify-center border-2 border-dashed border-slate-700 hover:border-slate-500 bg-primary hover:bg-[#202020] rounded-lg transition text-slate-400 hover:text-white group space-y-2 cursor-pointer"
+                                        className="aspect-video sm:aspect-square flex flex-col items-center justify-center border-2 border-dashed border-slate-700 hover:border-slate-500 bg-primary hover:bg-[#202020] rounded-lg transition text-slate-400 hover:text-white group space-y-2 cursor-pointer"
                                     >
                                         <div className="bg-secondary p-3 rounded-full group-hover:bg-[#323232] transition">
                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
