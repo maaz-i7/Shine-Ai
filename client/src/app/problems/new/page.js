@@ -5,7 +5,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { useProblemStore } from "../../../stores/problem.store.js";
 import { useRouter } from "next/navigation";
 
-export const LANGUAGES = [
+const LANGUAGES = [
   { id: "cpp", name: "C++", compiler: "g++-15" },
   { id: "python", name: "Python", compiler: "python-3.14" },
   { id: "java", name: "Java", compiler: "openjdk-25" },
@@ -18,6 +18,45 @@ export const LANGUAGES = [
   { id: "ruby", name: "Ruby", compiler: "ruby-4.0" },
   { id: "haskell", name: "Haskell", compiler: "haskell-9.12" },
   { id: "fsharp", name: "F#", compiler: "dotnet-fsharp-9" },
+];
+
+const PLATFORMS = [
+  { id: "leetcode", name: "LeetCode" },
+  { id: "codeforces", name: "Codeforces" },
+  { id: "codechef", name: "CodeChef" },
+  { id: "atcoder", name: "AtCoder" },
+  { id: "geeksforgeeks", name: "GeeksforGeeks" },
+  { id: "hackerrank", name: "HackerRank" },
+  { id: "codingninjas", name: "Coding Ninjas" },
+  { id: "cses", name: "CSES" },
+  { id: "interviewbit", name: "InterviewBit" },
+  { id: "spoj", name: "SPOJ" },
+  { id: "usaco", name: "USACO" },
+  { id: "kattis", name: "Kattis" },
+  { id: "topcoder", name: "Topcoder" },
+  { id: "dmoj", name: "DMOJ" },
+  { id: "ojuz", name: "OJ.uz" },
+  { id: "lightoj", name: "LightOJ" },
+  { id: "beecrowd", name: "Beecrowd (URI Online Judge)" },
+  { id: "uva", name: "UVa Online Judge" },
+  { id: "timus", name: "Timus Online Judge" },
+  { id: "projecteuler", name: "Project Euler" },
+  { id: "codingame", name: "CodinGame" },
+  { id: "googlekickstart", name: "Google Kick Start" },
+  { id: "facebookhackercup", name: "Meta Hacker Cup" },
+  { id: "ioi", name: "IOI" },
+  { id: "icpc", name: "ICPC" },
+  { id: "googlecodejam", name: "Google Code Jam" },
+  { id: "yosupo", name: "Library Checker (Yosupo)" },
+  { id: "toph", name: "Toph" },
+  { id: "algoexpert", name: "AlgoExpert" },
+  { id: "lintcode", name: "LintCode" },
+  { id: "hackerearth", name: "HackerEarth" },
+  { id: "binarysearch", name: "BinarySearch" },
+  { id: "adventofcode", name: "Advent of Code" },
+  { id: "loj", name: "LibreOJ" },
+  { id: "acmp", name: "ACMP" },
+  { id: "other", name: "Other" }
 ];
 
 export default function App() {
@@ -96,8 +135,19 @@ export default function App() {
     }, 5000);
   };
 
-  const generateProblemFromImages = async () => {
-    if (uploadedImages.length === 0) 
+  const normalizeTitle = (title = "") => {
+    return title
+      .normalize("NFKD")                // Unicode normalization
+      .replace(/[\u0300-\u036f]/g, "")  // Remove accents
+      .toLowerCase()
+      .replace(/['’]/g, "")             // Remove apostrophes
+      .replace(/[^a-z0-9\s]/g, " ")     // Remove punctuation
+      .replace(/\s+/g, " ")             // Collapse spaces
+      .trim();
+  }
+
+  const generateProblemFromImages = async (data) => {
+    if (uploadedImages.length === 0)
       return null;
 
     setIsLoading(true);
@@ -108,6 +158,12 @@ export default function App() {
       formData.append("images", image.file);
     });
 
+    formData.append("title", normalizeTitle(data.title));
+    formData.append("url", data.url);
+    formData.append("platform", data.platform);
+    formData.append("language", data.language);
+    formData.append("starterCode", data.starterCode);
+    
     try {
       const response = await fetch(
         "http://localhost:5000/api/ai/extract-problem",
@@ -141,7 +197,7 @@ export default function App() {
     }
 
     // Process with AI using the uploaded images
-    const aiResponse = await generateProblemFromImages();
+    const aiResponse = await generateProblemFromImages(data);
 
     if (!aiResponse) {
       triggerToast("Server did not respond. Please try again", "error");
@@ -437,14 +493,21 @@ export default function App() {
               Platform <span className="text-red-500">*</span>
             </label>
 
-            <input
-              type="text"
-              placeholder="LeetCode / Codeforces / CodeChef..."
+            <select
               {...register("platform", {
                 required: "Platform is required",
               })}
-              className="w-full rounded-lg bg-primary border text-sm p-2 border-slate-700/80 px-4 py-3 text-white outline-none focus:border-blue-500 transition-colors"
-            />
+              className="w-full minimal-scrollbar rounded-lg bg-primary appearance-none border text-sm border-slate-700/80 px-4 py-3 text-white outline-none focus:border-blue-500 transition-colors cursor-pointer"
+            >
+              <option value="">
+                Select a platform
+              </option>
+              {PLATFORMS.map((platform) => (
+                <option className="cursor-pointer" key={platform.id} value={platform.id}>
+                  {platform.name}
+                </option>
+              ))}
+            </select>
 
             {errors.platform && (
               <p className="text-red-400 mt-1 text-sm">
