@@ -1,8 +1,16 @@
-import ProblemSection from "@/components/ProblemSection"
-export default function page() {
+"use client";
+
+import ProblemSection from "@/components/ProblemSection.js";
+import { useProblemStore } from "../../stores/problem.store.js";
+
+export default function Page() {
+    const generatedProblem = useProblemStore(
+        (state) => state.generatedProblem
+    );
+
     return (
-        <div className="w-screen h-screen overflow-y-scroll">
-            <ProblemSection />
-        </div>
-    )
+        <ProblemSection
+            content={generatedProblem}
+        />
+    );
 }

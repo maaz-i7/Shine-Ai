@@ -8,15 +8,16 @@ export default function LayoutWrapper({ children }) {
 
     const pathname = usePathname();
 
-    const hideNavbar = [
+    const hideNavbarAndFooter = [
         "/canvas",
+        "/problem"
     ].includes(pathname);
 
     return (
         <>
-            {!hideNavbar && <Navbar />}
+            {!hideNavbarAndFooter && <Navbar />}
             {children}
-            {!hideNavbar && <Footer />}
+            {!hideNavbarAndFooter && <Footer />}
         </>
     );
 }

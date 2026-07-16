@@ -43,9 +43,10 @@ function prepareStatement(statement) {
     // });
 
     // Escape for JavaScript template literals
-    return statement
-        .replace(/\\/g, "\\\\")
-        .replace(/`/g, "\\`");
+    // return statement
+    //     .replace(/\\/g, "\\\\")
+    //     .replace(/`/g, "\\`");
+    return statement;
 }
 
 export const generateCodeFromImages = async (files) => {

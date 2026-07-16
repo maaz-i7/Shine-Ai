@@ -2,8 +2,13 @@
 
 import React, { useState, useRef } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
+import { useProblemStore } from "../../../stores/problem.store.js";
+import { useRouter } from "next/navigation";
 
 export default function App() {
+
+  const router = useRouter();
+  
   // Accordion state - default minimized (false)
   const [isManualOpen, setIsManualOpen] = useState(false);
 
@@ -149,13 +154,13 @@ export default function App() {
 
       if (!aiResponse) return;
 
-      console.log("Generated Problem:", aiResponse);
+      console.log(aiResponse);
 
-      // TODO
-      // Save to DB
-      // Navigate to canvas
-      // Fill form
-      // Whatever you want
+      useProblemStore
+        .getState()
+        .setGeneratedProblem(aiResponse);
+
+      router.push("/problem");
 
       return;
     }
