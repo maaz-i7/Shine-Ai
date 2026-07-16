@@ -32,7 +32,7 @@ These routes are automatically generated and managed by NextAuth inside the Next
 | `GET` | `/api/auth/callback/google` | Google redirects here with the authorization code. NextAuth intercepts it. |
 | `GET` | `/api/auth/signin/github` | NextAuth endpoint to redirect the user to the GitHub authorization screen. |
 | `GET` | `/api/auth/callback/github` | GitHub redirects here. NextAuth intercepts and processes the profile. |
-| `POST` | `/api/auth/signout` | Destroys the secure JWT session cookie in the user's browser. |
+| `POST` | `/api/ai/extract-problem` | Uses AI to extract and format a DSA problem from uploaded images into structured Markdown with LaTeX support. |
 
 ---
 

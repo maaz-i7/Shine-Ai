@@ -1,12 +1,5 @@
 import mongoose from "mongoose"
 
-// Sub-schema for test cases
-const testCaseSchema = new mongoose.Schema({
-    input: { type: String, required: true },
-    output: { type: String, required: true },
-    explanation: { type: String }
-}, { _id: false }); // Disabled _id for subdocuments to save space
-
 const problemSchema = new mongoose.Schema({
     title: { 
         type: String, 
@@ -42,10 +35,6 @@ const problemSchema = new mongoose.Schema({
         type: String, 
         required: true 
     },
-
-    constraints: [{ type: String }],
-    sampleTestCases: [testCaseSchema],
-    starterCode: { type: String },
 
 }, { timestamps: true });
 

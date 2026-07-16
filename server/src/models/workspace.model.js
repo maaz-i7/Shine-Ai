@@ -18,6 +18,7 @@ const workspaceSchema = new mongoose.Schema({
     },
 
     language: { type: String, default: 'C++' },
+    starterCode: { type: String },
     userCode: { type: String },
 
     timeTakenSeconds: {
@@ -43,6 +44,7 @@ const workspaceSchema = new mongoose.Schema({
 
     // AI Interaction Data
     aiNotes: { type: String },
+    aiCode: { type: String },
     aiRating: { type: Number, min: 0, max: 100 },
     chatCount: { type: Number, default: 0 },
     executionCount: { type: Number, default: 0 },

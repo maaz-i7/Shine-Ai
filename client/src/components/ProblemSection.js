@@ -9,7 +9,7 @@ import "katex/dist/katex.min.css";
 
 export default function ProblemSection({content}) {
     return (
-        <div className="problem-markdown bg-primary text-white leading-8 minimal-scrollbar max-w-100 text-[15px] font-sans wrap-break-word h-screen overflow-y-scroll p-5">
+        <div className="problem-markdown bg-primary text-white leading-8 minimal-scrollbar w-112.5 text-[15px] font-sans wrap-break-word h-screen overflow-y-scroll p-5">
             <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkMath]}
                 rehypePlugins={[rehypeRaw, rehypeKatex]}

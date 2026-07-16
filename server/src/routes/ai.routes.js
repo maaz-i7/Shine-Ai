@@ -9,7 +9,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 // POST route expecting a form-data field named 'image'
 router.post(
-    "/generate-code",
+    "/extract-problem",
     upload.array("images", 20),
     handleCodeGeneration
 );
