@@ -77,3 +77,5 @@ These routes are automatically generated and managed by NextAuth inside the Next
 - **Monaco editor** – for integrating an IDE
 - **react-markdown** – Markdown rendering in React components
 - **remark-gfm** – GitHub Flavored Markdown support for tables, checklists, and more
+-**multer** - 
+-**Zustand** -
