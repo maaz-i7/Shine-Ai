@@ -10,15 +10,14 @@
 
 ---
 
-### 🖥️ Express Backend Routes (Database Operations)
-
-These routes are defined in `server/src/routes/auth.routes.js` and handled by the Express backend. They securely transmit sensitive data via the request body using the `POST` method.
+### 🖥️ Express Backend Routes
 
 | Method | Endpoint | Description | Payload Expectation |
 | :--- | :--- | :--- | :--- |
 | `POST` | `/api/auth/signup` | Registers a new local user, hashes the password, and saves the document to MongoDB. | `{ name, username, email, password }` |
 | `POST` | `/api/auth/login` | Validates email/username and password. Resolves OAuth provider conflicts (e.g., returns 401 if they previously used Google). | `{ identifier, password }` |
 | `POST` | `/api/auth/oauth-sync`| Receives OAuth profile data from NextAuth. Creates a new user or links to an existing account. | `{ email, name, avatar, provider, providerId }` |
+| `POST` | `/api/online-compiler/execute-code`| calls online compiler API to execute code |
 
 ---
 
@@ -77,5 +76,5 @@ These routes are automatically generated and managed by NextAuth inside the Next
 - **Monaco editor** – for integrating an IDE
 - **react-markdown** – Markdown rendering in React components
 - **remark-gfm** – GitHub Flavored Markdown support for tables, checklists, and more
--**multer** - 
--**Zustand** -
+- **Multer** – Used to upload problem images from users so they can be processed by the AI for problem extraction.
+- **Zustand** – Lightweight state management library for global state management. Used to share application state such as generated problem data, workspace information, and UI state across components without prop drilling.
