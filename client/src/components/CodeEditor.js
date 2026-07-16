@@ -138,7 +138,7 @@ function App() {
       setIsRunning(true)
       const compiler = LANGUAGES.find(lang => lang.id === language)?.compiler
       const input = ""
-      const backendUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/execute`
+      const backendUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/online-compiler/execute-code`
       const response = await fetch(backendUrl, {
         method: 'POST',
         headers: {

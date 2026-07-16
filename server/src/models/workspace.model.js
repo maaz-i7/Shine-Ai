@@ -17,8 +17,8 @@ const workspaceSchema = new mongoose.Schema({
         default: 'Todo'
     },
 
-    language: { type: String, default: 'C++' },
-    starterCode: { type: String },
+    language: { type: String, default: 'cpp' },
+    codeTemplate: { type: String },
     userCode: { type: String },
 
     timeTakenSeconds: {
@@ -27,7 +27,6 @@ const workspaceSchema = new mongoose.Schema({
     },
 
     // Shine AI analysis
-
     journeySummary: {
         type: String
     },
@@ -38,8 +37,6 @@ const workspaceSchema = new mongoose.Schema({
         max: 5
     },
 
-    timeComplexity: { type: String },
-    spaceComplexity: { type: String },
     shortNotes: { type: String },
 
     // AI Interaction Data

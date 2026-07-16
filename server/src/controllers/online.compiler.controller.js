@@ -1,4 +1,4 @@
-import { runCodeService } from '../services/code.service.js';
+import { runCodeService } from '../services/online.compiler.service.js';
 
 export default async function (req, res) {
   try {

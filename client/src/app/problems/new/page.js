@@ -120,13 +120,13 @@ export default function App() {
       const result = await response.json();
 
       if (!response.ok || !result.success) {
-        throw new Error(result.error || "Failed to generate problem.");
+        throw new Error(result.error || "Failed to create problem.");
       }
       return result.data;
 
     } catch (error) {
       console.error(error);
-      triggerToast("Failed to generate problem from uploaded images.", "error");
+      triggerToast("Failed to create problem. Please try again.", "error");
       return null;
     } finally {
       setIsLoading(false);
@@ -143,7 +143,10 @@ export default function App() {
     // Process with AI using the uploaded images
     const aiResponse = await generateProblemFromImages();
 
-    if (!aiResponse) return;
+    if (!aiResponse) {
+      triggerToast("Server did not respond. Please try again", "error");
+      return;
+    }
 
     if (aiResponse === "-1") {
       triggerToast("Please upload valid problem images", "error");
