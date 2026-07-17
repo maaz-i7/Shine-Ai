@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useProblemStore } from "../../../stores/problem.store.js";
 import { useRouter } from "next/navigation";
 
@@ -72,10 +72,8 @@ export default function App() {
 
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors },
-    trigger,
   } = useForm({
     defaultValues: {
       title: "",
@@ -92,11 +90,6 @@ export default function App() {
         },
       ],
     },
-  });
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "sampleTestCases",
   });
 
   const handleImageChange = (e) => {
@@ -135,38 +128,98 @@ export default function App() {
     }, 5000);
   };
 
-  const normalizeTitle = (title = "") => {
-    return title
-      .normalize("NFKD")                // Unicode normalization
-      .replace(/[\u0300-\u036f]/g, "")  // Remove accents
-      .toLowerCase()
-      .replace(/['’]/g, "")             // Remove apostrophes
-      .replace(/[^a-z0-9\s]/g, " ")     // Remove punctuation
-      .replace(/\s+/g, " ")             // Collapse spaces
-      .trim();
-  }
+  // const generateProblemFromImages = async (data) => {
+  //   if (uploadedImages.length === 0)
+  //     return null;
 
+  //   setIsLoading(true);
+
+  //   const formData = new FormData();
+
+  //   uploadedImages.forEach((image) => {
+  //     formData.append("images", image.file);
+  //   });
+
+  //   formData.append("url", data.url);
+  //   formData.append("title", data.title);
+  //   formData.append("platform", data.platform);
+  //   formData.append("language", data.language);
+  //   formData.append("starterCode", data.starterCode);
+
+  //   try {
+  //     const response = await fetch(
+  //       "http://localhost:5000/api/problem/ensure",
+  //       {
+  //         method: "POST",
+  //         body: formData,
+  //       }
+  //     );
+
+  //     const result = await response.json();
+
+  //     if (!response.ok || !result.success) {
+  //       throw new Error(result.error || "Failed to create problem.");
+  //     }
+  //     return result.data;
+
+  //   } catch (error) {
+  //     console.error(error);
+  //     triggerToast("Failed to create problem. Please try again.", "error");
+  //     return null;
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  // const onSubmit = async (data) => {
+  //   // Check if at least one image is uploaded (react-hook-form handles title/platform)
+  //   if (uploadedImages.length === 0) {
+  //     triggerToast("Please upload at least one image.", "error");
+  //     return;
+  //   }
+
+  //   // Process with AI using the uploaded images
+  //   const aiResponse = await generateProblemFromImages(data);
+
+  //   if (!aiResponse) {
+  //     triggerToast("Server did not respond. Please try again", "error");
+  //     return;
+  //   }
+
+  //   if (aiResponse === "-1") {
+  //     triggerToast("Please upload valid problem images", "error");
+  //     return;
+  //   }
+
+  //   useProblemStore.getState().setGeneratedProblem(aiResponse);
+  //   router.push("/problem");
+  // };
+
+  // const onInvalidSubmit = (formErrors) => {
+  //   const isImageMissing = uploadedImages.length === 0;
+
+  //   if (isImageMissing) {
+  //     triggerToast("Please fill all required fields and upload an image.", "error");
+  //   } else {
+  //     triggerToast("Please fill all required fields.", "error");
+  //   }
+  // };
   const generateProblemFromImages = async (data) => {
-    if (uploadedImages.length === 0)
-      return null;
-
     setIsLoading(true);
 
-    const formData = new FormData();
-
-    uploadedImages.forEach((image) => {
-      formData.append("images", image.file);
-    });
-
-    formData.append("title", normalizeTitle(data.title));
-    formData.append("url", data.url);
-    formData.append("platform", data.platform);
-    formData.append("language", data.language);
-    formData.append("starterCode", data.starterCode);
-    
     try {
+      const formData = new FormData();
+
+      uploadedImages.forEach(({ file }) => {
+        formData.append("images", file);
+      });
+
+      formData.append("title", data.title.trim());
+      formData.append("platform", data.platform);
+      formData.append("url", data.url?.trim() ?? "");
+
       const response = await fetch(
-        "http://localhost:5000/api/ai/extract-problem",
+        "http://localhost:5000/api/problem/ensure",
         {
           method: "POST",
           body: formData,
@@ -175,14 +228,19 @@ export default function App() {
 
       const result = await response.json();
 
-      if (!response.ok || !result.success) {
+      if (!response.ok) {
         throw new Error(result.error || "Failed to create problem.");
       }
-      return result.data;
+
+      if (!result.success) {
+        throw new Error(result.error || "Failed to create problem.");
+      }
+
+      return result.problem;
 
     } catch (error) {
       console.error(error);
-      triggerToast("Failed to create problem. Please try again.", "error");
+      triggerToast(error.message, "error");
       return null;
     } finally {
       setIsLoading(false);
@@ -190,36 +248,31 @@ export default function App() {
   };
 
   const onSubmit = async (data) => {
-    // Check if at least one image is uploaded (react-hook-form handles title/platform)
     if (uploadedImages.length === 0) {
       triggerToast("Please upload at least one image.", "error");
       return;
     }
 
-    // Process with AI using the uploaded images
-    const aiResponse = await generateProblemFromImages(data);
+    const problem = await generateProblemFromImages(data);
 
-    if (!aiResponse) {
-      triggerToast("Server did not respond. Please try again", "error");
-      return;
-    }
+    if (!problem) return;
 
-    if (aiResponse === "-1") {
-      triggerToast("Please upload valid problem images", "error");
-      return;
-    }
+    useProblemStore.getState().setGeneratedProblem(problem.statement);
 
-    useProblemStore.getState().setGeneratedProblem(aiResponse);
     router.push("/problem");
   };
 
-  const onInvalidSubmit = (formErrors) => {
-    const isImageMissing = uploadedImages.length === 0;
-
-    if (isImageMissing) {
-      triggerToast("Please fill all required fields and upload an image.", "error");
+  const onInvalidSubmit = () => {
+    if (uploadedImages.length === 0) {
+      triggerToast(
+        "Please fill all required fields and upload at least one image.",
+        "error"
+      );
     } else {
-      triggerToast("Please fill all required fields.", "error");
+      triggerToast(
+        "Please fill all required fields.",
+        "error"
+      );
     }
   };
 

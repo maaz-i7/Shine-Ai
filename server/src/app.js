@@ -6,7 +6,8 @@ import morgan from "morgan"
 import indexRoutes from "./routes/index.routes.js"
 import authRoutes from "./routes/auth.routes.js"
 import onlineCompiler from "./controllers/online.compiler.controller.js"
-import aiRoutes from "./routes/ai.routes.js"
+import problemRoutes from "./routes/problem.routes.js"
+
 
 const app = express()
 
@@ -19,6 +20,6 @@ app.use(express.urlencoded({ extended: true}))
 app.use('/', indexRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/online-compiler/execute-code', onlineCompiler)
-app.use('/api/ai', aiRoutes);
+app.use('/api/problem', problemRoutes);
 
 export default app

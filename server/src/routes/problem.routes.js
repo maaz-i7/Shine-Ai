@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { handleCodeGeneration } from '../controllers/ai.controller.js';
+import { ensureProblemController } from '../controllers/problem.controller.js';
 
 const router = express.Router();
 
@@ -9,9 +9,9 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 // POST route expecting a form-data field named 'image'
 router.post(
-    "/extract-problem",
+    "/ensure",
     upload.array("images", 20),
-    handleCodeGeneration
+    ensureProblemController
 );
 
 export default router;
