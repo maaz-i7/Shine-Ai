@@ -5,9 +5,12 @@ import CodeEditor from "@/components/CodeEditor.js";
 import ProblemSection from "@/components/ProblemSection.js";
 import Console from "@/components/Console.js";
 import AiSection from "@/components/AiSection.js";
+import useWorkspaceStore from "@/stores/workspace.store";
 
 export default function Layout() {
 
+    const workspace = useWorkspaceStore((state) => state.workspace);
+    // console.log(useWorkspaceStore.getState().workspace);
     const containerRef = useRef(null);
     const editorRef = useRef(null);
     const consoleRef = useRef(null);
@@ -119,14 +122,11 @@ export default function Layout() {
                 style={{ width: leftWidth }}
                 className="bg-primary shrink-0 overflow-hidden"
             >
-                <ProblemSection />
+                <ProblemSection problem={workspace?.problem} />
             </div>
 
             {/* Left Divider */}
-            <div
-                onMouseDown={startLeftDrag}
-                className="w-1 cursor-col-resize bg-gray-600 hover:bg-blue-500 shrink-0"
-            />
+            <div onMouseDown={startLeftDrag} className="w-1 cursor-col-resize bg-gray-600 hover:bg-blue-500 shrink-0"/>
 
             {/* Center */}
             <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
@@ -172,10 +172,7 @@ export default function Layout() {
             </div>
 
             {/* Right Divider */}
-            <div
-                onMouseDown={startRightDrag}
-                className="w-1 cursor-col-resize bg-gray-600 hover:bg-blue-500 shrink-0"
-            />
+            <div onMouseDown={startRightDrag} className="w-1 cursor-col-resize bg-gray-600 hover:bg-blue-500 shrink-0"/>
 
             {/* Right Panel */}
             <AiSection

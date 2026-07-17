@@ -1,4 +1,4 @@
-import { extractProblemStatement, generateProblemMetadata } from "./gemini.service.js";
+import { extractProblemStatement, generateProblemMetadata, generateWorkspaceFiles } from "./gemini.service.js";
 
 export const extractProblemFromImages = async (files) => {
     if (!files || files.length === 0) {
@@ -31,4 +31,12 @@ export const generateMetadata = async (statement) => {
         difficulty: metadata.difficulty,
         tags: metadata.tags ?? []
     };
+};
+
+export const generateWorkspace = async ({ statement, language, starterCode,}) => {
+    return await generateWorkspaceFiles({
+        statement,
+        language,
+        starterCode,
+    });
 };

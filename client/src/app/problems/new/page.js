@@ -2,8 +2,11 @@
 
 import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { useProblemStore } from "../../../stores/problem.store.js";
+import { ensureProblem } from "@/services/problem.service";
+import { ensureWorkspace } from "@/services/workspace.service";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import useWorkspaceStore from "@/stores/workspace.store";
 
 const LANGUAGES = [
   { id: "cpp", name: "C++", compiler: "g++-15" },
@@ -60,6 +63,10 @@ const PLATFORMS = [
 ];
 
 export default function App() {
+
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
+
   const router = useRouter();
 
   // Image upload state
@@ -129,24 +136,19 @@ export default function App() {
   };
 
   // const generateProblemFromImages = async (data) => {
-  //   if (uploadedImages.length === 0)
-  //     return null;
-
   //   setIsLoading(true);
 
-  //   const formData = new FormData();
-
-  //   uploadedImages.forEach((image) => {
-  //     formData.append("images", image.file);
-  //   });
-
-  //   formData.append("url", data.url);
-  //   formData.append("title", data.title);
-  //   formData.append("platform", data.platform);
-  //   formData.append("language", data.language);
-  //   formData.append("starterCode", data.starterCode);
-
   //   try {
+  //     const formData = new FormData();
+
+  //     uploadedImages.forEach(({ file }) => {
+  //       formData.append("images", file);
+  //     });
+
+  //     formData.append("title", data.title.trim());
+  //     formData.append("platform", data.platform);
+  //     formData.append("url", data.url?.trim() ?? "");
+
   //     const response = await fetch(
   //       "http://localhost:5000/api/problem/ensure",
   //       {
@@ -157,14 +159,19 @@ export default function App() {
 
   //     const result = await response.json();
 
-  //     if (!response.ok || !result.success) {
+  //     if (!response.ok) {
   //       throw new Error(result.error || "Failed to create problem.");
   //     }
-  //     return result.data;
+
+  //     if (!result.success) {
+  //       throw new Error(result.error || "Failed to create problem.");
+  //     }
+
+  //     return result.problem;
 
   //   } catch (error) {
   //     console.error(error);
-  //     triggerToast("Failed to create problem. Please try again.", "error");
+  //     triggerToast(error.message, "error");
   //     return null;
   //   } finally {
   //     setIsLoading(false);
@@ -172,39 +179,25 @@ export default function App() {
   // };
 
   // const onSubmit = async (data) => {
-  //   // Check if at least one image is uploaded (react-hook-form handles title/platform)
   //   if (uploadedImages.length === 0) {
   //     triggerToast("Please upload at least one image.", "error");
   //     return;
   //   }
 
-  //   // Process with AI using the uploaded images
-  //   const aiResponse = await generateProblemFromImages(data);
+  //   const problem = await generateProblemFromImages(data);
 
-  //   if (!aiResponse) {
-  //     triggerToast("Server did not respond. Please try again", "error");
-  //     return;
-  //   }
+  //   if (!problem) return;
 
-  //   if (aiResponse === "-1") {
-  //     triggerToast("Please upload valid problem images", "error");
-  //     return;
-  //   }
+  //   useProblemStore.getState().setGeneratedProblem(problem.statement);
 
-  //   useProblemStore.getState().setGeneratedProblem(aiResponse);
   //   router.push("/problem");
   // };
+  const onSubmit = async (data) => {
+    if (uploadedImages.length === 0) {
+      triggerToast("Please upload at least one image.", "error");
+      return;
+    }
 
-  // const onInvalidSubmit = (formErrors) => {
-  //   const isImageMissing = uploadedImages.length === 0;
-
-  //   if (isImageMissing) {
-  //     triggerToast("Please fill all required fields and upload an image.", "error");
-  //   } else {
-  //     triggerToast("Please fill all required fields.", "error");
-  //   }
-  // };
-  const generateProblemFromImages = async (data) => {
     setIsLoading(true);
 
     try {
@@ -218,48 +211,24 @@ export default function App() {
       formData.append("platform", data.platform);
       formData.append("url", data.url?.trim() ?? "");
 
-      const response = await fetch(
-        "http://localhost:5000/api/problem/ensure",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const problem = await ensureProblem(formData);
 
-      const result = await response.json();
+      const workspace = await ensureWorkspace({
+        userId,
+        problemId: problem._id,
+        language: data.language,
+        starterCode: data.starterCode,
+      });
 
-      if (!response.ok) {
-        throw new Error(result.error || "Failed to create problem.");
-      }
-
-      if (!result.success) {
-        throw new Error(result.error || "Failed to create problem.");
-      }
-
-      return result.problem;
+      useWorkspaceStore.getState().setWorkspace(workspace);
+      router.push("/canvas");
 
     } catch (error) {
       console.error(error);
       triggerToast(error.message, "error");
-      return null;
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const onSubmit = async (data) => {
-    if (uploadedImages.length === 0) {
-      triggerToast("Please upload at least one image.", "error");
-      return;
-    }
-
-    const problem = await generateProblemFromImages(data);
-
-    if (!problem) return;
-
-    useProblemStore.getState().setGeneratedProblem(problem.statement);
-
-    router.push("/problem");
   };
 
   const onInvalidSubmit = () => {

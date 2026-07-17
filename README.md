@@ -37,6 +37,7 @@ These routes are implemented in the Express backend and handle authentication, p
 | Method | Endpoint | Description | Payload Expectation |
 | :--- | :--- | :--- | :--- |
 | `POST` | `/api/problem/ensure` | Ensures that a problem exists in the database. Creates it if it doesn't already exist and returns the stored problem document. | Problem details |
+| `POST` | `/api/workspace/ensure` | Ensures that workspace exists in the database. Creates it if it doesn't already exist and returns the created workspace for the session user. | Workspace details |
 
 ---
 

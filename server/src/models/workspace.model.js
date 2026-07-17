@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 const workspaceSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -22,7 +23,7 @@ const workspaceSchema = new mongoose.Schema({
         default: "cpp",
     },
 
-    starterCode: {
+    runnerCode: {
         type: String,
         default: "",
     },
@@ -51,6 +52,7 @@ const workspaceSchema = new mongoose.Schema({
         type: Number,
         min: 0,
         max: 100,
+        default: 0
     },
 
     aiNotes: {
@@ -76,3 +78,6 @@ const workspaceSchema = new mongoose.Schema({
 workspaceSchema.index({ user: 1, problem: 1 }, { unique: true });
 
 workspaceSchema.index({ user: 1, updatedAt: -1 });
+
+const Workspace = mongoose.model('Workspace', workspaceSchema);
+export default Workspace

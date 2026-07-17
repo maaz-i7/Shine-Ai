@@ -5,6 +5,7 @@ import morgan from "morgan"
 
 import indexRoutes from "./routes/index.routes.js"
 import authRoutes from "./routes/auth.routes.js"
+import workspaceRoutes from "./routes/workspace.routes.js";
 import onlineCompiler from "./controllers/online.compiler.controller.js"
 import problemRoutes from "./routes/problem.routes.js"
 
@@ -21,5 +22,6 @@ app.use('/', indexRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/online-compiler/execute-code', onlineCompiler)
 app.use('/api/problem', problemRoutes);
+app.use("/api/workspace", workspaceRoutes);
 
 export default app

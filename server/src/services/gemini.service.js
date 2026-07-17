@@ -1,6 +1,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import getProblemMetaDataPrompt from "../prompts/getProblemMetaDataPrompt.js";
+import generateWorkspacePrompt from "../prompts/generateWorkspace.prompt.js";
 import createProblemPrompt from "../prompts/createProblem.prompt.js";
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -15,7 +17,7 @@ const model = genAI.getGenerativeModel({
     model: GEMINI_MODEL
 });
 
-function prepareStatement(statement) {
+function refineStatementFormatting(statement) {
     statement = statement.replace(/`([^`\n]+)`/g, (_, code) => {
 
         // Escape HTML first
@@ -54,6 +56,39 @@ function prepareStatement(statement) {
     return statement;
 }
 
+function cleanStatementForModel(statement) {
+    return statement
+        // Remove HTML tags (mainly <code>, <b>, etc.)
+        .replace(/<\/?[^>]+>/gi, "")
+
+        // Decode common HTML entities
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">")
+        .replace(/&amp;/g, "&")
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/&nbsp;/g, " ")
+
+        // Convert common LaTeX operators
+        .replace(/\\leq?/g, "<=")
+        .replace(/\\geq?/g, ">=")
+        .replace(/\\neq/g, "!=")
+        .replace(/\\times/g, "*")
+        .replace(/\\cdot/g, "*")
+        .replace(/\\div/g, "/")
+        .replace(/\\rightarrow/g, "->")
+        .replace(/\\to/g, "->")
+
+        // Remove escaping before punctuation
+        .replace(/\\([()[\]{}])/g, "$1")
+
+        // Normalize whitespace
+        .replace(/\r/g, "")
+        .replace(/[ \t]+/g, " ")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+}
+
 export async function extractProblemStatement(files) {
 
     try {
@@ -78,7 +113,7 @@ export async function extractProblemStatement(files) {
             throw new Error("INVALID_PROBLEM_IMAGES");
         }
 
-        return prepareStatement(statement)
+        return refineStatementFormatting(statement)
 
     } catch (error) {
 
@@ -113,3 +148,40 @@ export async function generateProblemMetadata(statement) {
         throw new Error("Failed to generate problem metadata.");
     }
 }
+
+export const generateWorkspaceFiles = async ({ statement, language, starterCode }) => {
+
+    try {
+        const cleanedStatement = cleanStatementForModel(statement)
+        
+        const input = {
+            cleanedStatement,
+            language,
+            starterCode,
+        };
+
+        const prompt = `${JSON.stringify(input, null, 2)}\n${generateWorkspacePrompt}`;
+
+        const result = await model.generateContent(prompt);
+
+        const response = result.response.text();
+
+        if (!response) {
+            throw new Error("Gemini returned an empty response.");
+        }
+
+        const workspace = JSON.parse(cleanJson(response));
+
+        if (typeof workspace.runnerCode !== "string" || typeof workspace.aiCode !== "string") {
+            throw new Error("Invalid Gemini response.");
+        }
+
+        return workspace;
+
+    } catch (error) {
+        console.error(error);
+        throw new Error(
+            error.message || "Failed to generate workspace."
+        );
+    }
+};
