@@ -2,7 +2,7 @@
 import { useSession } from "next-auth/react"
 import { signOut } from "next-auth/react";
 import Image from "next/image";
-import ProjectCard from "@/components/ProblemCard.js"
+import WorkspaceCard from "@/components/WorkspaceCard.js"
 import Link from "next/link";
 
 export default function () {
@@ -60,7 +60,7 @@ export default function () {
             </button>
           </Link>
         </div>
-        <ProjectCard />
+        <WorkspaceCard />
       </div>
     </div>
   )
