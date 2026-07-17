@@ -6,84 +6,45 @@
 
 ---
 
-## 🔗 API Routes
+## 🔗 API & Routes
 
----
-
-### 🖥️ Express Backend Routes
-
-These routes are implemented in the Express backend and handle authentication, problem management, and code execution.
-
-#### 🔐 Authentication
-
-| Method | Endpoint | Description | Payload Expectation |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/auth/signup` | Registers a new local user, hashes the password, and stores the user in MongoDB. | `{ name, username, email, password }` |
-| `POST` | `/api/auth/login` | Authenticates a user using email/username and password. Also checks for OAuth-only accounts and returns an appropriate error if necessary. | `{ identifier, password }` |
-| `POST` | `/api/auth/oauth-sync` | Receives authenticated OAuth user information from NextAuth, creates a new user if needed, or links an existing account. | `{ email, name, avatar, provider, providerId }` |
-
----
-
-#### 💻 Online Compiler
-
-| Method | Endpoint | Description | Payload Expectation |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/online-compiler/execute-code` | Executes the submitted source code using the online compiler API and returns the compilation/execution result. | Compiler request payload |
-
----
-
-#### 📚 Problem Management
-
-| Method | Endpoint | Description | Payload Expectation |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/problem/ensure` | Ensures that a problem exists in the database. Creates it if it doesn't already exist and returns the stored problem document. | Problem details |
-| `POST` | `/api/workspace/ensure` | Ensures that workspace exists in the database. Creates it if it doesn't already exist and returns the created workspace for the session user. | Workspace details |
-| `GET` | `/api/workspace/problem/:problemId?userId=uid` | Fetches the workspace for the user with uid as user.__id for the problem with problemId as problem.__id |
-
----
-
-### 🌐 Next.js Frontend API Routes (NextAuth)
-
-These routes are automatically provided by **NextAuth** inside the Next.js application (`/api/auth/*`). They manage the complete OAuth authentication flow and **do not require custom controllers**.
-
-#### 🔑 Google OAuth
+### 🖥️ Backend API (Express)
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| `GET` | `/api/auth/signin/google` | Redirects the user to Google's OAuth consent screen. |
-| `GET` | `/api/auth/callback/google` | Handles Google's OAuth callback, validates the user, and creates the authenticated session. |
+| `POST` | `/api/auth/signup` | Register a new user with email/username and password. |
+| `POST` | `/api/auth/login` | Authenticate a user using email/username and password. |
+| `POST` | `/api/auth/oauth-sync` | Create or sync a user after successful Google/GitHub OAuth authentication. |
+| `POST` | `/api/online-compiler/execute-code` | Compile and execute the submitted source code. |
+| `POST` | `/api/problem/ensure` | Create a problem if it doesn't exist, otherwise return the existing one. |
+| `POST` | `/api/workspace/ensure` | Create a workspace if it doesn't exist, otherwise return the existing one. |
+| `GET` | `/api/workspace/problem/:problemId?userId=:userId` | Fetch a user's workspace for a specific problem. |
+| `GET` | `/api/workspace/user/:userId` | Fetch all workspaces belonging to a user. |
 
 ---
 
-#### 🐙 GitHub OAuth
+### 🔐 NextAuth Authentication Routes
+
+These routes are automatically provided by **NextAuth** for OAuth authentication.
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| `GET` | `/api/auth/signin/github` | Redirects the user to GitHub's OAuth authorization page. |
-| `GET` | `/api/auth/callback/github` | Processes GitHub's OAuth callback and creates the authenticated session. |
+| `GET` | `/api/auth/signin/google` | Redirect to Google sign-in. |
+| `GET` | `/api/auth/callback/google` | Handle Google OAuth callback and create a session. |
+| `GET` | `/api/auth/signin/github` | Redirect to GitHub sign-in. |
+| `GET` | `/api/auth/callback/github` | Handle GitHub OAuth callback and create a session. |
 
 ---
 
-### 🧭 Frontend Routes
-
-These are the pages available in the Next.js frontend application.
-
-#### 🌍 Public Routes
+### 🌐 Frontend Routes
 
 | Route | Description | Access |
 | :--- | :--- | :--- |
-| `/` | Landing page introducing Shine AI, its features, and platform overview. | Public |
-| `/login` | Authentication page allowing users to sign in or sign up using email/username & password or OAuth (Google/GitHub). | Public |
-
----
-
-#### 🔒 Protected Routes
-
-| Route | Description | Access |
-| :--- | :--- | :--- |
-| `/dashboard` | User dashboard displaying personalized information and recent activity. | Protected |
-| `/canvas` | Interactive coding workspace where users solve problems with AI assistance. | Protected |
-| `/problems/new` | Interface for creating a new problem and opening it on the coding canvas. | Protected |
+| `/` | Landing page introducing Shine AI and its features. | Public |
+| `/login` | Sign in or create an account using credentials or OAuth. | Public |
+| `/problems/new` | Create a new problem workspace by uploading screenshots or entering problem details. | Protected |
+| `/problem/:id` | Solve a problem inside the coding workspace with the editor, AI assistant, and execution console. | Protected |
+| `/dashboard` | View and manage all of your problem workspaces, progress, and AI scores. | Protected |
 
 ---
 

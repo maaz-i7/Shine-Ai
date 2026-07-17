@@ -20,9 +20,10 @@ Rules:
 1. runnerCode
 - Indent using 4 spaces
 - Convert the starter code into fully runnable code.
-- Keep all comments from the starter code.
-- Create a runnable function if starter code is empty
-- Take inputs correctly
+- Do not change the starter code at all
+- Create a runnable main function that calls the starter code
+- if starter code is empty, create one with apt names and parameters
+- Take inputs correctly as the problem demands
 - Print the output exactly as the problem demands
 - Import all necessary libraries
 - Preserve the original logic and function signatures whenever possible.
@@ -37,7 +38,6 @@ Rules:
 - Use the requested programming language.
 - The solution must compile.
 - The solution should be clean and efficient.
-- Add proper comments
 - Do NOT include explanations.
 - Do NOT wrap inside markdown.
 

@@ -31,7 +31,7 @@ export const signupUser = async ({ name, username, email, password }) => {
     });
 
     return {
-        _id: newUser._id,
+        id: newUser._id.toString(),
         name: newUser.name,
         username: newUser.username,
         email: newUser.email,

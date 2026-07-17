@@ -1,3 +1,4 @@
+import Workspace from "../models/workspace.model.js";
 import { ensureWorkspace, getWorkspaceByProblem } from "../services/workspace.service.js";
 
 export const ensureWorkspaceController = async (req, res) => {
@@ -48,6 +49,27 @@ export const getWorkspaceByProblemController = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: error.message,
+        });
+    }
+};
+
+export const getUserWorkspaces = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const workspaces = await Workspace.find({ user: userId })
+            .populate("problem")
+            .sort({ updatedAt: -1 });
+        
+        res.status(200).json({
+            success: true,
+            workspaces
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
         });
     }
 };

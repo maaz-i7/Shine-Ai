@@ -64,7 +64,7 @@ const PLATFORMS = [
 
 export default function App() {
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const userId = session?.user?.id;
 
   const router = useRouter();
@@ -156,6 +156,10 @@ export default function App() {
 
       const problem = await ensureProblem(formData);
 
+      if (status !== "authenticated") {
+        return;
+      }
+        
       const workspace = await ensureWorkspace({
         userId,
         problemId: problem._id,
@@ -163,8 +167,9 @@ export default function App() {
         starterCode: data.starterCode,
       });
 
+      console.log(session)
+
       useWorkspaceStore.getState().setWorkspace(workspace);
-      console.log(problem);
       router.push(`/problem/${problem._id}`);
     } catch (error) {
       console.error(error);
@@ -189,7 +194,7 @@ export default function App() {
   };
 
   return (
-    <div className="w-screen font-sans relative transition-colors duration-300 bg-primary">
+    <div className="w-full font-sans relative transition-colors duration-300 bg-primary">
       {/* Embedded Theme CSS variables */}
       <style
         dangerouslySetInnerHTML={{

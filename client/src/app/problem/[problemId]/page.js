@@ -15,7 +15,6 @@ export default function Layout() {
 
     const { problemId } = useParams();
     const router = useRouter()
-    console.log(useParams())
     const { data: session, status } = useSession();
 
     const workspace = useWorkspaceStore((state) => state.workspace);
@@ -152,7 +151,7 @@ export default function Layout() {
         window.addEventListener("mouseup", stop);
     };
 
-    if (loading) {
+    if (loading || status=="loading") {
         return (
             <div className="flex w-screen h-screen items-center justify-center">
                 Loading...
@@ -163,7 +162,7 @@ export default function Layout() {
     return (
         <div
             ref={containerRef}
-            className="flex h-screen select-none overflow-hidden font-sans"
+            className="flex h-screen select-none overflow-hidden font-sans w-full"
         >
             {/* Left Panel */}
             <div

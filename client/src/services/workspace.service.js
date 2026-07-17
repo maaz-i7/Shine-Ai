@@ -30,3 +30,21 @@ export async function getWorkspaceByProblem(problemId, userId) {
 
     return result.workspace;
 }
+
+export async function getUserWorkspaces(userId) {
+
+    if(!userId)
+        return []
+    
+    const response = await fetch(
+        `${API_URL}/api/workspace/user/${userId}`
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
+    return data.workspaces;
+}

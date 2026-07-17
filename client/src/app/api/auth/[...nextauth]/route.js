@@ -41,7 +41,12 @@ export const authOptions = {
             throw new Error(data.message || "Authentication failed");
           }
 
-          return data;
+          const user = {
+            ...data,
+            id: data.id ?? data._id?.toString(),
+          };
+
+          return user;
         } catch (error) {
           throw new Error(error.message);
         }
