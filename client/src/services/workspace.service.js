@@ -17,3 +17,16 @@ export const ensureWorkspace = async (data) => {
 
     return result.workspace;
 };
+
+export async function getWorkspaceByProblem(problemId, userId) {
+
+    const response = await fetch(`${API_URL}/api/workspace/problem/${problemId}?userId=${userId}`);
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+        throw new Error(result.error || "Failed to fetch workspace.");
+    }
+
+    return result.workspace;
+}

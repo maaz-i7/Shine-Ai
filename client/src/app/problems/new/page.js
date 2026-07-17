@@ -135,63 +135,6 @@ export default function App() {
     }, 5000);
   };
 
-  // const generateProblemFromImages = async (data) => {
-  //   setIsLoading(true);
-
-  //   try {
-  //     const formData = new FormData();
-
-  //     uploadedImages.forEach(({ file }) => {
-  //       formData.append("images", file);
-  //     });
-
-  //     formData.append("title", data.title.trim());
-  //     formData.append("platform", data.platform);
-  //     formData.append("url", data.url?.trim() ?? "");
-
-  //     const response = await fetch(
-  //       "http://localhost:5000/api/problem/ensure",
-  //       {
-  //         method: "POST",
-  //         body: formData,
-  //       }
-  //     );
-
-  //     const result = await response.json();
-
-  //     if (!response.ok) {
-  //       throw new Error(result.error || "Failed to create problem.");
-  //     }
-
-  //     if (!result.success) {
-  //       throw new Error(result.error || "Failed to create problem.");
-  //     }
-
-  //     return result.problem;
-
-  //   } catch (error) {
-  //     console.error(error);
-  //     triggerToast(error.message, "error");
-  //     return null;
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  // const onSubmit = async (data) => {
-  //   if (uploadedImages.length === 0) {
-  //     triggerToast("Please upload at least one image.", "error");
-  //     return;
-  //   }
-
-  //   const problem = await generateProblemFromImages(data);
-
-  //   if (!problem) return;
-
-  //   useProblemStore.getState().setGeneratedProblem(problem.statement);
-
-  //   router.push("/problem");
-  // };
   const onSubmit = async (data) => {
     if (uploadedImages.length === 0) {
       triggerToast("Please upload at least one image.", "error");
@@ -221,8 +164,8 @@ export default function App() {
       });
 
       useWorkspaceStore.getState().setWorkspace(workspace);
-      router.push("/canvas");
-
+      console.log(problem);
+      router.push(`/problem/${problem._id}`);
     } catch (error) {
       console.error(error);
       triggerToast(error.message, "error");

@@ -38,6 +38,7 @@ These routes are implemented in the Express backend and handle authentication, p
 | :--- | :--- | :--- | :--- |
 | `POST` | `/api/problem/ensure` | Ensures that a problem exists in the database. Creates it if it doesn't already exist and returns the stored problem document. | Problem details |
 | `POST` | `/api/workspace/ensure` | Ensures that workspace exists in the database. Creates it if it doesn't already exist and returns the created workspace for the session user. | Workspace details |
+| `GET` | `/api/workspace/problem/:problemId?userId=uid` | Fetches the workspace for the user with uid as user.__id for the problem with problemId as problem.__id |
 
 ---
 

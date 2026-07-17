@@ -70,3 +70,17 @@ export const ensureWorkspace = async ({ userId, problemId, language, starterCode
 
     return workspace;
 };
+
+export const getWorkspaceByProblem = async ({ userId, problemId }) => {
+
+    const workspace = await Workspace.findOne({
+        user: userId,
+        problem: problemId
+    }).populate("problem");
+
+    if (!workspace) {
+        throw new Error("Workspace not found.");
+    }
+
+    return workspace;
+};

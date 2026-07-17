@@ -1,16 +1,56 @@
 "use client";
 
-import { useRef, useState } from "react";
 import CodeEditor from "@/components/CodeEditor.js";
 import ProblemSection from "@/components/ProblemSection.js";
 import Console from "@/components/Console.js";
 import AiSection from "@/components/AiSection.js";
 import useWorkspaceStore from "@/stores/workspace.store";
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { getWorkspaceByProblem } from "@/services/workspace.service";
+import { useRouter } from "next/navigation";
 
 export default function Layout() {
 
+    const { problemId } = useParams();
+    const router = useRouter()
+    console.log(useParams())
+    const { data: session, status } = useSession();
+
     const workspace = useWorkspaceStore((state) => state.workspace);
-    // console.log(useWorkspaceStore.getState().workspace);
+    const setWorkspace = useWorkspaceStore((state) => state.setWorkspace);
+
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+
+        if (status !== "authenticated") {
+            return;
+        }
+
+        async function loadWorkspace() {
+            try {
+                const workspace = await getWorkspaceByProblem(
+                    problemId,
+                    session.user.id
+                );
+                setWorkspace(workspace);
+            } catch (error) {
+
+                if (error.message === "Failed to fetch workspace.") {
+                    router.push("/problems/new");
+                    return;
+                }
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        loadWorkspace();
+
+    }, [problemId, session, status, setWorkspace]);
+
     const containerRef = useRef(null);
     const editorRef = useRef(null);
     const consoleRef = useRef(null);
@@ -21,7 +61,7 @@ export default function Layout() {
 
     const [isRightOpen, setIsRightOpen] = useState(false);
     const [isConsoleOpen, setIsConsoleOpen] = useState(false);
-    
+
     const [isDraggingRight, setIsDraggingRight] = useState(false);
 
     const MINIMIZED_CONSOLE_HEIGHT = 36;
@@ -112,6 +152,14 @@ export default function Layout() {
         window.addEventListener("mouseup", stop);
     };
 
+    if (loading) {
+        return (
+            <div className="flex w-screen h-screen items-center justify-center">
+                Loading...
+            </div>
+        );
+    }
+
     return (
         <div
             ref={containerRef}
@@ -122,11 +170,11 @@ export default function Layout() {
                 style={{ width: leftWidth }}
                 className="bg-primary shrink-0 overflow-hidden"
             >
-                <ProblemSection problem={workspace?.problem} />
+                <ProblemSection workspace={workspace} />
             </div>
 
             {/* Left Divider */}
-            <div onMouseDown={startLeftDrag} className="w-1 cursor-col-resize bg-gray-600 hover:bg-blue-500 shrink-0"/>
+            <div onMouseDown={startLeftDrag} className="w-1 cursor-col-resize bg-gray-600 hover:bg-blue-500 shrink-0" />
 
             {/* Center */}
             <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
@@ -172,7 +220,7 @@ export default function Layout() {
             </div>
 
             {/* Right Divider */}
-            <div onMouseDown={startRightDrag} className="w-1 cursor-col-resize bg-gray-600 hover:bg-blue-500 shrink-0"/>
+            <div onMouseDown={startRightDrag} className="w-1 cursor-col-resize bg-gray-600 hover:bg-blue-500 shrink-0" />
 
             {/* Right Panel */}
             <AiSection

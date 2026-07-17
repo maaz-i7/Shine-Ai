@@ -26,7 +26,7 @@ Rules:
 8. "tags" MUST be an array of strings.
 9. Include only the algorithmic concepts actually required to solve the problem.
 10. Use standard competitive programming tags whenever possible.
-11. Return atleast 1 tag and atmost 8 tags.
+11. Return atleast 5 to 10 tags.
 
 Return ONLY the JSON object.
 `;

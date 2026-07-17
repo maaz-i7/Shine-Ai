@@ -9,9 +9,8 @@ export default function LayoutWrapper({ children }) {
     const pathname = usePathname();
 
     const hideNavbarAndFooter = [
-        "/canvas",
         "/problem"
-    ].includes(pathname);
+    ].includes(pathname) || pathname.startsWith('/problem/');
 
     return (
         <>
