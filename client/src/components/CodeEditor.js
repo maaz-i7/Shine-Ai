@@ -38,12 +38,12 @@ const THEMES = [
 
 const TAB_SIZES = [2, 4, 8];
 
-function App() {
-  const [language, setLanguage] = useState('cpp');
+function App({workspace}) {
+  const [language, setLanguage] = useState(workspace?.language);
   const [theme, setTheme] = useState('vs-dark');
   const [tabSize, setTabSize] = useState(4);
   const [fontSize, setFontSize] = useState(16);
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState(workspace?.runnerCode);
   const [isCopied, setIsCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isRunning, setIsRunning] = useState(false);

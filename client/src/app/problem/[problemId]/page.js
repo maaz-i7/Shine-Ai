@@ -189,7 +189,7 @@ export default function Layout() {
                             : `calc(100% - ${MINIMIZED_CONSOLE_HEIGHT}px - 4px)`
                     }}
                 >
-                    <CodeEditor />
+                    <CodeEditor workspace={workspace} />
                 </div>
 
                 {/* Divider */}
