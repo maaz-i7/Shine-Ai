@@ -12,39 +12,78 @@
 
 ### 🖥️ Express Backend Routes
 
+These routes are implemented in the Express backend and handle authentication, problem management, and code execution.
+
+#### 🔐 Authentication
+
 | Method | Endpoint | Description | Payload Expectation |
 | :--- | :--- | :--- | :--- |
-| `POST` | `/api/auth/signup` | Registers a new local user, hashes the password, and saves the document to MongoDB. | `{ name, username, email, password }` |
-| `POST` | `/api/auth/login` | Validates email/username and password. Resolves OAuth provider conflicts (e.g., returns 401 if they previously used Google). | `{ identifier, password }` |
-| `POST` | `/api/auth/oauth-sync`| Receives OAuth profile data from NextAuth. Creates a new user or links to an existing account. | `{ email, name, avatar, provider, providerId }` |
-| `POST` | `/api/online-compiler/execute-code`| calls online compiler API to execute code |
+| `POST` | `/api/auth/signup` | Registers a new local user, hashes the password, and stores the user in MongoDB. | `{ name, username, email, password }` |
+| `POST` | `/api/auth/login` | Authenticates a user using email/username and password. Also checks for OAuth-only accounts and returns an appropriate error if necessary. | `{ identifier, password }` |
+| `POST` | `/api/auth/oauth-sync` | Receives authenticated OAuth user information from NextAuth, creates a new user if needed, or links an existing account. | `{ email, name, avatar, provider, providerId }` |
 
 ---
 
-### 🌐 Next.js Frontend Routes (NextAuth Built-in)
+#### 💻 Online Compiler
 
-These routes are automatically generated and managed by NextAuth inside the Next.js application at `http://localhost:3000/api/auth/*`. **You do not need to write controllers for these endpoints.**
+| Method | Endpoint | Description | Payload Expectation |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/online-compiler/execute-code` | Executes the submitted source code using the online compiler API and returns the compilation/execution result. | Compiler request payload |
+
+---
+
+#### 📚 Problem Management
+
+| Method | Endpoint | Description | Payload Expectation |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/problem/ensure` | Ensures that a problem exists in the database. Creates it if it doesn't already exist and returns the stored problem document. | Problem details |
+
+---
+
+### 🌐 Next.js Frontend API Routes (NextAuth)
+
+These routes are automatically provided by **NextAuth** inside the Next.js application (`/api/auth/*`). They manage the complete OAuth authentication flow and **do not require custom controllers**.
+
+#### 🔑 Google OAuth
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| `GET` | `/api/auth/signin/google` | NextAuth endpoint to redirect the user to the Google consent screen. |
-| `GET` | `/api/auth/callback/google` | Google redirects here with the authorization code. NextAuth intercepts it. |
-| `GET` | `/api/auth/signin/github` | NextAuth endpoint to redirect the user to the GitHub authorization screen. |
-| `GET` | `/api/auth/callback/github` | GitHub redirects here. NextAuth intercepts and processes the profile. |
-| `POST` | `/api/ai/extract-problem` | Uses AI to extract and format a DSA problem from uploaded images into structured Markdown with LaTeX support. |
+| `GET` | `/api/auth/signin/google` | Redirects the user to Google's OAuth consent screen. |
+| `GET` | `/api/auth/callback/google` | Handles Google's OAuth callback, validates the user, and creates the authenticated session. |
 
 ---
 
-## 🔗 Frontend Routes
+#### 🐙 GitHub OAuth
 
-| Route           | Description                                                                 | Access    |
-| --------------- | --------------------------------------------------------------------------- | --------- |
-| `/`             | Landing page introducing Shine AI and its features.                         | Public    |
-| `/login`        | Sign in or Sign up using email/username & password or OAuth (Google/GitHub).           | Public    |
-| `/dashboard`    | User dashboard displaying personalized content and recent activity.         | Protected |
-| `/canvas`    | Playground where user solves problem with AI assistance         | Protected |
-| `/problems/new`    | Create new problem on canvas         | Protected |
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/auth/signin/github` | Redirects the user to GitHub's OAuth authorization page. |
+| `GET` | `/api/auth/callback/github` | Processes GitHub's OAuth callback and creates the authenticated session. |
 
+---
+
+### 🧭 Frontend Routes
+
+These are the pages available in the Next.js frontend application.
+
+#### 🌍 Public Routes
+
+| Route | Description | Access |
+| :--- | :--- | :--- |
+| `/` | Landing page introducing Shine AI, its features, and platform overview. | Public |
+| `/login` | Authentication page allowing users to sign in or sign up using email/username & password or OAuth (Google/GitHub). | Public |
+
+---
+
+#### 🔒 Protected Routes
+
+| Route | Description | Access |
+| :--- | :--- | :--- |
+| `/dashboard` | User dashboard displaying personalized information and recent activity. | Protected |
+| `/canvas` | Interactive coding workspace where users solve problems with AI assistance. | Protected |
+| `/problems/new` | Interface for creating a new problem and opening it on the coding canvas. | Protected |
+
+---
 
 ## 🛠️ Technologies Used
 
@@ -75,6 +114,10 @@ These routes are automatically generated and managed by NextAuth inside the Next
 - **Lucide React** – Modern customizable SVG icon library for React components and UI icons.
 - **Monaco editor** – for integrating an IDE
 - **react-markdown** – Markdown rendering in React components
-- **remark-gfm** – GitHub Flavored Markdown support for tables, checklists, and more
+- **remark-gfm** – Support for GitHub Flavored Markdown (tables, task lists, strikethrough, etc.)
+- **remark-math** – Parses LaTeX math expressions in Markdown
+- **rehype-katex** – Renders LaTeX math using KaTeX
+- **rehype-raw** – Allows rendering of raw HTML inside Markdown
+- **KaTeX** – Fast rendering of mathematical expressions with CSS styling
 - **Multer** – Used to upload problem images from users so they can be processed by the AI for problem extraction.
 - **Zustand** – Lightweight state management library for global state management. Used to share application state such as generated problem data, workspace information, and UI state across components without prop drilling.

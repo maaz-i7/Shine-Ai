@@ -1,56 +1,78 @@
 const workspaceSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+        ref: "User",
+        required: true,
     },
 
     problem: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Problem',
-        required: true
+        ref: "Problem",
+        required: true,
     },
 
     status: {
         type: String,
-        enum: ['Todo', 'Solving', 'Solved', 'Revisit'],
-        default: 'Todo'
+        enum: ["Todo", "Solving", "Solved", "Revisit"],
+        default: "Todo",
     },
 
-    language: { type: String, default: 'cpp' },
-    codeTemplate: { type: String },
-    userCode: { type: String },
+    language: {
+        type: String,
+        default: "cpp",
+    },
+
+    starterCode: {
+        type: String,
+        default: "",
+    },
+
+    userCode: {
+        type: String,
+        default: "",
+    },
+
+    userNotes: {
+        type: String,
+        default: "",
+    },
 
     timeTakenSeconds: {
         type: Number,
-        default: 0
+        default: 0,
     },
 
-    // Shine AI analysis
     journeySummary: {
-        type: String
+        type: String,
+        default: "",
     },
-    
+
     score: {
         type: Number,
         min: 0,
-        max: 5
+        max: 100,
     },
 
-    shortNotes: { type: String },
+    aiNotes: {
+        type: String,
+        default: "",
+    },
 
-    // AI Interaction Data
-    aiNotes: { type: String },
-    aiCode: { type: String },
-    aiRating: { type: Number, min: 0, max: 100 },
-    chatCount: { type: Number, default: 0 },
-    executionCount: { type: Number, default: 0 },
+    aiCode: {
+        type: String,
+        default: "",
+    },
 
-    favorite: { type: Boolean, default: false },
-    solvedAt: { type: Date },
+    favorite: {
+        type: Boolean,
+        default: false,
+    },
+
+    solvedAt: {
+        type: Date,
+    },
 }, { timestamps: true });
 
-// Ensure a user only has one active workspace per problem.
 workspaceSchema.index({ user: 1, problem: 1 }, { unique: true });
 
-const Workspace = mongoose.model('Workspace', workspaceSchema);
+workspaceSchema.index({ user: 1, updatedAt: -1 });
