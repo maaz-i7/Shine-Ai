@@ -1,6 +1,7 @@
 import Problem from "../models/problem.model.js";
 
 import { extractProblemFromImages, generateMetadata } from "./ai.service.js";
+import { generateProblemStatementSummary } from "./gemini.service.js";
 
 function normalizeTitle(title) {
     return title
@@ -60,10 +61,14 @@ async function createProblem({ files, title, platform, url }) {
     const normalizedTitle = normalizeTitle(title);
 
     // OCR
-    const { statement } = await extractProblemFromImages(files);
+    const statement = await extractProblemFromImages(files);
 
     // AI metadata
     const { difficulty, tags } = await generateMetadata(statement);
+
+    // Summarized problem statement
+    const summarizedStatement  = await generateProblemStatementSummary(statement);
+    // console.log(summarizedStatement)
 
     return await Problem.create({
         title: title.trim(),
@@ -71,6 +76,7 @@ async function createProblem({ files, title, platform, url }) {
         platform,
         url: url?.trim() || undefined,
         statement,
+        summarizedStatement,
         difficulty,
         tags
     });

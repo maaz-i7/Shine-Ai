@@ -10,7 +10,7 @@ export default function Component({ title, testCase, open, setOpen, copied, hand
 
         {/* Judge Result */}
         <div className="flex items-center gap-2 mr-2">
-          <Check strokeWidth={5} className="w-3 h-3 ml-1 text-primary rounded-[1px] p-0.5 bg-green-600" />
+          <Check strokeWidth={3} className="w-2.5 h-2.5 ml-1 text-primary rounded-xs p-0.5 bg-green-600" />
         </div>
         <div>
           {/* Copy Icon */}

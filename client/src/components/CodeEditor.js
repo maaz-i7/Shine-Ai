@@ -43,7 +43,7 @@ function App({ workspace }) {
   const [theme, setTheme] = useState('vs-dark');
   const [tabSize, setTabSize] = useState(4);
   const [fontSize, setFontSize] = useState(14);
-  const [code, setCode] = useState(workspace?.runnerCode);
+  const [code, setCode] = useState(workspace?.aiCode);
   const [isCopied, setIsCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isRunning, setIsRunning] = useState(false);

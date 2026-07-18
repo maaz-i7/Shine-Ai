@@ -43,6 +43,10 @@ const problemSchema = new mongoose.Schema({
         required: true
     },
 
+    summarizedStatement: {
+        type: String,
+    },
+
 }, { timestamps: true });
 
 // Fallback index to catch duplicate titles on the same platform

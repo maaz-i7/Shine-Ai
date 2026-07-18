@@ -1,7 +1,9 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import getProblemMetaDataPrompt from "../prompts/getProblemMetaDataPrompt.js";
+import getProblemMetaDataPrompt from "../prompts/getProblemMetaData.prompt.js";
 import generateWorkspacePrompt from "../prompts/generateWorkspace.prompt.js";
 import createProblemPrompt from "../prompts/createProblem.prompt.js";
+import generateProblemStatementSummaryPrompt from "../prompts/generateProblemStatementSummary.prompt.js"
+import generateCodeForProblemPrompt from "../prompts/generateCodeForProblem.prompt.js"
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -17,6 +19,15 @@ const model = genAI.getGenerativeModel({
     model: GEMINI_MODEL
 });
 
+// utility function to make sure ONLY json is returned after gemini response
+function cleanJson(text) {
+    return text
+        .replace(/^```(?:json)?\s*/i, "")
+        .replace(/\s*```$/i, "")
+        .trim();
+}
+
+// utility function to fix mathemtical symbols and equations, symbols etc.
 function refineStatementFormatting(statement) {
     statement = statement.replace(/`([^`\n]+)`/g, (_, code) => {
 
@@ -89,6 +100,7 @@ function cleanStatementForModel(statement) {
         .trim();
 }
 
+// does OCR on images to extract problem in Markup and LaTex format
 export async function extractProblemStatement(files) {
 
     try {
@@ -113,7 +125,8 @@ export async function extractProblemStatement(files) {
             throw new Error("INVALID_PROBLEM_IMAGES");
         }
 
-        return refineStatementFormatting(statement)
+        const refinedStatement = refineStatementFormatting(statement)
+        return refinedStatement
 
     } catch (error) {
 
@@ -126,13 +139,7 @@ export async function extractProblemStatement(files) {
     }
 }
 
-function cleanJson(text) {
-    return text
-        .replace(/^```(?:json)?\s*/i, "")
-        .replace(/\s*```$/i, "")
-        .trim();
-}
-
+// generates problem tags and rates problem difficulty
 export async function generateProblemMetadata(statement) {
     try {
         const result = await model.generateContent([
@@ -149,11 +156,12 @@ export async function generateProblemMetadata(statement) {
     }
 }
 
+// creates runner code template
 export const generateWorkspaceFiles = async ({ statement, language, starterCode }) => {
 
     try {
         const cleanedStatement = cleanStatementForModel(statement)
-        
+
         const input = {
             cleanedStatement,
             language,
@@ -182,6 +190,71 @@ export const generateWorkspaceFiles = async ({ statement, language, starterCode 
         console.error(error);
         throw new Error(
             error.message || "Failed to generate workspace."
+        );
+    }
+};
+
+// generates a concise summary of the problem statement for future LLM interactions.
+export const generateProblemStatementSummary = async (statement) => {
+    try {
+        if (!statement || typeof statement !== "string") {
+            throw new Error("A valid problem statement is required.");
+        }
+
+        const cleanedStatement = cleanStatementForModel(statement);
+
+        const prompt = `${JSON.stringify(
+            { statement: cleanedStatement },
+            null,
+            2
+        )}\n${generateProblemStatementSummaryPrompt}`;
+
+        const result = await model.generateContent(prompt);
+
+        const problemSummary = result.response.text()?.trim();
+
+        if (!problemSummary) {
+            throw new Error("Gemini returned an empty summary.");
+        }
+
+        return problemSummary;
+    } catch (error) {
+        console.error("Error generating problem summary:", error);
+
+        throw new Error(
+            error?.message || "Failed to generate problem summary."
+        );
+    }
+};
+
+// Generates AI solution code for a problem.
+export const generateCodeForProblem = async ({ summarizedStatement, runnerCode, language }) => {
+    try {
+        if (!summarizedStatement || !runnerCode || !language) {
+            throw new Error("Missing required fields.");
+        }
+
+        const input = {
+            problem: summarizedStatement,
+            runnerCode,
+            language,
+        };
+
+        const prompt = `${JSON.stringify(input, null, 2)}\n${generateCodeForProblemPrompt}`;
+
+        const result = await model.generateContent(prompt);
+
+        const generatedCode = result.response.text()?.trim();
+
+        if (!generatedCode) {
+            throw new Error("Gemini returned an empty response.");
+        }
+
+        return generatedCode;
+    } catch (error) {
+        console.error("Error generating AI code:", error);
+        throw new Error(
+            error?.message || "Failed to generate AI code."
         );
     }
 };

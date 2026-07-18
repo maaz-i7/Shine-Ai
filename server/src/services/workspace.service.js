@@ -1,5 +1,6 @@
 import Workspace from "../models/workspace.model.js";
 import Problem from "../models/problem.model.js";
+import { generateCode } from "./ai.service.js";
 
 import { generateWorkspace } from "./ai.service.js";
 
@@ -19,7 +20,7 @@ export const createWorkspace = async ({ userId, problemId, language, starterCode
     }
 
     const { runnerCode } = await generateWorkspace({
-        statement: problem.statement,
+        statement: problem.summarizedStatement,
         language,
         starterCode,
     });
@@ -82,4 +83,20 @@ export const getWorkspaceByProblem = async ({ userId, problemId }) => {
     }
 
     return workspace;
+};
+
+export const getAiCodeForWorkspace = async ({ summarizedStatement, runnerCode, language }) => {
+    try {
+        return await generateCode({
+            summarizedStatement,
+            runnerCode,
+            language,
+        });
+        
+    } catch (error) {
+        console.error("Error generating AI code:", error);
+        throw new Error(
+            error?.message || "Failed to generate AI code."
+        );
+    }
 };

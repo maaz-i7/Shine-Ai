@@ -8,7 +8,7 @@ import useWorkspaceStore from "@/stores/workspace.store";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { getWorkspaceByProblem } from "@/services/workspace.service";
+import { getWorkspaceByProblem, getAiCodeForWorkspace } from "@/services/workspace.service.js";
 import { useRouter } from "next/navigation";
 
 export default function Layout() {
@@ -34,6 +34,20 @@ export default function Layout() {
                     problemId,
                     session.user.id
                 );
+
+                // Generate AI code only once
+                if (!workspace.aiCode || workspace.aiCode === "") {
+                    const aiCode = await getAiCodeForWorkspace({
+                        userId: session.user.id,
+                        problemId,
+                        summarizedStatement: workspace.problem.summarizedStatement,
+                        runnerCode: workspace.runnerCode,
+                        language: workspace.language,
+                    });
+
+                    workspace.aiCode = aiCode;
+                }
+
                 setWorkspace(workspace);
             } catch (error) {
 

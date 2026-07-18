@@ -33,9 +33,9 @@ export async function getWorkspaceByProblem(problemId, userId) {
 
 export async function getUserWorkspaces(userId) {
 
-    if(!userId)
+    if (!userId)
         return []
-    
+
     const response = await fetch(
         `${API_URL}/api/workspace/user/${userId}`
     );
@@ -48,3 +48,29 @@ export async function getUserWorkspaces(userId) {
 
     return data.workspaces;
 }
+
+// workspace.service.js
+export const getAiCodeForWorkspace = async ({ userId, problemId, summarizedStatement, runnerCode, language }) => {
+    const response = await fetch(
+        `${API_URL}/api/workspace/problem/ai-code/${problemId}?user=${userId}`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                summarizedStatement,
+                runnerCode,
+                language,
+            }),
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || "Failed to generate AI code.");
+    }
+
+    return data.generatedCode;
+};
