@@ -172,7 +172,7 @@ export const generateWorkspaceFiles = async ({ statement, language, starterCode 
 
         const workspace = JSON.parse(cleanJson(response));
 
-        if (typeof workspace.runnerCode !== "string" || typeof workspace.aiCode !== "string") {
+        if (typeof workspace.runnerCode !== "string") {
             throw new Error("Invalid Gemini response.");
         }
 

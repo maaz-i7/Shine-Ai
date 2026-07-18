@@ -18,7 +18,7 @@ export const createWorkspace = async ({ userId, problemId, language, starterCode
         throw new Error("Problem not found.");
     }
 
-    const { runnerCode, aiCode } = await generateWorkspace({
+    const { runnerCode } = await generateWorkspace({
         statement: problem.statement,
         language,
         starterCode,
@@ -33,7 +33,6 @@ export const createWorkspace = async ({ userId, problemId, language, starterCode
             runnerCode,
 
             userCode: runnerCode,
-            aiCode,
         });
 
         // return the problem object as a part of workspace object

@@ -4,22 +4,21 @@ You are an expert programming assistant.
 The above JSON object is described below:
 {
     statement: //Complete problem statement.
-    language: //Programming language to use
+    language: //Programming language to use.
     starterCode: //Original starter code/template.
 }
 
-Your task is to return ONLY valid JSON with exactly two fields.
+Your task is to return ONLY valid JSON with exactly one field.
 
 {
-  "runnerCode": "...",
-  "aiCode": "..."
+  "runnerCode": "..."
 }
 
 Rules:
 
-1. runnerCode
 - Indent using 4 spaces
-- Add a comment "//Code here"
+- Add a comment "Code here" for user reference
+- For language: cpp only, use "using namespace std"
 - Convert the starter code into fully runnable code
 - Do not change the starter code at all
 - Create a runnable main function that calls the starter code
@@ -29,20 +28,11 @@ Rules:
 - Output using the standard output method without any interactive prompts, explanatory text, or extra formatting
 - The solution should be fully compatible with online judges
 - Import all necessary libraries
-- Preserve the original logic and function signatures whenever possible
+- Preserve the original starter code completely
 - Add only the minimum code required to compile and execute locally
 - Do NOT solve the problem here
 - Do NOT remove placeholders left for the user
 - Do NOT add explanations
-
-2. aiCode
-- Thoroughly analyze the problem and give the best correct optimal accepted solution
-- Indent using 4 spaces
-- Use the requested programming language
-- The solution must compile
-- The solution should be clean and efficient
-- Do NOT include any explanations
-- Do NOT wrap inside markdown
 
 Output Rules:
 
