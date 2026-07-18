@@ -121,7 +121,7 @@ export default function Console({
                         onClick={(e) => handleCopy(e, output, "output")}
                         className="rounded p-1 hover:bg-white/10 ml-auto"
                       >
-                        {copiedOutput ? ( <CheckCircle2Icon className="text-gray-300/80 w-3.5 h-3.5" />) : ( <Copy className="text-gray-300/80 w-3.5 h-3.5 cursor-pointer" />)}
+                        {copiedOutput ? (<CheckCircle2Icon className="text-gray-300/80 w-3.5 h-3.5" />) : (<Copy className="text-gray-300/80 w-3.5 h-3.5 cursor-pointer" />)}
                       </button>
                     </div>
                   </div>
@@ -136,7 +136,7 @@ export default function Console({
                       onClick={(e) => handleCopy(e, expOutput, "expected")}
                       className="rounded p-1 hover:bg-white/10 ml-auto"
                     >
-                      {copiedExpected ? ( <CheckCircle2Icon className="text-gray-300/80 w-3.5 h-3.5" />) : ( <Copy className="text-gray-300/80 w-3.5 h-3.5 cursor-pointer" />)}
+                      {copiedExpected ? (<CheckCircle2Icon className="text-gray-300/80 w-3.5 h-3.5" />) : (<Copy className="text-gray-300/80 w-3.5 h-3.5 cursor-pointer" />)}
                     </button>
                   </div>
                   <div className="bg-primary p-2 min-h-10 max-h-70 overflow-auto minimal-scrollbar">
@@ -157,7 +157,7 @@ export default function Console({
           className="h-10 py-6 p-5 flex items-center justify-between cursor-pointer hover:bg-white/5"
         >
           <span className="text-xl font-medium text-green-600">Accepted</span>
-          <ChevronUp size={16}/>
+          <ChevronUp size={16} />
         </div>
       )}
     </div>

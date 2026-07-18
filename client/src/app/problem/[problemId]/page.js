@@ -83,6 +83,11 @@ export default function Layout() {
             consoleRef.current.style.height = `${height}px`;
             editorRef.current.style.height = `calc(100% - ${height}px - 4px)`;
 
+            const editor = document.querySelector(".monaco-editor");
+            if (editor && window.monaco) {
+                window.monaco.editor.getEditors?.().forEach(e => e.layout());
+            }
+
             // React update at most once per frame
             if (!frame.current) {
                 frame.current = requestAnimationFrame(() => {

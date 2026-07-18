@@ -38,7 +38,7 @@ const THEMES = [
 
 const TAB_SIZES = [2, 4, 8];
 
-function App({workspace}) {
+function App({ workspace }) {
   const [language, setLanguage] = useState(workspace?.language);
   const [theme, setTheme] = useState('vs-dark');
   const [tabSize, setTabSize] = useState(4);
@@ -250,7 +250,7 @@ function App({workspace}) {
   };
 
   return (
-    <div className="flex flex-col flex-1 w-full bg-[#1e1e1e] rounded-xl overflow-hidden">
+    <div className="flex flex-col h-full w-full bg-[#1e1e1e] rounded-xl overflow-hidden">
 
       {/* Top Toolbar */}
       <div className="flex flex-wrap items-center justify-between px-4 py-3 bg-[#252526] border-b border-[#333333] gap-y-3">
@@ -366,13 +366,16 @@ function App({workspace}) {
       </div>
 
       {/* Editor Container */}
-      <div className="flex-1 mt-5 relative bg-[#1e1e1e]">
+      <div className="flex-1 min-h-0 relative bg-[#1e1e1e] pt-5">
         {isLoading && (
           <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#1e1e1e] text-gray-400">
             Initializing Editor...
           </div>
         )}
-        <div ref={editorRef} className="w-full h-full" />
+        <div
+          ref={editorRef}
+          className="w-full h-full min-h-0"
+        />
       </div>
 
       {/* Status Bar */}
