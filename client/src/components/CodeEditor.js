@@ -42,7 +42,7 @@ function App({workspace}) {
   const [language, setLanguage] = useState(workspace?.language);
   const [theme, setTheme] = useState('vs-dark');
   const [tabSize, setTabSize] = useState(4);
-  const [fontSize, setFontSize] = useState(16);
+  const [fontSize, setFontSize] = useState(14);
   const [code, setCode] = useState(workspace?.runnerCode);
   const [isCopied, setIsCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -250,7 +250,7 @@ function App({workspace}) {
   };
 
   return (
-    <div className="flex flex-col h-screen w-full bg-[#1e1e1e] border-x border-t border-gray-800 rounded-t-lg overflow-hidden shadow-2xl">
+    <div className="flex flex-col flex-1 w-full bg-[#1e1e1e] rounded-xl overflow-hidden">
 
       {/* Top Toolbar */}
       <div className="flex flex-wrap items-center justify-between px-4 py-3 bg-[#252526] border-b border-[#333333] gap-y-3">

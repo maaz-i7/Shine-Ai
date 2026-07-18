@@ -1,8 +1,9 @@
 "use client";
+import { ChevronDown, ChevronUp, Copy, CheckCircle2Icon } from "lucide-react";
 
 const testCases = [
   `5 4 3
-1 5 3 6 2
+1 5 3 6 2 1 1 1 1 1 1 1 1 1 1 1 
 1 2 3
 2 4 5
 5 3 1
@@ -46,55 +47,6 @@ const expOutputCases = ['20', '27', '32', '19', '34']
 import TestCase from "@/components/TestCase.js"
 import { useState } from "react";
 
-const CheckIcon = ({ className = "w-4 h-4" }) => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path
-      d="M7.29417 12.9577L10.5048 16.1681L17.6729 9"
-      stroke="currentColor"
-      strokeWidth={2.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <circle
-      cx={12}
-      cy={12}
-      r={10}
-      stroke="currentColor"
-      strokeWidth={2}
-    />
-  </svg>
-);
-
-const CopyIcon = ({ className = "w-4 h-4 text-gray-400 hover:text-white cursor-pointer" }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    className={className}
-  >
-    <rect
-      x="9"
-      y="9"
-      width="11"
-      height="11"
-      rx="2"
-      stroke="currentColor"
-      strokeWidth={2}
-    />
-    <path
-      d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
 export default function Console({
   isConsoleOpen,
   setIsConsoleOpen,
@@ -103,7 +55,6 @@ export default function Console({
 }) {
 
   const [open, setOpen] = useState(null);
-  const [caseInd, setCaseInd] = useState(0);
   const [copiedTestCase, setCopiedTestCase] = useState(null);
   const [copiedOutput, setCopiedOutput] = useState(false);
   const [copiedExpected, setCopiedExpected] = useState(false);
@@ -129,21 +80,17 @@ export default function Console({
 
   return (
     <div style={{ height: isConsoleOpen ? CONSOLE_HEIGHT : MINIMIZED_CONSOLE_HEIGHT, }}
-      className="border-t border-gray-700 bg-primary z-10 transition-[height] duration-300 ease-in-out flex flex-col shrink-0"
+      className="border-gray-700 bg-primary rounded-xl z-10 transition-[height] duration-300 ease-in-out flex flex-col shrink-0"
     >
       {isConsoleOpen ? (
         <>
-          <div className="h-9 border-b border-gray-700 flex items-center justify-between px-3">
-            <span className="text-sm font-medium">Console</span>
-            <button
-              onClick={() => setIsConsoleOpen(false)}
-              className="text-xs bg-gray-700 hover:bg-gray-600 px-2 py-1 rounded cursor-pointer"
-            >
-              Minimize
-            </button>
+          <div onClick={() => setIsConsoleOpen(false)} className="h-10 cursor-pointer bg-[#202020] rounded-xl hover:bg-white/5 border-gray-700 flex items-center justify-between py-6 p-5">
+            {/* <span className="text-xl font-medium text-green-600">Accepted</span> */}
+            <span className="text-xl font-medium text-red-600">Time Limit Exceeded</span>
+            <ChevronDown size={16} />
           </div>
 
-          <div className="flex-1 overflow-y-scroll minimal-scrollbar p-3 text-sm">
+          <div className="flex-1 overflow-y-scroll minimal-scrollbar p-5 text-sm">
             <div className="text-xl mb-3">Test Cases</div>
             <div className="flex flex-wrap items-start h-50 overflow-y-scroll minimal-scrollbar">
               {
@@ -154,7 +101,6 @@ export default function Console({
                   open={open === i}
                   setOpen={() => {
                     setOpen(open === i ? null : i);
-                    setCaseInd(i);
                     setOutput(outputCases[i]);
                     setExpOutput(expOutputCases[i]);
                   }}
@@ -175,7 +121,7 @@ export default function Console({
                         onClick={(e) => handleCopy(e, output, "output")}
                         className="rounded p-1 hover:bg-white/10 ml-auto"
                       >
-                        {copiedOutput ? <CheckIcon /> : <CopyIcon />}
+                        {copiedOutput ? ( <CheckCircle2Icon className="text-gray-300/80 w-3.5 h-3.5" />) : ( <Copy className="text-gray-300/80 w-3.5 h-3.5 cursor-pointer" />)}
                       </button>
                     </div>
                   </div>
@@ -190,7 +136,7 @@ export default function Console({
                       onClick={(e) => handleCopy(e, expOutput, "expected")}
                       className="rounded p-1 hover:bg-white/10 ml-auto"
                     >
-                      {copiedExpected ? <CheckIcon /> : <CopyIcon />}
+                      {copiedExpected ? ( <CheckCircle2Icon className="text-gray-300/80 w-3.5 h-3.5" />) : ( <Copy className="text-gray-300/80 w-3.5 h-3.5 cursor-pointer" />)}
                     </button>
                   </div>
                   <div className="bg-primary p-2 min-h-10 max-h-70 overflow-auto minimal-scrollbar">
@@ -201,18 +147,17 @@ export default function Console({
             </div>
             <div>
               <div className="text-xl mb-3 mt-3">Console</div>
-              <div className="w-full h-100 bg-[#0c1d0a]"></div>
+              <div className="w-full h-100 bg-[#050521]"></div>
             </div>
           </div>
         </>
       ) : (
         <div
           onClick={() => setIsConsoleOpen(true)}
-          className="h-full flex items-center justify-center cursor-pointer hover:bg-white/5"
+          className="h-10 py-6 p-5 flex items-center justify-between cursor-pointer hover:bg-white/5"
         >
-          <span className="text-sm font-semibold tracking-wider text-gray-400">
-            CONSOLE
-          </span>
+          <span className="text-xl font-medium text-green-600">Accepted</span>
+          <ChevronUp size={16}/>
         </div>
       )}
     </div>

@@ -63,7 +63,7 @@ export default function Layout() {
 
     const [isDraggingRight, setIsDraggingRight] = useState(false);
 
-    const MINIMIZED_CONSOLE_HEIGHT = 36;
+    const MINIMIZED_CONSOLE_HEIGHT = 50;
     const MINIMIZED_WIDTH = 36;
 
     const frame = useRef(null);
@@ -113,7 +113,7 @@ export default function Layout() {
             const rect = containerRef.current.getBoundingClientRect();
 
             let width = e.clientX - rect.left;
-            width = Math.max(200, Math.min(width, 500));
+            width = Math.max(200, Math.min(width, 900));
 
             setLeftWidth(width);
         };
@@ -195,7 +195,7 @@ export default function Layout() {
                 {isConsoleOpen && (
                     <div
                         onMouseDown={startConsoleDrag}
-                        className="h-1 cursor-row-resize bg-gray-600 hover:bg-blue-500 shrink-0"
+                        className="h-1 cursor-row-resize bg-black transition-colors hover:bg-gray-500 shrink-0"
                     />
                 )}
 
@@ -207,7 +207,7 @@ export default function Layout() {
                             ? consoleHeight
                             : MINIMIZED_CONSOLE_HEIGHT
                     }}
-                    className="shrink-0 bg-primary"
+                    className={`shrink-0 bg-primary rounded-xl ${isConsoleOpen ? "" : "mt-1"}`}
                 >
                     <Console
                         isConsoleOpen={isConsoleOpen}

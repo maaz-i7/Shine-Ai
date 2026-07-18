@@ -10,7 +10,7 @@ export default function RightPanel({
     return (
         <div
             style={{ width: isRightOpen ? rightWidth : MINIMIZED_WIDTH }}
-            className={`bg-primary shrink-0 overflow-hidden flex flex-col ${
+            className={`bg-primary shrink-0 rounded-xl overflow-hidden flex flex-col ${
                 !isDraggingRight ? "transition-[width] duration-300 ease-in-out" : ""
             }`}
             onClick={() => {

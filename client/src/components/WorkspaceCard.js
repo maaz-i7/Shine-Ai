@@ -79,40 +79,42 @@ export default function Component({ workspace }) {
   const Icon = status.icon;
 
   return (
-    <div className="w-full h-fit flex items-center justify-between p-5 border-b border-white/10">
-      <div className="w-full">
-        <div className="font-bold text-xl">{problem?.title}</div>
-        <div className="flex w-full mt-5 items-center justify-between">
-          <div className="flex w-fit gap-5 justify-between items-center">
-            <div className="text-[#3adcd7] bg-[#3C3C3C] text-[12px] font-semibold flex items-center justify-center rounded-2xl px-2.5 py-1">{LANGUAGES[workspace?.language]}</div>
-            {/* Difficulty Tag */}
-            <div
-              className={`inline-flex items-center rounded-full px-2.5 py-1 text-[12px] font-semibold
+    <Link href={`/problem/${problem?._id}`}>
+      <div className="w-full h-fit flex items-center justify-between p-5 px-10 hover:bg-[#1e1e1e] transition-colors border-b border-white/10">
+        <div className="w-full">
+          <div className="font-bold text-xl">{problem?.title}</div>
+          <div className="flex w-full mt-5 items-center justify-between">
+            <div className="flex w-fit gap-5 justify-between items-center">
+              <div className="text-[#3adcd7] bg-[#3C3C3C] text-[12px] font-semibold flex items-center justify-center rounded-2xl px-2.5 py-1">{LANGUAGES[workspace?.language]}</div>
+              {/* Difficulty Tag */}
+              <div
+                className={`inline-flex items-center rounded-full px-2.5 py-1 text-[12px] font-semibold
                         ${problem?.difficulty === "Easy" ? "bg-green-500/15 text-green-400" : problem?.difficulty === "Medium" ? "bg-yellow-500/15 text-yellow-400" : problem?.difficulty === "Hard" ? "bg-red-500/15 text-red-400" : "bg-purple-500/15 text-purple-400"}`}
-            >
-              {problem?.difficulty}
-            </div>
-            <div className="text-gray-400 text-[13px]">{getTimeAgo(workspace?.createdAt)}</div>
-            {/* Solve Status */}
-            <div
-              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${status.className}`}
-            >
-              <Icon size={14} strokeWidth={2.2} />
-              <span>{workspace?.status}</span>
+              >
+                {problem?.difficulty}
+              </div>
+              <div className="text-gray-400 text-[13px]">{getTimeAgo(workspace?.createdAt)}</div>
+              {/* Solve Status */}
+              <div
+                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${status.className}`}
+              >
+                <Icon size={13} strokeWidth={2.2} />
+                <span>{workspace?.status}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="flex flex-col">
-        <Link href={`/problem/${problem?._id}`}>
-          <button className="w-40 bg-blue-500 p-1 px-3 mb-5 text-center text-sm rounded-xl cursor-pointer hover:bg-blue-400 transition-colors">
+        <div className="flex flex-col">
+          {/* <Link href={`/problem/${problem?._id}`}>
+          <button className="w-40 bg-blue-500 p-2 px-3 mb-5 text-center text-sm rounded cursor-pointer hover:bg-blue-400 transition-colors">
             View on Canvas
           </button>
-        </Link>
-        <div className="w-fit">
-          <ScoreBar score={workspace?.score} />
+        </Link> */}
+          <div className="w-fit">
+            <ScoreBar score={workspace?.score} />
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
