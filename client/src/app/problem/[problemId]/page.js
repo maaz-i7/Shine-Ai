@@ -151,7 +151,7 @@ export default function Layout() {
         window.addEventListener("mouseup", stop);
     };
 
-    if (loading || status=="loading") {
+    if (loading || status == "loading") {
         return (
             <div className="flex w-screen h-screen items-center justify-center">
                 Loading...
@@ -167,13 +167,13 @@ export default function Layout() {
             {/* Left Panel */}
             <div
                 style={{ width: leftWidth }}
-                className="bg-primary shrink-0 overflow-hidden"
+                className="bg-primary shrink-0 overflow-hidden rounded-xl"
             >
                 <ProblemSection workspace={workspace} />
             </div>
 
             {/* Left Divider */}
-            <div onMouseDown={startLeftDrag} className="w-1 cursor-col-resize bg-gray-600 hover:bg-blue-500 shrink-0" />
+            <div onMouseDown={startLeftDrag} className="w-1 cursor-col-resize bg-black transition-colors hover:bg-gray-500 shrink-0" />
 
             {/* Center */}
             <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
@@ -219,7 +219,7 @@ export default function Layout() {
             </div>
 
             {/* Right Divider */}
-            <div onMouseDown={startRightDrag} className="w-1 cursor-col-resize bg-gray-600 hover:bg-blue-500 shrink-0" />
+            <div onMouseDown={startRightDrag} className="w-1 cursor-col-resize bg-black transition-colors hover:bg-gray-500 shrink-0" />
 
             {/* Right Panel */}
             <AiSection

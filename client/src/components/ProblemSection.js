@@ -41,7 +41,7 @@ export default function ProblemSection({ workspace }) {
 
         <div className="w-full h-screen font-sans overflow-y-scroll minimal-scrollbar p-5">
             {/* Title */}
-            <div className="text-4xl font-bold mt-5">{problem?.title}</div>
+            <div className="text-2xl font-bold mt-5">{problem?.title}</div>
 
             <div className="w-full flex items-center justify-between mt-5 mb-5">
                 <div className="flex">

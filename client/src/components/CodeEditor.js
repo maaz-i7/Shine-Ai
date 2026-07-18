@@ -73,7 +73,7 @@ function App({workspace}) {
             cursorBlinking: 'smooth',
             cursorSmoothCaretAnimation: 'on',
             folding: true,
-            fontFamily: "'Fira Code', 'JetBrains Mono', 'Menlo', 'Monaco', 'Courier New', monospace",
+            fontFamily: "'sans', monospace",
             fontSize: fontSize,
             formatOnPaste: true,
             formatOnType: true,
