@@ -80,7 +80,7 @@ export default function Console({
 
   return (
     <div style={{ height: isConsoleOpen ? CONSOLE_HEIGHT : MINIMIZED_CONSOLE_HEIGHT, }}
-      className="border-gray-700 bg-primary rounded-xl z-10 transition-[height] duration-300 ease-in-out flex flex-col shrink-0"
+      className="border-gray-700 bg-primary rounded-xl z-10 flex flex-col shrink-0"
     >
       {isConsoleOpen ? (
         <>

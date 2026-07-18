@@ -309,7 +309,7 @@ function App({ workspace }) {
           </div>
 
           {/* Font Size Selector */}
-          <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5 focus-within:ring-2 focus-within:ring-blue-500">
+          <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5">
             <Type className="w-4 h-4 text-gray-400 mr-2" />
             <select
               value={fontSize}
@@ -379,7 +379,7 @@ function App({ workspace }) {
       </div>
 
       {/* Status Bar */}
-      <div className="flex items-center justify-between px-3 py-1 bg-[#007acc] text-white text-xs">
+      <div className="flex items-center justify-between px-3 py-1 bg-primary text-white text-xs">
         <div className="flex items-center space-x-3">
           <span className="flex items-center">
             <Settings className="w-3 h-3 mr-1" /> Ready

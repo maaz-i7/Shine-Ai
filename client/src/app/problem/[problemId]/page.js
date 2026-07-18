@@ -55,8 +55,8 @@ export default function Layout() {
     const consoleRef = useRef(null);
 
     const [leftWidth, setLeftWidth] = useState(450);
-    const [rightWidth, setRightWidth] = useState(300);
-    const [consoleHeight, setConsoleHeight] = useState(220);
+    const [rightWidth, setRightWidth] = useState(400);
+    const [consoleHeight, setConsoleHeight] = useState(300);
 
     const [isRightOpen, setIsRightOpen] = useState(false);
     const [isConsoleOpen, setIsConsoleOpen] = useState(false);
@@ -178,7 +178,7 @@ export default function Layout() {
             </div>
 
             {/* Left Divider */}
-            <div onMouseDown={startLeftDrag} className="w-1 cursor-col-resize bg-black transition-colors hover:bg-gray-500 shrink-0" />
+            <div onMouseDown={startLeftDrag} className="w-1 cursor-ew-resize bg-black transition-colors hover:bg-gray-500 shrink-0" />
 
             {/* Center */}
             <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
@@ -200,7 +200,7 @@ export default function Layout() {
                 {isConsoleOpen && (
                     <div
                         onMouseDown={startConsoleDrag}
-                        className="h-1 cursor-row-resize bg-black transition-colors hover:bg-gray-500 shrink-0"
+                        className="h-1 cursor-ns-resize bg-black transition-colors hover:bg-gray-500 shrink-0"
                     />
                 )}
 
@@ -224,7 +224,7 @@ export default function Layout() {
             </div>
 
             {/* Right Divider */}
-            <div onMouseDown={startRightDrag} className="w-1 cursor-col-resize bg-black transition-colors hover:bg-gray-500 shrink-0" />
+            <div onMouseDown={startRightDrag} className="w-1 cursor-ew-resize bg-black transition-colors hover:bg-gray-500 shrink-0" />
 
             {/* Right Panel */}
             <AiSection
