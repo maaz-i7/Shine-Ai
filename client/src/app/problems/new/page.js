@@ -7,6 +7,7 @@ import { ensureWorkspace } from "@/services/workspace.service";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import useWorkspaceStore from "@/stores/workspace.store";
+import { Loader } from "lucide-react";
 
 const LANGUAGES = [
   { id: "cpp", name: "C++", compiler: "g++-15" },
@@ -71,7 +72,7 @@ export default function App() {
 
   // Image upload state
   const [uploadedImages, setUploadedImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const fileInputRef = useRef(null);
 
   // Custom Toast Notification State
@@ -159,7 +160,7 @@ export default function App() {
       if (status !== "authenticated") {
         return;
       }
-        
+
       const workspace = await ensureWorkspace({
         userId,
         problemId: problem._id,
@@ -537,7 +538,10 @@ export default function App() {
               : "bg-blue-600 hover:bg-blue-700 cursor-pointer active:scale-[0.99]"
               }`}
           >
-            {isLoading ? "Generating Problem..." : "Create Problem"}
+            {isLoading ? <div className="flex items-center justify-center">
+              <div>Generating Problem</div> 
+              <Loader strokeWidth={2} className="h-5 w-5 ml-2 animate-spin text-white" />
+              </div> : "Create Problem"}
           </button>
         </div>
       </form>
