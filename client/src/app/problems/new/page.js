@@ -72,7 +72,7 @@ export default function App() {
 
   // Image upload state
   const [uploadedImages, setUploadedImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
 
   // Custom Toast Notification State
@@ -539,9 +539,9 @@ export default function App() {
               }`}
           >
             {isLoading ? <div className="flex items-center justify-center">
-              <div>Generating Problem</div> 
+              <div>Preparing the Canvas</div> 
               <Loader strokeWidth={2} className="h-5 w-5 ml-2 animate-spin text-white" />
-              </div> : "Create Problem"}
+              </div> : "Create Canvas"}
           </button>
         </div>
       </form>

@@ -20,6 +20,7 @@
 | `POST` | `/api/workspace/ensure` | Create a workspace if it doesn't exist, otherwise return the existing one. |
 | `GET` | `/api/workspace/problem/:problemId?userId=:userId` | Fetch a user's workspace for a specific problem. |
 | `GET` | `/api/workspace/user/:userId` | Fetch all workspaces belonging to a user. |
+| `POST` | `api/workspace/problem/ai-code/:problemId?user=:userId` | Generate and save AI-generated starter code for the specified user and problem. |
 
 ---
 
