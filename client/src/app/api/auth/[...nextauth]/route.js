@@ -73,6 +73,7 @@ export const authOptions = {
           if (res.ok && backendUser) {
             user.id = backendUser._id;
             user.username = backendUser.username;
+            user.accessToken = backendUser.accessToken;
             return true;
           }
           return false;
@@ -87,6 +88,7 @@ export const authOptions = {
       if (user) {
         token.id = user.id;
         token.username = user.username;
+        token.accessToken = user.accessToken;
       }
       return token;
     },
@@ -94,6 +96,7 @@ export const authOptions = {
       if (session.user) {
         session.user.id = token.id;
         session.user.username = token.username;
+        session.accessToken = token.accessToken;
       }
       return session;
     }

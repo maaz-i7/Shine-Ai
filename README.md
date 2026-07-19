@@ -85,3 +85,4 @@ These routes are automatically provided by **NextAuth** for OAuth authentication
 - **KaTeX** – Fast rendering of mathematical expressions with CSS styling
 - **Multer** – Used to upload problem images from users so they can be processed by the AI for problem extraction.
 - **Zustand** – Lightweight state management library for global state management. Used to share application state such as generated problem data, workspace information, and UI state across components without prop drilling.
+- **jsonwebtoken** - for authenticating user in backend

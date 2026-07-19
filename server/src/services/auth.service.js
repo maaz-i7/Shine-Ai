@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from 'bcryptjs';
+import { generateToken } from "../utils/generateToken.js";
 
 // ==========================================
 // 1. Standard Registration Service
@@ -30,12 +31,15 @@ export const signupUser = async ({ name, username, email, password }) => {
         authProviders: ['local']
     });
 
+    const accessToken = generateToken(newUser)
+
     return {
         id: newUser._id.toString(),
         name: newUser.name,
         username: newUser.username,
         email: newUser.email,
-        avatar: newUser.avatar
+        avatar: newUser.avatar,
+        accessToken
     };
 };
 
@@ -76,12 +80,15 @@ export const loginUser = async ({ identifier, password }) => {
         throw error;
     }
 
+    const accessToken = generateToken(user);
+
     return {
         _id: user._id,
         name: user.name,
         username: user.username,
         email: user.email,
-        avatar: user.avatar
+        avatar: user.avatar,
+        accessToken
     };
 };
 
@@ -101,13 +108,16 @@ export const syncOAuthUser = async ({ email, name, avatar, provider, providerId 
             await user.save();
         }
 
+        const accessToken = generateToken(user);
+
         return {
             user: {
                 _id: user._id,
                 name: user.name,
                 username: user.username,
                 email: user.email,
-                avatar: user.avatar
+                avatar: user.avatar,
+                accessToken
             },
             isNewUser: false 
         };
@@ -135,13 +145,16 @@ export const syncOAuthUser = async ({ email, name, avatar, provider, providerId 
         githubId: provider === 'github' ? providerId : undefined,
     });
 
+    const accessToken = generateToken(newUser);
+
     return {
         user: {
             _id: newUser._id,
             name: newUser.name,
             username: newUser.username,
             email: newUser.email,
-            avatar: newUser.avatar
+            avatar: newUser.avatar,
+            accessToken
         },
         isNewUser: true
     };
