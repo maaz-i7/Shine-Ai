@@ -1,82 +1,74 @@
 "use client";
-import { ChevronDown, ChevronUp, Copy, CheckCircle2Icon } from "lucide-react";
-
-const testCases = [
-  `5 4 3
-1 5 3 6 2 1 1 1 1 1 1 1 1 1 1 1 
-1 2 3
-2 4 5
-5 3 1
-4 1 2`,
-
-  `6 5 2
-8 3 9 1 7 4
-1 6 5
-2 5 8
-3 4 2
-6 1 7
-4 2 9`,
-
-  `4 3 1
-10 20 30 40
-1 2 5
-2 4 6
-4 1 3`,
-
-  `7 6 4
-5 2 8 6 1 9 3
-1 7 4
-2 6 8
-3 5 2
-4 1 7
-5 2 1
-7 3 9`,
-
-  `8 5 3
-12 5 9 4 8 7 2 6
-1 8 4
-2 7 5
-3 6 8
-4 5 1
-8 1 9`,
-];
-
-const outputCases = ['10', '27', '32', '19', '34']
-const expOutputCases = ['20', '27', '32', '19', '34']
-
+import { ChevronDown, ChevronUp, Copy, Check, PlusIcon } from "lucide-react";
+import useTestCasesStore from "@/stores/testcases.store.js";
 import TestCase from "@/components/TestCase.js"
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export default function Console({
-  isConsoleOpen,
-  setIsConsoleOpen,
-  CONSOLE_HEIGHT,
-  MINIMIZED_CONSOLE_HEIGHT
-}) {
+function CopyButton({ text }) {
+  const [copied, setCopied] = useState(false);
 
-  const [open, setOpen] = useState(null);
-  const [copiedTestCase, setCopiedTestCase] = useState(null);
-  const [copiedOutput, setCopiedOutput] = useState(false);
-  const [copiedExpected, setCopiedExpected] = useState(false);
-  const [output, setOutput] = useState('');
-  const [expOutput, setExpOutput] = useState('');
-
-  const handleCopy = async (e, text, type, index = null) => {
-    e.stopPropagation();
-
-    await navigator.clipboard.writeText(text);
-
-    if (type === "testcase") {
-      setCopiedTestCase(index);
-      setTimeout(() => setCopiedTestCase(null), 1500);
-    } else if (type === "output") {
-      setCopiedOutput(true);
-      setTimeout(() => setCopiedOutput(false), 1500);
-    } else if (type === "expected") {
-      setCopiedExpected(true);
-      setTimeout(() => setCopiedExpected(false), 1500);
-    }
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(text ?? "");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
   };
+
+  return (
+    <button
+      onClick={handleCopy}
+      className="rounded p-1 hover:scale-105 mr-2 cursor-pointer transition-colors"
+      title="Copy"
+    >
+      {copied ? (
+        <Check className="w-4 h-4 text-white" />
+      ) : (
+        <Copy className="w-4 h-4" />
+      )}
+    </button>
+  );
+}
+
+export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGHT, MINIMIZED_CONSOLE_HEIGHT }) {
+
+  const testCases = useTestCasesStore((state) => state.testCases);
+  const addTestCase = useTestCasesStore((state) => state.addTestCase);
+  const setTestCases = useTestCasesStore((state) => state.setTestCases);
+  const selectedTestCase = useTestCasesStore(
+    (state) => state.selectedTestCase
+  );
+  const currentTestCase = testCases[selectedTestCase]
+  const textareaRef = useRef()
+
+  const handleAddTestCase = () => {
+    const input = textareaRef.current?.value.trim();
+
+    if (!input) return;
+
+    addTestCase(input);
+    // textareaRef.current.value = "";
+  };
+
+
+  useEffect(() => {
+    setTestCases([
+      {
+        input: "50\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n",
+        output: "50\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n",
+        expected: "50\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n",
+      },
+      {
+        input: "5\n6",
+        output: "23",
+        expected: "11",
+      },
+      {
+        input: "7 8 9",
+        output: "34",
+        expected: "24",
+      },
+    ]);
+  }, [setTestCases]);
+
 
   return (
     <div style={{ height: isConsoleOpen ? CONSOLE_HEIGHT : MINIMIZED_CONSOLE_HEIGHT, }}
@@ -85,70 +77,82 @@ export default function Console({
       {isConsoleOpen ? (
         <>
           <div onClick={() => setIsConsoleOpen(false)} className="h-10 cursor-pointer bg-[#202020] rounded-xl hover:bg-white/5 border-gray-700 flex items-center justify-between py-6 p-5">
-            {/* <span className="text-xl font-medium text-green-600">Accepted</span> */}
             <span className="text-xl font-medium text-red-600">Time Limit Exceeded</span>
             <ChevronDown size={16} />
           </div>
 
-          <div className="flex-1 overflow-y-scroll minimal-scrollbar p-5 text-sm">
-            <div className="text-xl mb-3">Test Cases</div>
-            <div className="flex flex-wrap items-start h-50 overflow-y-scroll minimal-scrollbar">
-              {
-                testCases.map((tc, i) => (<TestCase
-                  key={i}
-                  title={`Test Case ${i + 1}`}
-                  testCase={tc}
-                  open={open === i}
-                  setOpen={() => {
-                    setOpen(open === i ? null : i);
-                    setOutput(outputCases[i]);
-                    setExpOutput(expOutputCases[i]);
-                  }}
-                  copied={copiedTestCase === i}
-                  handleCopy={(e) => handleCopy(e, tc, "testcase", i)}
-                />))
-              }
+          <div className="font-sans overflow-y-scroll minimal-scrollbar p-5 text-sm">
 
+            {/* Test Cases  */}
+            <div className="text-xl mb-3">Test Cases</div>
+            <div className="flex flex-col">
+              <div className="flex flex-col">
+                <textarea placeholder="Add test case here" ref={textareaRef} className="bg-black minimal-scrollbar h-30 font-mono p-3 resize-y focus:outline-0 mb-3" name="" id=""></textarea>
+                <button onClick={handleAddTestCase} className="flex items-center justify-center w-30 m-1 p-1 rounded active:scale-99 border mb-3 transition-all bg-tertiary border-white/10 hover:bg-[#313131] cursor-pointer mt-auto">
+                  <PlusIcon className="w-4 mb-0.5 mr-1" />
+                  Test Case
+                </button>
+              </div>
+              {/* Test Cases Map */}
+              <div className="flex flex-wrap items-start max-h-40 overflow-y-scroll minimal-scrollbar">
+                {
+                  testCases.map((tc, i) =>
+                    (tc.input || tc.output || tc.expected) && (
+                      <TestCase
+                        key={i}
+                        title={`Case ${i + 1}`}
+                        i={i}
+                      />
+                    )
+                  )
+                }
+              </div>
             </div>
-            <div className="h-100">
-              <div className="text-xl mb-3 mt-3">Results</div>
-              <div className="w-full flex">
-                <div className="w-1/2 rounded-lg bg-secondary p-5 mr-1 h-fit">
-                  <div className="text-base mb-2">
-                    <div className="flex">
-                      <div>Output</div>
-                      <button
-                        onClick={(e) => handleCopy(e, output, "output")}
-                        className="rounded p-1 hover:bg-white/10 ml-auto"
-                      >
-                        {copiedOutput ? (<CheckCircle2Icon className="text-gray-300/80 w-3.5 h-3.5" />) : (<Copy className="text-gray-300/80 w-3.5 h-3.5 cursor-pointer" />)}
-                      </button>
-                    </div>
+
+            {/* Results */}
+            <div>
+              <div className="text-xl mt-5 mb-3">Results</div>
+              <div className="flex flex-col">
+                <div className="rounded-sm mb-2">
+                  <div className="flex justify-between w-full bg-secondary">
+                    <div className=" text-base p-2 px-2">Input</div>
+                    <CopyButton text={currentTestCase?.input} />
                   </div>
-                  <div className="bg-primary p-2 min-h-10 max-h-70 overflow-auto minimal-scrollbar">
-                    <pre>{output}</pre>
-                  </div>
+                  <pre className="bg-black max-h-40 overflow-auto minimal-scrollbar p-4 text-sm font-mono">
+                    {currentTestCase?.input}
+                  </pre>
                 </div>
-                <div className="w-1/2 rounded-lg bg-secondary p-5 ml-1 h-fit">
-                  <div className="flex">
-                    <div className="text-base mb-2">Expected</div>
-                    <button
-                      onClick={(e) => handleCopy(e, expOutput, "expected")}
-                      className="rounded p-1 hover:bg-white/10 ml-auto"
-                    >
-                      {copiedExpected ? (<CheckCircle2Icon className="text-gray-300/80 w-3.5 h-3.5" />) : (<Copy className="text-gray-300/80 w-3.5 h-3.5 cursor-pointer" />)}
-                    </button>
+                <div className="flex">
+                  <div className="w-1/2 mr-1 rounded-sm">
+                    <div className="flex justify-between w-full bg-secondary">
+                      <div className=" text-base p-2 px-2">Output</div>
+                      <CopyButton text={currentTestCase?.output} />
+                    </div>
+                    <pre className="bg-black max-h-40 overflow-auto minimal-scrollbar p-4 text-sm font-mono">
+                      {currentTestCase?.output}
+                    </pre>
                   </div>
-                  <div className="bg-primary p-2 min-h-10 max-h-70 overflow-auto minimal-scrollbar">
-                    <pre>{expOutput}</pre>
+                  <div className="w-1/2 ml-1 rounded-sm">
+                    <div className="flex justify-between w-full bg-secondary">
+                      <div className=" text-base p-2 px-2">Expected</div>
+                      <CopyButton text={currentTestCase?.expected} />
+                    </div>
+                    <pre className="bg-black max-h-40 overflow-auto minimal-scrollbar p-4 text-sm font-mono">
+                      {currentTestCase?.expected}
+                    </pre>
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* Console */}
             <div>
-              <div className="text-xl mb-3 mt-3">Console</div>
-              <div className="w-full h-100 bg-[#050521]"></div>
+              <div className="text-xl mt-5 mb-3">Console</div>
+              <div className="bg-black w-full h-50">
+
+              </div>
             </div>
+
           </div>
         </>
       ) : (
