@@ -1,5 +1,4 @@
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
 export const ensureWorkspace = async (data) => {
     const response = await fetch(`${API_URL}/api/workspace/ensure`, {
         method: "POST",
@@ -18,14 +17,19 @@ export const ensureWorkspace = async (data) => {
     return result.workspace;
 };
 
-export async function getWorkspaceByProblem(problemId, userId) {
-
-    const response = await fetch(`${API_URL}/api/workspace/problem/${problemId}?userId=${userId}`);
+export async function getWorkspaceForProblem(problemId, accessToken) {
+    const response = await fetch(`${API_URL}/api/workspace/${problemId}`,
+        {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        }
+    );
 
     const result = await response.json();
 
     if (!response.ok || !result.success) {
-        throw new Error(result.error || "Failed to fetch workspace.");
+        throw new Error("Failed to fetch workspace.");
     }
 
     return result.workspace;

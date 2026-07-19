@@ -29,10 +29,10 @@ export const ensureWorkspaceController = async (req, res) => {
     }
 };
 
-export const getWorkspaceByProblemController = async (req, res) => {
+export const getWorkspaceForProblemController = async (req, res) => {
     try {
         const { problemId } = req.params;
-        const { userId } = req.query;
+        const userId = req.user.id;
 
         const workspace = await getWorkspaceByProblem({
             userId,

@@ -8,9 +8,9 @@ import useWorkspaceStore from "@/stores/workspace.store";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { getWorkspaceByProblem, getAiCodeForWorkspace } from "@/services/workspace.service.js";
+import { getWorkspaceForProblem, getAiCodeForWorkspace } from "@/services/workspace.service.js";
 import { useRouter } from "next/navigation";
-import {LoaderCircle} from "lucide-react"
+import { LoaderCircle } from "lucide-react"
 
 export default function Layout() {
 
@@ -22,6 +22,7 @@ export default function Layout() {
     const setWorkspace = useWorkspaceStore((state) => state.setWorkspace);
 
     const [loading, setLoading] = useState(true);
+    let redirecting = false
 
     useEffect(() => {
 
@@ -31,10 +32,7 @@ export default function Layout() {
 
         async function loadWorkspace() {
             try {
-                const workspace = await getWorkspaceByProblem(
-                    problemId,
-                    session.user.id
-                );
+                const workspace = await getWorkspaceForProblem(problemId, session?.accessToken);
 
                 // Generate AI code only once
                 if (!workspace.aiCode || workspace.aiCode === "") {
@@ -51,14 +49,15 @@ export default function Layout() {
 
                 setWorkspace(workspace);
             } catch (error) {
-
                 if (error.message === "Failed to fetch workspace.") {
                     router.push("/problems/new");
+                    redirecting = true
                     return;
                 }
                 console.error(error);
             } finally {
-                setLoading(false);
+                if (!redirecting)
+                    setLoading(false);
             }
         }
         loadWorkspace();
