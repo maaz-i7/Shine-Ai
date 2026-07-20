@@ -3,6 +3,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Settings, Code2, Moon, Sun, AlignLeft, Download, Copy, Check, Type, Play, Loader2 } from 'lucide-react';
 import useTestCasesStore from '@/stores/testcases.store';
+import runCode from '@/services/code.editor.service';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export const LANGUAGES = [
   { id: "cpp", name: "C++", compiler: "g++-15" },
@@ -28,20 +32,20 @@ const THEMES = [
 const TAB_SIZES = [2, 4, 8];
 
 function App({ workspace }) {
+  const { data: session } = useSession();
+  const user = session?.user
   const [language, setLanguage] = useState(workspace?.language);
   const [theme, setTheme] = useState('vs-dark');
   const [tabSize, setTabSize] = useState(4);
   const [fontSize, setFontSize] = useState(14);
-  const [code, setCode] = useState(workspace?.aiCode);
+  const [code, setCode] = useState(workspace?.runnerCode);
   const [idealCode, setIdealCode] = useState(workspace?.aiCode);
   const [idealLang, setIdealLang] = useState(workspace?.language);
   const [isCopied, setIsCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isRunning, setIsRunning] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const testCases = useTestCasesStore((state) => state.testCases);
-  const setTestCases = useTestCasesStore((state) => state.setTestCases);
-  const { setVerdict } = useTestCasesStore();
+  const running = useTestCasesStore((state) => state.running);
 
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
@@ -152,111 +156,16 @@ function App({ workspace }) {
     RUNTIME_ERROR: "runtime_error",
   };
 
-  async function runTestCases({ code, language, testCases, filter = () => true }) {
-    const backendUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/online-compiler/execute-code`;
-    const compiler = LANGUAGES.find(lang => lang.id === language)?.compiler;
-
-    const results = [];
-
-    for (const tc of testCases.filter(filter)) {
-      const res = await fetch(backendUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          compiler,
-          code,
-          input: tc.input,
-        }),
-      });
-
-      const data = await res.json();
-
-      results.push({
-        input: tc.input,
-        ...data,
-      });
-    }
-
-    return results;
-  }
-
   const handleRunCode = async () => {
     try {
-      if (cooldown > 0) return;
-
-      setIsRunning(true);
-
-      // Only execute AI code for missing expected outputs
-      const generatedExpected = await runTestCases({
-        code: idealCode,
-        language: idealLang,
-        testCases,
-        filter: tc => tc.expected == null,
-      });
-
-      const expectedMap = new Map(
-        generatedExpected.map(tc => [tc.input, tc.output])
-      );
-
-      // Always execute user's code
-      const results = await runTestCases({
-        code,
-        language,
-        testCases,
-      });
-
-      const resultMap = new Map(
-        results.map(tc => [tc.input, tc])
-      );
-
-      const updatedTestCases = testCases.map(tc => {
-        const actual = resultMap.get(tc.input);
-
-        // Use stored expected if present, otherwise use generated value
-        const expectedOutput =
-          tc.expected ?? expectedMap.get(tc.input);
-
-        let status;
-
-        if (!actual?.success || actual?.error || actual?.message !== "Success") {
-          status = STATUS.RUNTIME_ERROR;
-        } else if ((actual.output ?? "").trim() === (expectedOutput ?? "").trim()) {
-          status = STATUS.RIGHT;
-        } else {
-          status = STATUS.WRONG;
-        }
-
-        return {
-          ...tc,
-          expected: expectedOutput,
-          output: actual?.output,
-          execution: {
-            message: actual?.message ?? "",
-            error: actual?.error ?? "",
-          },
-          status,
-        };
-      });
-
-      setTestCases(updatedTestCases);
-
-      const finalVerdict = updatedTestCases.every(
-        tc => tc.status === STATUS.RIGHT
-      )
-        ? "Accepted"
-        : updatedTestCases.some(tc => tc.status === STATUS.RUNTIME_ERROR)
-          ? "Runtime Error"
-          : "Wrong Answer";
-
-      setVerdict(finalVerdict);
-
+      const idealCompiler = LANGUAGES.find(lang => lang.id === idealLang)?.compiler;
+      const compiler = LANGUAGES.find(lang => lang.id === language)?.compiler;
+      await runCode(idealCompiler, idealCode, compiler, code)
     } catch (error) {
-      console.error("Failed to run code:", error);
-    } finally {
-      setIsRunning(false);
-      setCooldown(10);
+      console.log("Failed to run code: ", error.message)
+    }
+    finally {
+      setCooldown(10)
     }
   };
 
@@ -425,14 +334,14 @@ function App({ workspace }) {
           </div>
           <button
             onClick={handleRunCode}
-            disabled={isRunning || cooldown > 0 || testCases.length===0}
+            disabled={running || cooldown > 0 || testCases.length === 0}
             className={`flex items-center gap-2 w-20 h-8 justify-center rounded-md transition-all duration-200 text-white
-              ${isRunning || cooldown > 0
+              ${running || cooldown > 0
                 ? "bg-yellow-600 cursor-not-allowed"
                 : "bg-green-600 hover:bg-green-700 cursor-pointer active:scale-98"
               }`}
           >
-            {isRunning ? (
+            {running ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
               </>
@@ -466,6 +375,21 @@ function App({ workspace }) {
           >
             <Download className="w-4 h-4" />
           </button>
+          <div>
+            <Link href={user ? "/dashboard" : "/login"}>
+              {user ? (
+                <Image
+                  src={user?.image || "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"}
+                  alt={user?.name || "User"}
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+              ) : (
+                <span>Sign In</span>
+              )}
+            </Link>
+          </div>
         </div>
       </div>
 

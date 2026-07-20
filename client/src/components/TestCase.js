@@ -1,9 +1,11 @@
 "use client";
-import { Check, Trash2, X, Clock, AlertTriangle } from "lucide-react";
+import { Check, Trash2, X, Clock, AlertTriangle, HelpCircleIcon } from "lucide-react";
 import useTestCasesStore from "@/stores/testcases.store";
 
 const STATUS_CONFIG = {
   not_tested: {
+    icon: HelpCircleIcon,
+    className: "w-2.5 ml-2 h-2.5 invisible",
   },
   right: {
     icon: Check,
@@ -53,13 +55,7 @@ export default function Component({ title, i, status }) {
             <div>
               {title}
             </div>
-            {/* Judge Result */}
-            {/* <Check strokeWidth={3} className="w-2.5 ml-2 h-2.5 text-primary rounded-xs p-0.5 bg-green-600" /> */}
-            {/* <X strokeWidth={3} className="w-2.5 ml-2 h-2.5 text-primary rounded-xs p-0.5 bg-red-600" /> */}
-            {/* <Clock strokeWidth={3} className="w-3 ml-2 h-3 text-red-600 rounded-xs"/> */}
-            {/* <AlertTriangle strokeWidth={3} className="w-3 ml-2 h-3 text-red-600 rounded-xs" /> */}
             {Icon && <Icon strokeWidth={3} className={className} />}
-
           </div>
         </div>
       </div>

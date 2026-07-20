@@ -12,9 +12,11 @@ const useTestCasesStore = create((set) => ({
     testCases: [],
     selectedTestCase: 0,
     verdict: "",
+    running: false,
 
     setTestCases: (testCases) => set({ testCases }),
     setVerdict: (verdict) => set({ verdict }),
+    setRunning: (running) => set({ running }),
 
     setSelectedTestCase: (index) =>
         set({ selectedTestCase: index }),
@@ -34,6 +36,15 @@ const useTestCasesStore = create((set) => ({
                     }
                 },
             ],
+        })),
+
+    updateTestCase: (index, updates) =>
+        set((state) => ({
+            testCases: state.testCases.map((testCase, i) =>
+                i === index
+                    ? { ...testCase, ...updates }
+                    : testCase
+            ),
         })),
 
     removeTestCase: (index) =>

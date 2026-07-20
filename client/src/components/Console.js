@@ -1,5 +1,5 @@
 "use client";
-import { ChevronDown, ChevronUp, Copy, Check, PlusIcon } from "lucide-react";
+import { ChevronDown, ChevronUp, Copy, Check, PlusIcon, Loader2 } from "lucide-react";
 import useTestCasesStore from "@/stores/testcases.store.js";
 import TestCase from "@/components/TestCase.js"
 import { useEffect, useRef, useState } from "react";
@@ -55,7 +55,7 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
       {isConsoleOpen ? (
         <>
           <div onClick={() => setIsConsoleOpen(false)} className="h-10 cursor-pointer bg-[#202020] rounded-xl hover:bg-white/5 border-gray-700 flex items-center justify-between py-6 p-5">
-            <div className={`${verdict !== "Accepted" ? "text-red-600" : "text-green-600"}  font-bold`}>{verdict}</div>
+            {verdict!=="Judging" ? <div className={`${verdict !== "Accepted" ? "text-red-600" : "text-green-600"}  font-bold`}>{verdict}</div> : <Loader2 className="w-5 h-5 animate-spin" />}
             <ChevronDown size={16} />
           </div>
 
@@ -126,7 +126,7 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
               <div>
                 <div className="bg-black w-full font-mono text-base p-4">
                   <div className={`${currentTestCase?.execution.message !== "Success" ? "text-red-600" : "text-green-600"}  font-bold`}>{currentTestCase?.execution.message}</div>
-                  <div className="text-red-600">{currentTestCase?.execution.error}</div>
+                  <div className="text-red-600 text-sm">{currentTestCase?.execution.error}</div>
                 </div>
               </div>
             </div>
@@ -138,7 +138,7 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
           onClick={() => setIsConsoleOpen(true)}
           className="h-10 py-6 p-5 flex items-center justify-between cursor-pointer hover:bg-white/5"
         >
-          <div className={`${verdict !== "Accepted" ? "text-red-600" : "text-green-600"}  font-bold`}>{verdict}</div>
+          {verdict!=="Judging" ? <div className={`${verdict !== "Accepted" ? "text-red-600" : "text-green-600"}  font-bold`}>{verdict}</div> : <Loader2 className="w-5 h-5 animate-spin" />}
           <ChevronUp size={16} />
         </div>
       )}
