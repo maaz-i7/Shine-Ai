@@ -32,18 +32,36 @@ function App({ workspace }) {
   const [theme, setTheme] = useState('vs-dark');
   const [tabSize, setTabSize] = useState(4);
   const [fontSize, setFontSize] = useState(14);
-  const [code, setCode] = useState(workspace?.aiCode);
+  const [code, setCode] = useState(workspace?.runnerCode);
   const [idealCode, setIdealCode] = useState(workspace?.aiCode);
   const [idealLang, setIdealLang] = useState(workspace?.language);
   const [isCopied, setIsCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
   const testCases = useTestCasesStore((state) => state.testCases);
   const setTestCases = useTestCasesStore((state) => state.setTestCases);
+  const { setVerdict } = useTestCasesStore();
 
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
   const editorInstanceRef = useRef(null);
+
+  useEffect(() => {
+    if (cooldown <= 0) return;
+
+    const interval = setInterval(() => {
+      setCooldown(prev => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [cooldown > 0]);
 
   // Dynamic Loading of Monaco to avoid bundler resolution issues
   useEffect(() => {
@@ -166,30 +184,45 @@ function App({ workspace }) {
 
   const handleRunCode = async () => {
     try {
-      setIsRunning(true)
+      if (cooldown > 0) return;
 
-      const expectedResults = await runTestCases({
+      setIsRunning(true);
+
+      // Only execute AI code for missing expected outputs
+      const generatedExpected = await runTestCases({
         code: idealCode,
         language: idealLang,
         testCases,
-        filter: tc => tc.expected === null,
+        filter: tc => tc.expected == null,
       });
 
+      const expectedMap = new Map(
+        generatedExpected.map(tc => [tc.input, tc.output])
+      );
+
+      // Always execute user's code
       const results = await runTestCases({
         code,
         language,
         testCases,
       });
 
-      const updatedTestCases = testCases.map((tc) => {
-        const expected = expectedResults.find(r => r.input === tc.input);
-        const actual = results.find(r => r.input === tc.input);
+      const resultMap = new Map(
+        results.map(tc => [tc.input, tc])
+      );
+
+      const updatedTestCases = testCases.map(tc => {
+        const actual = resultMap.get(tc.input);
+
+        // Use stored expected if present, otherwise use generated value
+        const expectedOutput =
+          tc.expected ?? expectedMap.get(tc.input);
 
         let status;
 
         if (!actual?.success || actual?.error || actual?.message !== "Success") {
           status = STATUS.RUNTIME_ERROR;
-        } else if ((actual.output ?? "").trim() === (expected?.output ?? "").trim()) {
+        } else if ((actual.output ?? "").trim() === (expectedOutput ?? "").trim()) {
           status = STATUS.RIGHT;
         } else {
           status = STATUS.WRONG;
@@ -197,7 +230,7 @@ function App({ workspace }) {
 
         return {
           ...tc,
-          expected: expected?.output ?? tc.expected,
+          expected: expectedOutput,
           output: actual?.output,
           execution: {
             message: actual?.message ?? "",
@@ -209,10 +242,21 @@ function App({ workspace }) {
 
       setTestCases(updatedTestCases);
 
-      setIsRunning(false)
+      const finalVerdict = updatedTestCases.every(
+        tc => tc.status === STATUS.RIGHT
+      )
+        ? "Accepted"
+        : updatedTestCases.some(tc => tc.status === STATUS.RUNTIME_ERROR)
+          ? "Runtime Error"
+          : "Wrong Answer";
+
+      setVerdict(finalVerdict);
+
     } catch (error) {
       console.error("Failed to run code:", error);
-      setIsRunning(false)
+    } finally {
+      setIsRunning(false);
+      setCooldown(10);
     }
   };
 
@@ -381,9 +425,9 @@ function App({ workspace }) {
           </div>
           <button
             onClick={handleRunCode}
-            disabled={isRunning}
+            disabled={isRunning || cooldown > 0 || testCases.length===0}
             className={`flex items-center gap-2 w-20 h-8 justify-center rounded-md transition-all duration-200 text-white
-            ${isRunning
+              ${isRunning || cooldown > 0
                 ? "bg-yellow-600 cursor-not-allowed"
                 : "bg-green-600 hover:bg-green-700 cursor-pointer"
               }`}
@@ -391,7 +435,11 @@ function App({ workspace }) {
             {isRunning ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-
+              </>
+            ) : cooldown > 0 ? (
+              <>
+                <Play className="w-4 h-4" />
+                {cooldown}s
               </>
             ) : (
               <>

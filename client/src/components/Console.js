@@ -32,6 +32,7 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
 
   const testCases = useTestCasesStore((state) => state.testCases);
   const addTestCase = useTestCasesStore((state) => state.addTestCase);
+  const verdict = useTestCasesStore((state) => state.verdict);
   const selectedTestCase = useTestCasesStore(
     (state) => state.selectedTestCase
   );
@@ -54,7 +55,7 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
       {isConsoleOpen ? (
         <>
           <div onClick={() => setIsConsoleOpen(false)} className="h-10 cursor-pointer bg-[#202020] rounded-xl hover:bg-white/5 border-gray-700 flex items-center justify-between py-6 p-5">
-            <span className="text-xl font-medium text-red-600">Time Limit Exceeded</span>
+            <div className={`${verdict !== "Accepted" ? "text-red-600" : "text-green-600"}  font-bold`}>{verdict}</div>
             <ChevronDown size={16} />
           </div>
 
@@ -122,8 +123,11 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
             {/* Console */}
             <div>
               <div className="text-xl mt-5 mb-3">Console</div>
-              <div className="bg-black w-full font-mono text-base p-4">
-                {currentTestCase?.execution.message}
+              <div>
+                <div className="bg-black w-full font-mono text-base p-4">
+                  <div className={`${currentTestCase?.execution.message !== "Success" ? "text-red-600" : "text-green-600"}  font-bold`}>{currentTestCase?.execution.message}</div>
+                  <div className="text-red-600">{currentTestCase?.execution.error}</div>
+                </div>
               </div>
             </div>
 
@@ -134,7 +138,7 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
           onClick={() => setIsConsoleOpen(true)}
           className="h-10 py-6 p-5 flex items-center justify-between cursor-pointer hover:bg-white/5"
         >
-          <span className="text-xl font-medium text-green-600">Accepted</span>
+          <div className={`${verdict !== "Accepted" ? "text-red-600" : "text-green-600"}  font-bold`}>{verdict}</div>
           <ChevronUp size={16} />
         </div>
       )}

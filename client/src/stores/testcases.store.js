@@ -11,8 +11,10 @@ const STATUS = {
 const useTestCasesStore = create((set) => ({
     testCases: [],
     selectedTestCase: 0,
+    verdict: "",
 
     setTestCases: (testCases) => set({ testCases }),
+    setVerdict: (verdict) => set({ verdict }),
 
     setSelectedTestCase: (index) =>
         set({ selectedTestCase: index }),
