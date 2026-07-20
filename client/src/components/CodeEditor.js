@@ -32,7 +32,7 @@ function App({ workspace }) {
   const [theme, setTheme] = useState('vs-dark');
   const [tabSize, setTabSize] = useState(4);
   const [fontSize, setFontSize] = useState(14);
-  const [code, setCode] = useState(workspace?.runnerCode);
+  const [code, setCode] = useState(workspace?.aiCode);
   const [idealCode, setIdealCode] = useState(workspace?.aiCode);
   const [idealLang, setIdealLang] = useState(workspace?.language);
   const [isCopied, setIsCopied] = useState(false);
