@@ -19,18 +19,6 @@ const useTestCasesStore = create((set) => ({
     setSelectedTestCase: (index) =>
         set({ selectedTestCase: index }),
 
-    // addTestCase: () =>
-    //     set((state) => ({
-    //         testCases: [
-    //             ...state.testCases,
-    //             {
-    //                 input: "",
-    //                 output: "",
-    //                 expected: "",
-    //             },
-    //         ],
-    //     })),
-
     addTestCase: (input) =>
         set((state) => ({
             testCases: [
@@ -47,15 +35,6 @@ const useTestCasesStore = create((set) => ({
                 },
             ],
         })),
-
-    // updateTestCase: (index, field, value) =>
-    //     set((state) => ({
-    //         testCases: state.testCases.map((testCase, i) =>
-    //             i === index
-    //                 ? { ...testCase, [field]: value }
-    //                 : testCase
-    //         ),
-    //     })),
 
     removeTestCase: (index) =>
         set((state) => {
@@ -78,17 +57,6 @@ const useTestCasesStore = create((set) => ({
                 selectedTestCase: newSelected,
             };
         }),
-
-    // clearTestCases: () =>
-    //     set({
-    //         testCases: [
-    //             {
-    //                 input: "",
-    //                 output: "",
-    //                 expected: "",
-    //             },
-    //         ],
-    //     }),
 }));
 
 export default useTestCasesStore;

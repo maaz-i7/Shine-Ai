@@ -40,7 +40,7 @@ export default function Component({ title, i, status }) {
   );
 
   return (
-    <div>
+    <div className="active:scale-98">
       <div onClick={() => setSelectedTestCase(i)} className={`${selectedTestCase === i ? "rounded border border-white/40" : ""} w-fit p-2 px-3 m-1 hover:bg-[#313131] rounded border transition-all bg-secondary border-white/10`}>
         <div className="font-sans w-full justify-between cursor-pointer">
           <div className="flex items-center justify-center">

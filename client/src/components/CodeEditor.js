@@ -429,7 +429,7 @@ function App({ workspace }) {
             className={`flex items-center gap-2 w-20 h-8 justify-center rounded-md transition-all duration-200 text-white
               ${isRunning || cooldown > 0
                 ? "bg-yellow-600 cursor-not-allowed"
-                : "bg-green-600 hover:bg-green-700 cursor-pointer"
+                : "bg-green-600 hover:bg-green-700 cursor-pointer active:scale-98"
               }`}
           >
             {isRunning ? (
