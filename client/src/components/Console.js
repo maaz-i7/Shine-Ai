@@ -10,13 +10,13 @@ function CopyButton({ text }) {
   const handleCopy = async () => {
     await navigator.clipboard.writeText(text ?? "");
     setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+    setTimeout(() => setCopied(false), 1000);
   };
 
   return (
     <button
       onClick={handleCopy}
-      className="rounded p-1 hover:scale-105 mr-2 cursor-pointer transition-colors"
+      className="rounded p-1 hover:scale-115 transition-all mr-2 cursor-pointer"
       title="Copy"
     >
       {copied ? (
@@ -45,7 +45,7 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
     if (!input) return;
 
     addTestCase(input);
-    // textareaRef.current.value = "";
+    textareaRef.current.value = "";
   };
 
 
@@ -88,8 +88,8 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
             <div className="flex flex-col">
               <div className="flex flex-col">
                 <textarea placeholder="Add test case here" ref={textareaRef} className="bg-black minimal-scrollbar h-30 font-mono p-3 resize-y focus:outline-0 mb-3" name="" id=""></textarea>
-                <button onClick={handleAddTestCase} className="flex items-center justify-center w-30 m-1 p-1 rounded active:scale-99 border mb-3 transition-all bg-tertiary border-white/10 hover:bg-[#313131] cursor-pointer mt-auto">
-                  <PlusIcon className="w-4 mb-0.5 mr-1" />
+                <button onClick={handleAddTestCase} className="flex rounded items-center justify-center w-26 m-1 p-1 active:scale-99 border mb-3 transition-all bg-tertiary border-white/10 hover:bg-[#313131] cursor-pointer mt-auto">
+                  <PlusIcon className="w-3 mr-1" />
                   Test Case
                 </button>
               </div>
@@ -97,13 +97,7 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
               <div className="flex flex-wrap items-start max-h-40 overflow-y-scroll minimal-scrollbar">
                 {
                   testCases.map((tc, i) =>
-                    (tc.input || tc.output || tc.expected) && (
-                      <TestCase
-                        key={i}
-                        title={`Case ${i + 1}`}
-                        i={i}
-                      />
-                    )
+                    (tc.input || tc.output || tc.expected) && (<TestCase key={i} title={`Case ${i + 1}`} i={i} />)
                   )
                 }
               </div>
@@ -113,9 +107,9 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
             <div>
               <div className="text-xl mt-5 mb-3">Results</div>
               <div className="flex flex-col">
-                <div className="rounded-sm mb-2">
-                  <div className="flex justify-between w-full bg-secondary">
-                    <div className=" text-base p-2 px-2">Input</div>
+                <div className="mb-2">
+                  <div className="flex justify-between w-full bg-secondary rounded-t-lg">
+                    <div className=" text-base p-2 px-4">Input</div>
                     <CopyButton text={currentTestCase?.input} />
                   </div>
                   <pre className="bg-black max-h-40 overflow-auto minimal-scrollbar p-4 text-sm font-mono">
@@ -123,18 +117,18 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
                   </pre>
                 </div>
                 <div className="flex">
-                  <div className="w-1/2 mr-1 rounded-sm">
-                    <div className="flex justify-between w-full bg-secondary">
-                      <div className=" text-base p-2 px-2">Output</div>
+                  <div className="w-1/2 mr-1">
+                    <div className="flex justify-between w-full bg-secondary rounded-t-lg">
+                      <div className=" text-base p-2 px-4">Output</div>
                       <CopyButton text={currentTestCase?.output} />
                     </div>
                     <pre className="bg-black max-h-40 overflow-auto minimal-scrollbar p-4 text-sm font-mono">
                       {currentTestCase?.output}
                     </pre>
                   </div>
-                  <div className="w-1/2 ml-1 rounded-sm">
-                    <div className="flex justify-between w-full bg-secondary">
-                      <div className=" text-base p-2 px-2">Expected</div>
+                  <div className="w-1/2 ml-1">
+                    <div className="flex justify-between w-full bg-secondary rounded-t-lg">
+                      <div className=" text-base p-2 px-4">Expected</div>
                       <CopyButton text={currentTestCase?.expected} />
                     </div>
                     <pre className="bg-black max-h-40 overflow-auto minimal-scrollbar p-4 text-sm font-mono">
