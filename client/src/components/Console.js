@@ -32,7 +32,6 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
 
   const testCases = useTestCasesStore((state) => state.testCases);
   const addTestCase = useTestCasesStore((state) => state.addTestCase);
-  const setTestCases = useTestCasesStore((state) => state.setTestCases);
   const selectedTestCase = useTestCasesStore(
     (state) => state.selectedTestCase
   );
@@ -45,30 +44,8 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
     if (!input) return;
 
     addTestCase(input);
-    textareaRef.current.value = "";
+    // textareaRef.current.value = "";
   };
-
-
-  useEffect(() => {
-    setTestCases([
-      {
-        input: "50\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n",
-        output: "50\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n",
-        expected: "50\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n",
-      },
-      {
-        input: "5\n6",
-        output: "23",
-        expected: "11",
-      },
-      {
-        input: "7 8 9",
-        output: "34",
-        expected: "24",
-      },
-    ]);
-  }, [setTestCases]);
-
 
   return (
     <div style={{ height: isConsoleOpen ? CONSOLE_HEIGHT : MINIMIZED_CONSOLE_HEIGHT, }}
@@ -95,11 +72,14 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
               </div>
               {/* Test Cases Map */}
               <div className="flex flex-wrap items-start max-h-40 overflow-y-scroll minimal-scrollbar">
-                {
-                  testCases.map((tc, i) =>
-                    (tc.input || tc.output || tc.expected) && (<TestCase key={i} title={`Case ${i + 1}`} i={i} />)
-                  )
-                }
+                {testCases.map((tc, i) => (
+                  <TestCase
+                    key={i}
+                    title={`Case ${i + 1}`}
+                    i={i}
+                    status={tc.status}
+                  />
+                ))}
               </div>
             </div>
 
@@ -109,7 +89,7 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
               <div className="flex flex-col">
                 <div className="mb-2">
                   <div className="flex justify-between w-full bg-secondary rounded-t-lg">
-                    <div className=" text-base p-2 px-4">Input</div>
+                    <div className="text-base p-2 px-4">Input</div>
                     <CopyButton text={currentTestCase?.input} />
                   </div>
                   <pre className="bg-black max-h-40 overflow-auto minimal-scrollbar p-4 text-sm font-mono">
@@ -119,20 +99,20 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
                 <div className="flex">
                   <div className="w-1/2 mr-1">
                     <div className="flex justify-between w-full bg-secondary rounded-t-lg">
-                      <div className=" text-base p-2 px-4">Output</div>
+                      <div className="text-base p-2 px-4">Output</div>
                       <CopyButton text={currentTestCase?.output} />
                     </div>
                     <pre className="bg-black max-h-40 overflow-auto minimal-scrollbar p-4 text-sm font-mono">
-                      {currentTestCase?.output}
+                      {currentTestCase?.output ?? ""}
                     </pre>
                   </div>
                   <div className="w-1/2 ml-1">
                     <div className="flex justify-between w-full bg-secondary rounded-t-lg">
-                      <div className=" text-base p-2 px-4">Expected</div>
+                      <div className="text-base p-2 px-4">Expected</div>
                       <CopyButton text={currentTestCase?.expected} />
                     </div>
                     <pre className="bg-black max-h-40 overflow-auto minimal-scrollbar p-4 text-sm font-mono">
-                      {currentTestCase?.expected}
+                      {currentTestCase?.expected ?? ""}
                     </pre>
                   </div>
                 </div>
@@ -142,8 +122,8 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
             {/* Console */}
             <div>
               <div className="text-xl mt-5 mb-3">Console</div>
-              <div className="bg-black w-full h-50">
-
+              <div className="bg-black w-full font-mono text-base p-4">
+                {currentTestCase?.execution.message}
               </div>
             </div>
 

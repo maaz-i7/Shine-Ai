@@ -35,9 +35,13 @@ const useTestCasesStore = create((set) => ({
                 ...state.testCases,
                 {
                     input,
-                    output: "",
-                    expected: "",
-                    status: STATUS[NOT_TESTED]
+                    output: null,
+                    expected: null,
+                    status: STATUS.NOT_TESTED,
+                    execution: {
+                        message: "",
+                        error: ""
+                    }
                 },
             ],
         })),

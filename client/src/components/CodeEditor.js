@@ -1,19 +1,8 @@
 "use client"
 
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  Settings,
-  Code2,
-  Moon,
-  Sun,
-  AlignLeft,
-  Download,
-  Copy,
-  Check,
-  Type,
-  Play,
-  Loader2
-} from 'lucide-react';
+import { Settings, Code2, Moon, Sun, AlignLeft, Download, Copy, Check, Type, Play, Loader2 } from 'lucide-react';
+import useTestCasesStore from '@/stores/testcases.store';
 
 export const LANGUAGES = [
   { id: "cpp", name: "C++", compiler: "g++-15" },
@@ -44,9 +33,13 @@ function App({ workspace }) {
   const [tabSize, setTabSize] = useState(4);
   const [fontSize, setFontSize] = useState(14);
   const [code, setCode] = useState(workspace?.aiCode);
+  const [idealCode, setIdealCode] = useState(workspace?.aiCode);
+  const [idealLang, setIdealLang] = useState(workspace?.language);
   const [isCopied, setIsCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
+  const testCases = useTestCasesStore((state) => state.testCases);
+  const setTestCases = useTestCasesStore((state) => state.setTestCases);
 
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
@@ -133,26 +126,89 @@ function App({ workspace }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const STATUS = {
+    NOT_TESTED: "not_tested",
+    RIGHT: "right",
+    WRONG: "wrong",
+    TLE: "tle",
+    RUNTIME_ERROR: "runtime_error",
+  };
+
+  async function runTestCases({ code, language, testCases, filter = () => true }) {
+    const backendUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/online-compiler/execute-code`;
+    const compiler = LANGUAGES.find(lang => lang.id === language)?.compiler;
+
+    const results = [];
+
+    for (const tc of testCases.filter(filter)) {
+      const res = await fetch(backendUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          compiler,
+          code,
+          input: tc.input,
+        }),
+      });
+
+      const data = await res.json();
+
+      results.push({
+        input: tc.input,
+        ...data,
+      });
+    }
+
+    return results;
+  }
+
   const handleRunCode = async () => {
     try {
       setIsRunning(true)
-      const compiler = LANGUAGES.find(lang => lang.id === language)?.compiler
-      const input = ""
-      const backendUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/online-compiler/execute-code`
-      const response = await fetch(backendUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ compiler, code, input }),
+
+      const expectedResults = await runTestCases({
+        code: idealCode,
+        language: idealLang,
+        testCases,
+        filter: tc => tc.expected === null,
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      const results = await runTestCases({
+        code,
+        language,
+        testCases,
+      });
 
-      const data = await response.json();
-      console.log(data)
+      const updatedTestCases = testCases.map((tc) => {
+        const expected = expectedResults.find(r => r.input === tc.input);
+        const actual = results.find(r => r.input === tc.input);
+
+        let status;
+
+        if (!actual?.success || actual?.error || actual?.message !== "Success") {
+          status = STATUS.RUNTIME_ERROR;
+        } else if ((actual.output ?? "").trim() === (expected?.output ?? "").trim()) {
+          status = STATUS.RIGHT;
+        } else {
+          status = STATUS.WRONG;
+        }
+
+        return {
+          ...tc,
+          expected: expected?.output ?? tc.expected,
+          output: actual?.output,
+          execution: {
+            message: actual?.message ?? "",
+            error: actual?.error ?? "",
+          },
+          status,
+        };
+      });
+
+      setTestCases(updatedTestCases);
+
       setIsRunning(false)
     } catch (error) {
       console.error("Failed to run code:", error);
