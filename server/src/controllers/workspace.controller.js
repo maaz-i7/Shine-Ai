@@ -93,7 +93,7 @@ export const getAiCode = async (req, res) => {
                 aiCode: generatedCode,
             },
             {
-                new: true,
+                returnDocument: "after",
             }
         );
 

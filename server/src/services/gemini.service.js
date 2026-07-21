@@ -13,11 +13,12 @@ const BASE_MODEL = "gemini-3.1-flash-lite";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const codeModel = genAI.getGenerativeModel({
-    model: PRO_MODEL,
+    model: BASE_MODEL,
     generationConfig: {
-        thinkingConfig: {
-            thinkingLevel: "medium",
-        },
+        // thinkingConfig: {
+        //     thinkingLevel: "medium",
+        // },
+        temperature: 0,
     },
 });
 
