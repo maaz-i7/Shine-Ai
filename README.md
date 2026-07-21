@@ -1,8 +1,8 @@
-# ✨ Shine AI
+# ✨ Shine Ai
 
 > **Seek. Shine. Solve. Succeed**
 >
-> Shine AI is an AI-powered platform that helps users learn, solve problems, and share knowledge through an intuitive and modern interface.
+> Shine Ai is an AI-powered platform that helps users learn, solve problems, and share knowledge through an intuitive and modern interface.
 
 ---
 
