@@ -8,13 +8,26 @@ import generateCodeForProblemPrompt from "../prompts/generateCodeForProblem.prom
 import dotenv from "dotenv";
 dotenv.config();
 
-// const GEMINI_MODEL = "gemini-2.5-flash"
-const GEMINI_MODEL = "gemini-3.1-flash-lite";
-
+const PRO_MODEL = "gemini-3.5-flash"
+const BASE_MODEL = "gemini-3.1-flash-lite";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({
-    model: GEMINI_MODEL
+
+const codeModel = genAI.getGenerativeModel({
+    model: PRO_MODEL,
+    generationConfig: {
+        thinkingConfig: {
+            thinkingLevel: "medium",
+        },
+    },
 });
+
+const utilityModel = genAI.getGenerativeModel({
+    model: BASE_MODEL,
+    generationConfig: {
+        temperature: 0,
+    },
+});
+
 
 // utility function to make sure ONLY json is returned after gemini response
 function cleanJson(text) {
@@ -109,7 +122,7 @@ export async function extractProblemStatement(files) {
             }
         }));
 
-        const result = await model.generateContent([
+        const result = await utilityModel.generateContent([
             createProblemPrompt,
             ...imageParts
         ]);
@@ -139,7 +152,7 @@ export async function extractProblemStatement(files) {
 // generates problem tags and rates problem difficulty
 export async function generateProblemMetadata(statement) {
     try {
-        const result = await model.generateContent([
+        const result = await utilityModel.generateContent([
             getProblemMetaDataPrompt,
             statement
         ]);
@@ -167,7 +180,7 @@ export const generateWorkspaceFiles = async ({ statement, language, starterCode 
 
         const prompt = `${JSON.stringify(input, null, 2)}\n${generateWorkspacePrompt}`;
 
-        const result = await model.generateContent(prompt);
+        const result = await utilityModel.generateContent(prompt);
 
         const response = result.response.text();
 
@@ -206,7 +219,7 @@ export const generateProblemStatementSummary = async (statement) => {
             2
         )}\n${generateProblemStatementSummaryPrompt}`;
 
-        const result = await model.generateContent(prompt);
+        const result = await utilityModel.generateContent(prompt);
 
         const problemSummary = result.response.text()?.trim();
 
@@ -239,7 +252,7 @@ export const generateCodeForProblem = async ({ summarizedStatement, runnerCode, 
 
         const prompt = `${JSON.stringify(input, null, 2)}\n${generateCodeForProblemPrompt}`;
 
-        const result = await model.generateContent(prompt);
+        const result = await codeModel.generateContent(prompt);
 
         const generatedCode = result.response.text()?.trim();
 
