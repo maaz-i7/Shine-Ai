@@ -126,7 +126,7 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
               <div>
                 <div className="bg-black w-full font-mono text-base p-4">
                   <div className={`${currentTestCase?.execution.message !== "Success" ? "text-red-600" : "text-green-600"}  font-bold`}>{currentTestCase?.execution.message}</div>
-                  <div className="text-red-600 text-sm">{currentTestCase?.execution.error}</div>
+                  <div className={`text-red-600 text-sm ${currentTestCase?.execution.message === "Success" ? "text-yellow-400" : ""}`}>{currentTestCase?.execution.error}</div>
                 </div>
               </div>
             </div>

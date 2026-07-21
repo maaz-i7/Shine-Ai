@@ -9,9 +9,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // const GEMINI_MODEL = "gemini-2.5-flash"
-// const GEMINI_MODEL = "gemini-2.5-flash-lite"
-// const GEMINI_MODEL = "gemini-1.5-flash";
-// const GEMINI_MODEL = "gemini-2.0-flash"; 
 const GEMINI_MODEL = "gemini-3.1-flash-lite";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);

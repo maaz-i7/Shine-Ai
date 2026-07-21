@@ -1,7 +1,7 @@
 const getProblemMetaDataPrompt = 
 `
 You are an expert programming problem difficulty classifier.
-Thoroughly read the problem and analyze its difficulty for an intermediate coder.
+Thoroughly read the problem and analyze its difficulty for an average coder.
 Also give all relevant topic tags for this problem.
 Return ONLY a valid JSON object with the following schema:
 
