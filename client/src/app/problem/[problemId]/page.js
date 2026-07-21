@@ -37,7 +37,7 @@ export default function Layout() {
                 // Generate AI code only once
                 if (!workspace.aiCode || workspace.aiCode === "") {
                     const aiCode = await getAiCodeForWorkspace({
-                        userId: session.user.id,
+                        accessToken: session?.accessToken,
                         problemId,
                         summarizedStatement: workspace.problem.summarizedStatement,
                         runnerCode: workspace.runnerCode,

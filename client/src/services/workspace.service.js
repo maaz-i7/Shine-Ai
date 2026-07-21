@@ -35,13 +35,15 @@ export async function getWorkspaceForProblem(problemId, accessToken) {
     return result.workspace;
 }
 
-export async function getUserWorkspaces(userId) {
-
-    if (!userId)
-        return []
+export async function getUserWorkspaces(accessToken) {
 
     const response = await fetch(
-        `${API_URL}/api/workspace/user/${userId}`
+        `${API_URL}/api/workspace/all`,
+        {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        }
     );
 
     const data = await response.json();
@@ -54,12 +56,13 @@ export async function getUserWorkspaces(userId) {
 }
 
 // workspace.service.js
-export const getAiCodeForWorkspace = async ({ userId, problemId, summarizedStatement, runnerCode, language }) => {
+export const getAiCodeForWorkspace = async ({ accessToken, problemId, summarizedStatement, runnerCode, language }) => {
     const response = await fetch(
-        `${API_URL}/api/workspace/problem/ai-code/${problemId}?user=${userId}`,
+        `${API_URL}/api/workspace/ai-code/${problemId}`,
         {
             method: "POST",
             headers: {
+                Authorization: `Bearer ${accessToken}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({

@@ -22,7 +22,7 @@ function Page() {
 
     async function loadWorkspaces() {
       try {
-        const userWorkspaces = await getUserWorkspaces(user?.id);
+        const userWorkspaces = await getUserWorkspaces(session?.accessToken);
         setWorkspaces(userWorkspaces)
       } catch (error) {
         console.error(error);

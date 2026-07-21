@@ -18,9 +18,9 @@
 | `POST` | `/api/online-compiler/execute-code` | Compile and execute the submitted source code. |
 | `POST` | `/api/problem/ensure` | Create a problem if it doesn't exist, otherwise return the existing one. |
 | `POST` | `/api/workspace/ensure` | Create a workspace if it doesn't exist, otherwise return the existing one. |
-| `GET` | `/api/workspace/problem/:problemId?userId=:userId` | Fetch a user's workspace for a specific problem. |
-| `GET` | `/api/workspace/user/:userId` | Fetch all workspaces belonging to a user. |
-| `POST` | `api/workspace/problem/ai-code/:problemId?user=:userId` | Generate and save AI-generated starter code for the specified user and problem. |
+| `GET` | `/api/workspace/:problemId` | Fetch session user's workspace for a specific problem. |
+| `GET` | `/api/workspace/all` | Fetch all workspaces belonging to the session user. |
+| `POST` | `api/workspace/ai-code/:problemId` | Generate and save AI-generated starter code for the specified problem. |
 
 ---
 

@@ -53,9 +53,9 @@ export const getWorkspaceForProblemController = async (req, res) => {
     }
 };
 
-export const getUserWorkspaces = async (req, res) => {
+export const getUserWorkspacesController = async (req, res) => {
     try {
-        const { userId } = req.params;
+        const userId = req.user.id;
 
         const workspaces = await Workspace.find({ user: userId })
             .populate("problem")
@@ -76,10 +76,10 @@ export const getUserWorkspaces = async (req, res) => {
     }
 };
 
-export const getAiCode = async (req, res) => {
+export const getAiCodeController = async (req, res) => {
     try {
         const { problemId } = req.params;
-        const { user: userId } = req.query;
+        const userId = req.user.id;
         const { summarizedStatement, runnerCode, language } = req.body;
 
         const generatedCode = await getAiCodeForWorkspace({ summarizedStatement, runnerCode, language });
