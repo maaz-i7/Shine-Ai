@@ -78,7 +78,7 @@ export default function Layout() {
     const [isDraggingRight, setIsDraggingRight] = useState(false);
 
     const MINIMIZED_CONSOLE_HEIGHT = 50;
-    const MINIMIZED_WIDTH = 36;
+    const MINIMIZED_WIDTH = 50;
 
     const frame = useRef(null);
 

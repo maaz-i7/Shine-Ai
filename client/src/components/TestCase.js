@@ -44,10 +44,10 @@ export default function Component({ title, i, status }) {
   return (
     <div className="active:scale-98 group">
       <XIcon
-        className="w-4 h-4 p-0.5 translate-y-4 rounded-full bg-gray-700 hover:bg-gray-600 group-hover:opacity-100 opacity-0 cursor-pointer text-gray-400 transition-all"
+        className="w-4 h-4 p-0.5 translate-y-3 rounded-full bg-gray-700 hover:bg-gray-600 group-hover:opacity-100 opacity-0 cursor-pointer text-gray-400 transition-all"
         onClick={() => removeTestCase(i)}
       />
-      <div onClick={() => setSelectedTestCase(i)} className={`${selectedTestCase === i ? "rounded border border-white/40" : ""} w-fit p-2 px-3 m-1 hover:bg-[#313131] rounded border transition-all bg-secondary border-white/10`}>
+      <div onClick={() => setSelectedTestCase(i)} className={`${selectedTestCase === i ? "rounded border border-white/40" : ""} w-fit p-2 px-3 ml-2 hover:bg-[#313131] rounded border transition-all bg-secondary border-white/10`}>
         <div className="font-sans w-full justify-between cursor-pointer">
           <div className="flex items-center justify-center">
             <div className="mr-2">
