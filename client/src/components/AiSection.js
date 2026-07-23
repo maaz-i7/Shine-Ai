@@ -151,9 +151,9 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                                                 {messages.map((message, index) => (
                                                     <div
                                                         key={index}
-                                                        className={`w-3/4 text-sm rounded-lg p-2 m-1 ${message.role === "assistant"
-                                                            ? "bg-secondary"
-                                                            : "bg-[#3d3d3d] ml-auto"
+                                                        className={`w-3/4 text-sm rounded-lg m-1 ${message.role === "assistant"
+                                                            ? "bg-secondary px-4 pt-2"
+                                                            : "bg-[#3d3d3d] ml-auto px-2"
                                                             }`}
                                                     >
                                                         {message.role === "assistant" ? <MarkdownRendererChat text={message.content} /> : <div className="p-2">{message.content}</div>}

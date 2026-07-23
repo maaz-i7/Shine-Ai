@@ -17,7 +17,10 @@ export async function createAssistant(workspaceId) {
 
     assistant = await Assistant.create({
         workspace: workspaceId,
-        messages: [],
+        messages: [{
+            role: 'assistant',
+            content: 'Hello! I am Shine Ai, your programming mentor and software engineering assistant created by Maaz. How can I help you with your code or technical questions today?',
+        },],
     });
 
     return assistant;
@@ -63,12 +66,6 @@ export async function addAssistantMessage(workspaceId, content) {
 }
 
 export async function generateAssistantResponse({ workspace, message }) {
-
-    const prompt = getAiReplyPrompt({
-        workspace,
-        message,
-    });
-
-    const aiReply = await generateAiReply(prompt);
+    const aiReply = await generateAiReply({ workspace, message });
     return aiReply;
 }

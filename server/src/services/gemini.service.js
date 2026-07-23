@@ -4,6 +4,9 @@ import generateWorkspacePrompt from "../prompts/generateWorkspace.prompt.js";
 import createProblemPrompt from "../prompts/createProblem.prompt.js";
 import generateProblemStatementSummaryPrompt from "../prompts/generateProblemStatementSummary.prompt.js"
 import generateCodeForProblemPrompt from "../prompts/generateCodeForProblem.prompt.js"
+import classifyQuestionPrompt from "../prompts/classifyQuestion.prompt.js";
+import getAiReplyPrompt from "../prompts/getAiReply.prompt.js";
+import getAiReplyForWorkspacePrompt from "../prompts/getAiReplyForWorkspace.prompt.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -78,6 +81,7 @@ function refineStatementFormatting(statement) {
     return statement;
 }
 
+// utility function to remove html tags from problem statement for cleaner text
 function cleanStatementForModel(statement) {
     return statement
         // Remove HTML tags (mainly <code>, <b>, etc.)
@@ -109,6 +113,22 @@ function cleanStatementForModel(statement) {
         .replace(/[ \t]+/g, " ")
         .replace(/\n{3,}/g, "\n\n")
         .trim();
+}
+
+// utility function to classify the user message as "general" or "workspace" (related to workspace)
+async function classifyQuestion(message) {
+
+    const prompt = classifyQuestionPrompt(message);
+    try {
+        const result = await codeModel.generateContent(prompt);
+        return result.response.text().trim().toLowerCase();
+
+    } catch (error) {
+        console.error("Error classifying question:", error);
+        throw new Error(
+            error?.message || "Failed to classify question."
+        );
+    }
 }
 
 // does OCR on images to extract problem in Markup and LaTex format
@@ -270,16 +290,26 @@ export const generateCodeForProblem = async ({ summarizedStatement, runnerCode, 
     }
 };
 
-export async function generateAiReply(prompt) {
-
+// generates a response to the user's message
+export async function generateAiReply({ workspace, message }) {
     try {
+        // Step 1: Classify the user's question
+        const intent = await classifyQuestion(message)
+
+        // Step 2: Build the appropriate prompt
+        const prompt =
+            intent === "workspace"
+                ? getAiReplyForWorkspacePrompt({workspace, message})
+                : getAiReplyPrompt(message);
+
+        // Step 3: Generate the final response
         const result = await codeModel.generateContent(prompt);
         return result.response.text().trim();
-    }
-    catch (err) {
-        console.error("Error generating ai reply:", error);
+
+    } catch (error) {
+        console.error("Error generating AI reply:", error);
         throw new Error(
-            error?.message || "Failed to generate ai reply."
+            error?.message || "Failed to generate AI reply."
         );
     }
 }
