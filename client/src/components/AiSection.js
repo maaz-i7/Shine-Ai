@@ -103,15 +103,15 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                                 <div className={`h-full overflow-y-auto p-3 transition-opacity duration-300 ${expanded === "help" ? "opacity-100 delay-200" : "opacity-0"}`}>
                                     <div className={`h-full flex flex-col ${expanded !== "help" ? "hidden" : "block"}`}>
                                         <div className="flex flex-wrap pb-3 text-sm">
-                                            <button className="bg-primary hover:scale-102 hover:bg-primary/80 cursor-pointer active:scale-99 w-fit p-2 m-1 rounded-lg flex items-center" title="Give a hint to solve the problem">Hint <LightbulbIcon className="w-4 ml-1 text-yellow-300" /> </button>
-                                            <button className="bg-primary hover:scale-102 hover:bg-primary/80 cursor-pointer active:scale-99 w-fit p-2 m-1 rounded-lg flex items-center" title="Summarize the problem objective">Summarize <BookOpenCheckIcon className="w-4 ml-1 text-blue-500" /> </button>
-                                            <button className="bg-primary hover:scale-102 hover:bg-primary/80 cursor-pointer active:scale-99 w-fit p-2 m-1 rounded-lg flex items-center" title="Add a new test case">Test Case <TestTube2 className="w-4 ml-1 text-green-300" /> </button>
-                                            <button className="bg-primary hover:scale-102 hover:bg-primary/80 cursor-pointer active:scale-99 w-fit p-2 m-1 rounded-lg flex items-center" title="Add a new edge case">Edge Case <BookAlert className="w-4 ml-1 text-yellow-700" /></button>
-                                            <button className="bg-primary hover:scale-102 hover:bg-primary/80 cursor-pointer active:scale-99 w-fit p-2 m-1 rounded-lg flex items-center" title="Debug syntax errors only">Debug <Bug className="w-4 ml-1 text-red-600" /> </button>
-                                            <button className="bg-primary hover:scale-102 hover:bg-primary/80 cursor-pointer active:scale-99 w-fit p-2 m-1 rounded-lg flex items-center" title="Analyze the time complexity of code">Time Complexity <Timer className="w-4 ml-1 text-blue-500" /></button>
-                                            <button className="bg-primary hover:scale-102 hover:bg-primary/80 cursor-pointer active:scale-99 w-fit p-2 m-1 rounded-lg flex items-center" title="Analyze the space complexity of code">Space Complexity <MemoryStick className="w-4 ml-1 text-green-600" /></button>
-                                            <button className="bg-primary hover:scale-102 hover:bg-primary/80 cursor-pointer active:scale-99 w-fit p-2 m-1 rounded-lg flex items-center" title="Explain the input being taken">Explain Input <BookOpenTextIcon className="w-4 ml-1 text-pink-600" /></button>
-                                            <button className="bg-primary hover:scale-102 hover:bg-primary/80 cursor-pointer active:scale-99 w-fit p-2 m-1 rounded-lg flex items-center" title="Check if I am going in the right direction">Direction <ArrowDownRight className="w-4 ml-1 text-purple-600" /></button>
+                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Give a hint to solve the problem">Hint <LightbulbIcon className="w-4 ml-1 text-yellow-300" /> </button>
+                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Summarize the problem objective">Summarize <BookOpenCheckIcon className="w-4 ml-1 text-blue-500" /> </button>
+                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Add a new test case">Test Case <TestTube2 className="w-4 ml-1 text-green-300" /> </button>
+                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Add a new edge case">Edge Case <BookAlert className="w-4 ml-1 text-yellow-700" /></button>
+                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Debug syntax errors only">Debug <Bug className="w-4 ml-1 text-red-600" /> </button>
+                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Analyze the time complexity of code">Time Complexity <Timer className="w-4 ml-1 text-blue-500" /></button>
+                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Analyze the space complexity of code">Space Complexity <MemoryStick className="w-4 ml-1 text-green-600" /></button>
+                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Explain the input being taken">Explain Input <BookOpenTextIcon className="w-4 ml-1 text-pink-600" /></button>
+                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Check if I am going in the right direction">Direction <ArrowDownRight className="w-4 ml-1 text-purple-600" /></button>
                                         </div>
                                         <div className="flex-1 rounded-lg bg-black mt-auto text-sm p-4">
                                             <div>
@@ -131,7 +131,7 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                                 }`}
                         >
                             {/* Header (Always strictly h-10) */}
-                            <div onClick={() => expanded !== "help" ? setExpanded("help") : setExpanded("ai")} className="h-10 shrink-0 flex items-center px-4 font-semibold select-none cursor-pointer">
+                            <div onClick={() => expanded !== "help" ? setExpanded("help") : setExpanded("ai")} className="h-10 shrink-0 border-b border-white/10 flex items-center px-4 font-semibold select-none cursor-pointer">
                                 <Image
                                     src={fullLogo}
                                     alt="logo"
@@ -146,7 +146,7 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                                     }`}>
                                     <div className="w-full h-full bg-black rounded-lg flex flex-col">
                                         <div className="flex-1 font-sans">
-                                            <div className="w-full h-full bg-black select-text rounded-lg flex flex-col pt-5">
+                                            <div className="w-full h-full bg-black select-text rounded-lg flex flex-col pt-5 pb-5 px-1">
                                                 {/* Ai Conversations */}
                                                 {messages.map((message, index) => (
                                                     <div
