@@ -269,3 +269,17 @@ export const generateCodeForProblem = async ({ summarizedStatement, runnerCode, 
         );
     }
 };
+
+export async function generateAiReply(prompt) {
+
+    try {
+        const result = await codeModel.generateContent(prompt);
+        return result.response.text().trim();
+    }
+    catch (err) {
+        console.error("Error generating ai reply:", error);
+        throw new Error(
+            error?.message || "Failed to generate ai reply."
+        );
+    }
+}

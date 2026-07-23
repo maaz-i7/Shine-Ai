@@ -8,6 +8,7 @@ import authRoutes from "./routes/auth.routes.js"
 import workspaceRoutes from "./routes/workspace.routes.js";
 import onlineCompiler from "./controllers/online.compiler.controller.js"
 import problemRoutes from "./routes/problem.routes.js"
+import assistantRoutes from "./routes/assistant.routes.js";
 
 
 const app = express()
@@ -23,5 +24,6 @@ app.use('/api/auth', authRoutes)
 app.use('/api/online-compiler/execute-code', onlineCompiler)
 app.use('/api/problem', problemRoutes);
 app.use("/api/workspace", workspaceRoutes);
+app.use("/api/assistant", assistantRoutes);
 
 export default app
