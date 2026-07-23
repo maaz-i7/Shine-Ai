@@ -5,10 +5,12 @@ import ProblemSection from "@/components/ProblemSection.js";
 import Console from "@/components/Console.js";
 import AiSection from "@/components/AiSection.js";
 import useWorkspaceStore from "@/stores/workspace.store";
+import useAssistantStore from "@/stores/assistant.store";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { getWorkspaceForProblem, getAiCodeForWorkspace } from "@/services/workspace.service.js";
+import { getAssistant } from "@/services/assistant.service";
 import { useRouter } from "next/navigation";
 import { LoaderCircle } from "lucide-react"
 
@@ -20,6 +22,10 @@ export default function Layout() {
 
     const workspace = useWorkspaceStore((state) => state.workspace);
     const setWorkspace = useWorkspaceStore((state) => state.setWorkspace);
+
+    const setMessages = useAssistantStore((state) => state.setMessages);
+    const addMessage = useAssistantStore((state) => state.addMessage);
+    const messages = useAssistantStore((state) => state.messages);
 
     const [loading, setLoading] = useState(true);
     let redirecting = false
@@ -46,8 +52,15 @@ export default function Layout() {
 
                     workspace.aiCode = aiCode;
                 }
-
                 setWorkspace(workspace);
+
+                const assistant = await getAssistant(
+                    workspace._id,
+                    session?.accessToken
+                );
+
+                setMessages(assistant.messages);
+
             } catch (error) {
                 if (error.message === "Failed to fetch workspace.") {
                     router.push("/problems/new");
@@ -255,6 +268,8 @@ export default function Layout() {
                 rightWidth={rightWidth}
                 MINIMIZED_WIDTH={MINIMIZED_WIDTH}
                 isDraggingRight={isDraggingRight}
+                workspace={workspace}
+                session={session}
             />
         </div>
     );
