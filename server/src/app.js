@@ -25,5 +25,9 @@ app.use('/api/online-compiler/execute-code', onlineCompiler)
 app.use('/api/problem', problemRoutes);
 app.use("/api/workspace", workspaceRoutes);
 app.use("/api/assistant", assistantRoutes);
+app.get("/health", (req, res) => {
+    console.log("Backend is UP!")
+    res.send("Shine AI Backend is up!")
+})
 
 export default app
