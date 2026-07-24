@@ -24,8 +24,6 @@ export default function Layout() {
     const setWorkspace = useWorkspaceStore((state) => state.setWorkspace);
 
     const setMessages = useAssistantStore((state) => state.setMessages);
-    const addMessage = useAssistantStore((state) => state.addMessage);
-    const messages = useAssistantStore((state) => state.messages);
 
     const [loading, setLoading] = useState(true);
     let redirecting = false

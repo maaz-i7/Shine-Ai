@@ -1,4 +1,22 @@
 import mongoose from "mongoose";
+
+const workspaceTestCaseSchema = new mongoose.Schema(
+    {
+        input: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+        expected: {
+            type: String,
+            default: null,
+        },
+    },
+    {
+        _id: false,
+    }
+);
+
 const workspaceSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -31,6 +49,11 @@ const workspaceSchema = new mongoose.Schema({
     userCode: {
         type: String,
         default: "",
+    },
+
+    testCases: {
+        type: [workspaceTestCaseSchema],
+        default: [],
     },
 
     userNotes: {
