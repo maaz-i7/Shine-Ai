@@ -1,5 +1,5 @@
 import Workspace from "../models/workspace.model.js";
-import { ensureWorkspace, getWorkspaceByProblem, getAiCodeForWorkspace } from "../services/workspace.service.js";
+import { ensureWorkspace, getWorkspaceByProblem, getAiCodeForWorkspace, saveWorkspace } from "../services/workspace.service.js";
 
 export const ensureWorkspaceController = async (req, res) => {
 
@@ -110,3 +110,21 @@ export const getAiCodeController = async (req, res) => {
         });
     }
 };
+
+export const saveWorkspaceController = async (req, res) => {
+    try {
+        const workspace = await saveWorkspace({
+            workspaceId: req.params.workspaceId,
+            userId: req.user.id,
+            ...req.body,
+        });
+
+        res.json(workspace);
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: err.message || "Failed to save workspace.",
+        });
+    }
+}

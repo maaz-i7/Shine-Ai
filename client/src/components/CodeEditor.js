@@ -1,9 +1,9 @@
 "use client"
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Settings, Code2, Moon, Sun, AlignLeft, Download, Copy, Check, Type, Play, Loader2 } from 'lucide-react';
+import { Settings, Code2, Moon, Sun, AlignLeft, Download, Copy, Check, Type, Play, Loader2, LucideListRestart } from 'lucide-react';
 import useTestCasesStore from '@/stores/testcases.store';
-import runCode from '@/services/code.editor.service';
+import { checkCode, saveWorkspace } from '@/services/code.editor.service';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -50,6 +50,48 @@ function App({ workspace }) {
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
   const editorInstanceRef = useRef(null);
+
+  const lastSaved = useRef({
+    code: "",
+    testCases: [],
+  });
+
+  useEffect(() => {
+
+    if (!workspace?._id)
+      return;
+
+    const timeout = setTimeout(async () => {
+
+      if (
+        lastSaved.current.code === code &&
+        JSON.stringify(lastSaved.current.testCases) === JSON.stringify(testCases)
+      )
+        return;
+
+      try {
+        await saveWorkspace(workspace._id, code, testCases, session);
+
+        lastSaved.current = { code, testCases };
+      }
+      catch (err) {
+        console.error(err);
+      }
+    }, 2000);
+
+    return () => clearTimeout(timeout);
+
+  }, [code, testCases]);
+
+  useEffect(() => {
+    if (!editorInstanceRef.current) return;
+
+    const editor = editorInstanceRef.current;
+
+    if (editor.getValue() !== code) {
+      editor.setValue(code);
+    }
+  }, [code]);
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -160,7 +202,7 @@ function App({ workspace }) {
     try {
       const idealCompiler = LANGUAGES.find(lang => lang.id === idealLang)?.compiler;
       const compiler = LANGUAGES.find(lang => lang.id === language)?.compiler;
-      await runCode(idealCompiler, idealCode, compiler, code)
+      await checkCode(idealCompiler, idealCode, compiler, code)
     } catch (error) {
       console.log("Failed to run code: ", error.message)
     }
@@ -361,6 +403,7 @@ function App({ workspace }) {
 
         {/* Action Buttons */}
         <div className="flex items-center space-x-2">
+          <LucideListRestart className='w-5 h-5 text-gray-400 cursor-pointer' onClick={() => setCode(workspace?.runnerCode)}/>
           <button
             onClick={handleCopyCode}
             className="flex items-center p-2 rounded-md hover:bg-[#333333] transition-colors text-gray-400 hover:text-gray-200"

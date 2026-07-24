@@ -19,7 +19,7 @@ export async function createAssistant(workspaceId) {
         workspace: workspaceId,
         messages: [{
             role: 'assistant',
-            content: 'Hello! I am Shine Ai, your programming mentor and software engineering assistant created by Maaz. How can I help you with your code or technical questions today?',
+            content: `Hello! I am Shine Ai, your programming assistant created by **Maaz**. How can I help you today?`,
         },],
     });
 

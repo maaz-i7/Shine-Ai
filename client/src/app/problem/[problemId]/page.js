@@ -6,6 +6,7 @@ import Console from "@/components/Console.js";
 import AiSection from "@/components/AiSection.js";
 import useWorkspaceStore from "@/stores/workspace.store";
 import useAssistantStore from "@/stores/assistant.store";
+import useTestCasesStore from "@/stores/testcases.store";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -25,8 +26,29 @@ export default function Layout() {
 
     const setMessages = useAssistantStore((state) => state.setMessages);
 
+    const testCases = useTestCasesStore((state) => state.testCases);
+    const setTestCases = useTestCasesStore((state) => state.setTestCases);
+
     const [loading, setLoading] = useState(true);
     let redirecting = false
+
+    const containerRef = useRef(null);
+    const editorRef = useRef(null);
+    const consoleRef = useRef(null);
+
+    const [leftWidth, setLeftWidth] = useState(450);
+    const [rightWidth, setRightWidth] = useState(400);
+    const [consoleHeight, setConsoleHeight] = useState(300);
+
+    const [isRightOpen, setIsRightOpen] = useState(false);
+    const [isConsoleOpen, setIsConsoleOpen] = useState(false);
+
+    const [isDraggingRight, setIsDraggingRight] = useState(false);
+
+    const MINIMIZED_CONSOLE_HEIGHT = 50;
+    const MINIMIZED_WIDTH = 50;
+
+    const frame = useRef(null);
 
     useEffect(() => {
 
@@ -51,6 +73,18 @@ export default function Layout() {
                     workspace.aiCode = aiCode;
                 }
                 setWorkspace(workspace);
+                setTestCases(
+                    workspace?.testCases?.map((testCase) => ({
+                        ...testCase,
+                        output: null,
+                        status: "not_tested",
+                        execution: {
+                            message: "",
+                            error: "",
+                        },
+                    }))
+                );
+                console.log(testCases)
 
                 const assistant = await getAssistant(
                     workspace._id,
@@ -74,24 +108,6 @@ export default function Layout() {
         loadWorkspace();
 
     }, [problemId, session, status, setWorkspace]);
-
-    const containerRef = useRef(null);
-    const editorRef = useRef(null);
-    const consoleRef = useRef(null);
-
-    const [leftWidth, setLeftWidth] = useState(450);
-    const [rightWidth, setRightWidth] = useState(400);
-    const [consoleHeight, setConsoleHeight] = useState(300);
-
-    const [isRightOpen, setIsRightOpen] = useState(false);
-    const [isConsoleOpen, setIsConsoleOpen] = useState(false);
-
-    const [isDraggingRight, setIsDraggingRight] = useState(false);
-
-    const MINIMIZED_CONSOLE_HEIGHT = 50;
-    const MINIMIZED_WIDTH = 50;
-
-    const frame = useRef(null);
 
     const startConsoleDrag = () => {
         let latestHeight = consoleHeight;

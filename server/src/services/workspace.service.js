@@ -92,7 +92,7 @@ export const getAiCodeForWorkspace = async ({ summarizedStatement, runnerCode, l
             runnerCode,
             language,
         });
-        
+
     } catch (error) {
         console.error("Error generating AI code:", error);
         throw new Error(
@@ -100,3 +100,30 @@ export const getAiCodeForWorkspace = async ({ summarizedStatement, runnerCode, l
         );
     }
 };
+
+export const saveWorkspace = async ({ workspaceId, userId, userCode, testCases }) => {
+
+    const workspace = await Workspace.findOneAndUpdate(
+        {
+            _id: workspaceId,
+            user: userId,
+        },
+        {
+            $set: {
+                userCode,
+                testCases: (testCases ?? []).map(({ input, expected }) => ({
+                    input,
+                    expected,
+                })),
+            },
+        },
+        {
+            returnDocument: 'after'
+        }
+    );
+
+    if (!workspace)
+        throw new Error("Workspace not found.");
+
+    return workspace;
+}

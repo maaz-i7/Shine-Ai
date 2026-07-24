@@ -1,4 +1,7 @@
 import useTestCasesStore from "@/stores/testcases.store";
+
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 const STATUS = {
     NOT_TESTED: "not_tested",
     RIGHT: "right",
@@ -10,7 +13,7 @@ const STATUS = {
 const runCode = async (compiler, code, input) => {
 
     try {
-        const backendUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/online-compiler/execute-code`;
+        const backendUrl = `${API_URL}/api/online-compiler/execute-code`;
         const res = await fetch(backendUrl, {
             method: "POST",
             headers: {
@@ -31,7 +34,7 @@ const runCode = async (compiler, code, input) => {
     }
 }
 
-export default async function checkCode(idealCompiler, idealCode, compiler, code) {
+export const checkCode = async (idealCompiler, idealCode, compiler, code) => {
 
     const { testCases, updateTestCase, setRunning, setVerdict } = useTestCasesStore.getState()
     setRunning(true)
@@ -111,4 +114,27 @@ export default async function checkCode(idealCompiler, idealCode, compiler, code
                 setVerdict("Wrong Answer")
         }
     }
+}
+
+export const saveWorkspace = async (workspaceId, userCode, testCases, session) => {
+
+    const res = await fetch(
+        `${API_URL}/api/workspace/${workspaceId}`,
+        {
+            method: "PATCH",
+            headers: {
+                "Authorization": `Bearer ${session?.accessToken}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                userCode,
+                testCases,
+            }),
+        }
+    );
+
+    if (!res.ok)
+        throw new Error("Failed to save workspace.");
+
+    return res.json();
 }
