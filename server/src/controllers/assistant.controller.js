@@ -1,5 +1,5 @@
 import Workspace from "../models/workspace.model.js";
-import { getOrCreateAssistant, addUserMessage, addAssistantMessage, generateAssistantResponse } from "../services/assistant.service.js";
+import { getOrCreateAssistant, generateAssistantResponse, updateAssistant } from "../services/assistant.service.js";
 
 export async function getAssistant(req, res) {
 
@@ -54,16 +54,22 @@ export async function sendMessage(req, res) {
                 error: "Unauthorized"
             });
 
-        await addUserMessage(workspaceId, message);
+        const aiResponse = await generateAssistantResponse({
+            workspace,
+            message,
+        });
 
-        const aiResponse = await generateAssistantResponse({ workspace, message });
-
-        await addAssistantMessage(workspaceId, aiResponse);
+        await updateAssistant({
+            workspaceId,
+            userMessage: message, 
+            assistantReply: aiResponse,
+        });
 
         return res.json({
             success: true,
             response: aiResponse,
         });
+
     } catch (err) {
         console.log("Failed to get message from assistant: ", err.message)
         return res.status(500).json({

@@ -7,6 +7,7 @@ import generateCodeForProblemPrompt from "../prompts/generateCodeForProblem.prom
 import classifyQuestionPrompt from "../prompts/classifyQuestion.prompt.js";
 import getAiReplyPrompt from "../prompts/getAiReply.prompt.js";
 import getAiReplyForWorkspacePrompt from "../prompts/getAiReplyForWorkspace.prompt.js";
+import updateConversationSummaryPrompt from "../prompts/updateConversationSummary.prompt.js"
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -291,7 +292,8 @@ export const generateCodeForProblem = async ({ summarizedStatement, runnerCode, 
 };
 
 // generates a response to the user's message
-export async function generateAiReply({ workspace, message }) {
+export async function generateAiReply({ workspace, message, summary }) {
+
     try {
         // Step 1: Classify the user's question
         const intent = await classifyQuestion(message)
@@ -299,8 +301,8 @@ export async function generateAiReply({ workspace, message }) {
         // Step 2: Build the appropriate prompt
         const prompt =
             intent === "workspace"
-                ? getAiReplyForWorkspacePrompt({workspace, message})
-                : getAiReplyPrompt(message);
+                ? getAiReplyForWorkspacePrompt({workspace, message, summary})
+                : getAiReplyPrompt({message, summary});
 
         // Step 3: Generate the final response
         const result = await codeModel.generateContent(prompt);
@@ -310,6 +312,26 @@ export async function generateAiReply({ workspace, message }) {
         console.error("Error generating AI reply:", error);
         throw new Error(
             error?.message || "Failed to generate AI reply."
+        );
+    }
+}
+
+// generates new conversation memory to append
+export async function updateConversationSummary({ summary, userMessage, assistantReply }) {
+    try {
+        const prompt = updateConversationSummaryPrompt({
+            summary,
+            userMessage,
+            assistantReply,
+        });
+
+        const result = await codeModel.generateContent(prompt);
+        return result.response.text().trim();
+        
+    } catch (error) {
+        console.error("Error updating conversation summary:", error);
+        throw new Error(
+            error?.message || "Failed to update conversation summary."
         );
     }
 }

@@ -33,6 +33,12 @@ const assistantSchema = new mongoose.Schema(
             type: [messageSchema],
             default: [],
         },
+
+        pastConversationSummary: {
+            type: String,
+            default: "",
+            trim: true,
+        },
     },
     {
         timestamps: true,
