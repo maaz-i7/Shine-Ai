@@ -33,7 +33,6 @@ const utilityModel = genAI.getGenerativeModel({
     },
 });
 
-
 // utility function to make sure ONLY json is returned after gemini response
 function cleanJson(text) {
     return text
@@ -332,6 +331,20 @@ export async function updateConversationSummary({ summary, userMessage, assistan
         console.error("Error updating conversation summary:", error);
         throw new Error(
             error?.message || "Failed to update conversation summary."
+        );
+    }
+}
+
+// generates response to quick help buttons
+export async function generateQuickHelpResponse(prompt) {
+    try {
+        const result = await codeModel.generateContent(prompt);
+        return result.response.text().trim();
+
+    } catch (error) {
+        console.error("Error generating quick help:", error);
+        throw new Error(
+            error?.message || "Failed to generate quick help."
         );
     }
 }

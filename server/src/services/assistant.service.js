@@ -1,7 +1,9 @@
 import Assistant from "../models/assistant.model.js";
 import Workspace from "../models/workspace.model.js";
 import getAiReplyPrompt from "../prompts/getAiReply.prompt.js";
-import { generateAiReply, updateConversationSummary } from "./gemini.service.js";
+import { generateAiReply, updateConversationSummary, generateQuickHelpResponse } from "./gemini.service.js";
+
+import { getHintPrompt } from "../prompts/quickHelps.prompts.js";
 
 export async function getAssistant(workspaceId) {
     return await Assistant.findOne({ workspace: workspaceId });
@@ -56,7 +58,7 @@ export async function updateAssistantConversationSummary({ summary, userMessage,
 }
 
 export async function updateAssistant({ workspaceId, userMessage, assistantReply }) {
-    
+
     const assistant = await getOrCreateAssistant(workspaceId);
 
     assistant.messages.push(
@@ -82,4 +84,44 @@ export async function updateAssistant({ workspaceId, userMessage, assistantReply
     await assistant.save();
 
     return assistant;
+}
+
+const QUICK_HELP_PROMPTS = {
+    hint: getHintPrompt,
+    // debug: getDebugPrompt,
+    // test_case: getTestCasesPrompt,
+    // edge_case: getEdgeCasesPrompt,
+    // summarize: getSummarizePrompt,
+    // direction: getDirectionPrompt,
+    // time_complexity: getTimeComplexityPrompt,
+    // space_complexity: getSpaceComplexityPrompt,
+    // explain_input: getExplainInputPrompt,
+};
+
+export async function generateQuickHelp({ workspace, workspaceId, type, userMessage }) {
+
+    const assistant = await getOrCreateAssistant(workspaceId);
+
+    if (!assistant)
+        throw new Error("Assistant not found.");
+
+    const promptBuilder = QUICK_HELP_PROMPTS[type];
+
+    if (!promptBuilder)
+        throw new Error("Invalid quick help type.");
+
+    const prompt = promptBuilder({
+        workspace,
+        summary: assistant.pastConversationSummary,
+    });
+
+    const aiReply = await generateQuickHelpResponse(prompt);
+
+    await updateAssistant({
+        workspaceId,
+        userMessage,
+        assistantReply: aiReply,
+    });
+
+    return aiReply;
 }

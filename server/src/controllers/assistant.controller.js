@@ -1,5 +1,5 @@
 import Workspace from "../models/workspace.model.js";
-import { getOrCreateAssistant, generateAssistantResponse, updateAssistant } from "../services/assistant.service.js";
+import { getOrCreateAssistant, generateAssistantResponse, updateAssistant, generateQuickHelp } from "../services/assistant.service.js";
 
 export async function getAssistant(req, res) {
 
@@ -75,6 +75,49 @@ export async function sendMessage(req, res) {
         return res.status(500).json({
             success: false,
             error: err.message
+        });
+    }
+}
+
+export async function quickHelp(req, res) {
+
+    try {
+        const { workspaceId } = req.params;
+        const { type } = req.body;
+        const { userMessage } = req.body;
+
+        const workspace = await Workspace.findById(workspaceId).populate("problem");
+
+        if (!workspace)
+            return res.status(404).json({
+                success: false,
+                error: "Workspace not found"
+            });
+
+        if (workspace.user.toString() !== req.user.id)
+            return res.status(403).json({
+                success: false,
+                error: "Unauthorized"
+            });
+
+        const aiResponse = await generateQuickHelp({
+            workspace,
+            workspaceId,
+            type,
+            userMessage,
+        });
+
+        return res.json({
+            success: true,
+            response: aiResponse,
+        });
+
+    } catch (err) {
+        console.log("Failed to get quick help:", err.message);
+
+        return res.status(500).json({
+            success: false,
+            error: err.message,
         });
     }
 }

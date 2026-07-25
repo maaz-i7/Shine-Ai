@@ -3,17 +3,33 @@ import Image from "next/image";
 import logo from "../../public/images/logo-no-bg.png";
 import fullLogo from "../../public/images/hero-logo-no-bg.png"
 import MarkdownRendererChat from "./MarkdownRendererChat.js";
+import { handleQuickHelp } from "@/services/quick.help.service";
 import useAssistantStore from "@/stores/assistant.store";
 import { sendMessage } from "@/services/assistant.service";
 import { useRef, useEffect } from "react";
-
 import { X, Bug, Timer, MemoryStick, LightbulbIcon, TestTube2, BookOpenTextIcon, ArrowDownRight, BookAlert, BookOpenCheckIcon } from "lucide-react";
 import { useState } from "react";
+
+const QUICK_HELP_LABELS = {
+    hint: "Give me a hint to solve this problem",
+    debug: "List out all syntax errors in my code and help fix them",
+    test_case: "Add a new random test case",
+    edge_case: "Add a new edge case",
+    summarize: "Summarize the problem for me",
+    direction: "Check if i am going in the right direction",
+    time_complexity: "Analyze the time complexity of my code",
+    space_complexity: "Analyze the space complexity of my code",
+    explain_input: "Explain how the input is being taken",
+};
 
 export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MINIMIZED_WIDTH, isDraggingRight, workspace, session }) {
     const [expanded, setExpanded] = useState("help");
     const [fetching, setFetching] = useState(false);
+    const [quickHelp, setQuickHelp] = useState("")
+    const [quickHelpType, setQuickHelpType] = useState("")
+    const [quickHelpLoading, setQuickHelpLoading] = useState(false)
     const messages = useAssistantStore((state) => state.messages);
+    const setMessages = useAssistantStore((state) => state.setMessages);
     const input = useAssistantStore((state) => state.input);
     const setInput = useAssistantStore((state) => state.setInput);
     const addMessage = useAssistantStore((state) => state.addMessage);
@@ -103,20 +119,33 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                                 <div className={`h-full overflow-y-auto p-3 transition-opacity duration-300 ${expanded === "help" ? "opacity-100 delay-200" : "opacity-0"}`}>
                                     <div className={`h-full flex flex-col ${expanded !== "help" ? "hidden" : "block"}`}>
                                         <div className="flex flex-wrap pb-3 text-sm">
-                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Give me a hint to solve the problem">Hint <LightbulbIcon className="w-4 ml-1 text-yellow-300" /> </button>
-                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Summarize the problem objective">Summarize <BookOpenCheckIcon className="w-4 ml-1 text-blue-500" /> </button>
-                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Add a new test case">Test Case <TestTube2 className="w-4 ml-1 text-green-300" /> </button>
-                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Add a new edge case">Edge Case <BookAlert className="w-4 ml-1 text-yellow-700" /></button>
-                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Debug syntax errors only">Debug <Bug className="w-4 ml-1 text-red-600" /> </button>
-                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Analyze the time complexity of code">Time Complexity <Timer className="w-4 ml-1 text-blue-500" /></button>
-                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Analyze the space complexity of code">Space Complexity <MemoryStick className="w-4 ml-1 text-green-600" /></button>
-                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Explain the input being taken">Explain Input <BookOpenTextIcon className="w-4 ml-1 text-pink-600" /></button>
-                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Check if I am going in the right direction">Direction <ArrowDownRight className="w-4 ml-1 text-purple-600" /></button>
+                                            <button disabled={quickHelpLoading} className={`${quickHelpType==="hint" ? "bg-black" : "bg-primary"} ${quickHelpLoading ? "cursor-not-allowed" : "cursor-pointer"} active:scale-95 hover:bg-primary/80 w-fit p-2 m-1 rounded-lg flex items-center`}
+                                                title={QUICK_HELP_LABELS.hint}
+                                                onClick={() => {
+                                                    setQuickHelpType("hint")
+                                                    handleQuickHelp({ accessToken: session?.accessToken, workspaceId: workspace._id, type: "hint", userMessage: QUICK_HELP_LABELS.hint, setQuickHelp, setQuickHelpLoading, setMessages, messages })
+                                                }}>
+                                                Hint <LightbulbIcon className="w-4 ml-1 text-yellow-300" />
+                                            </button>
+                                            <button disabled={quickHelpLoading} className="bg-primary active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title={QUICK_HELP_LABELS.summarize}>Summarize <BookOpenCheckIcon className="w-4 ml-1 text-blue-500" /> </button>
+                                            <button disabled={quickHelpLoading} className="bg-primary active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title={QUICK_HELP_LABELS.test_case}>Test Case <TestTube2 className="w-4 ml-1 text-green-300" /> </button>
+                                            <button disabled={quickHelpLoading} className="bg-primary active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title={QUICK_HELP_LABELS.edge_case}>Edge Case <BookAlert className="w-4 ml-1 text-yellow-700" /></button>
+                                            <button disabled={quickHelpLoading} className="bg-primary active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title={QUICK_HELP_LABELS.debug}>Debug <Bug className="w-4 ml-1 text-red-600" /> </button>
+                                            <button disabled={quickHelpLoading} className="bg-primary active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title={QUICK_HELP_LABELS.time_complexity}>Time Complexity <Timer className="w-4 ml-1 text-blue-500" /></button>
+                                            <button disabled={quickHelpLoading} className="bg-primary active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title={QUICK_HELP_LABELS.space_complexity}>Space Complexity <MemoryStick className="w-4 ml-1 text-green-600" /></button>
+                                            <button disabled={quickHelpLoading} className="bg-primary active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title={QUICK_HELP_LABELS.explain_input}>Explain Input <BookOpenTextIcon className="w-4 ml-1 text-pink-600" /></button>
+                                            <button disabled={quickHelpLoading} className="bg-primary active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title={QUICK_HELP_LABELS.direction}>Direction <ArrowDownRight className="w-4 ml-1 text-purple-600" /></button>
                                         </div>
                                         <div className="text-xs mb-3 text-gray-300">💡Hover over the buttons for details!</div>
                                         <div className="flex-1 rounded-lg bg-black mt-auto text-sm p-4">
                                             {/* Quick Ai Reply */}
                                             <div>
+                                                {!quickHelpLoading ? <MarkdownRendererChat text={quickHelp} /> :
+                                                    <div className="flex items-center gap-1 bg-secondary w-fit h-10 pt-1 px-3 rounded-lg m-1">
+                                                        <div className="typing-dot"></div>
+                                                        <div className="typing-dot"></div>
+                                                        <div className="typing-dot"></div>
+                                                    </div>}
                                             </div>
                                         </div>
                                     </div>
@@ -142,7 +171,7 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                             </div>
 
                             {/* Content wrapper */}
-                            <div className="flex-1 min-h-0 overflow-hidden w-full">
+                            <div className={`flex-1 min-h-0 overflow-hidden w-full ${expanded === "help" ? "hidden" : ""}`}>
                                 <div className={`h-full minimal-scrollbar overflow-y-auto p-2 transition-opacity duration-300 ${expanded === "ai" ? "opacity-100 delay-200" : "opacity-0"
                                     }`}>
                                     <div className="w-full h-full bg-black rounded-lg flex flex-col">
@@ -175,7 +204,7 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                             </div>
                             <div className="mr-5">
                                 <input
-                                    disabled={fetching}
+                                    disabled={fetching || quickHelpLoading}
                                     className="active:outline-0 w-full p-3 focus:outline-0 text-sm bg-primary m-2"
                                     type="text"
                                     placeholder={`${fetching ? "Almost there..." : "Ask Shine Ai"}`}

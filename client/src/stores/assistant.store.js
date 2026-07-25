@@ -11,7 +11,12 @@ const useAssistantStore = create((set) => ({
     error: null,
 
     setMessages: (messages) =>
-        set({ messages }),
+        set((state) => ({
+            messages:
+                typeof messages === "function"
+                    ? messages(state.messages)
+                    : messages,
+        })),
 
     addMessage: (message) =>
         set((state) => ({
