@@ -10,5 +10,6 @@ export const config = {
   matcher: [
     "/dashboard/:path*",
     "/problem/:path*",
+    "/problems/new",
   ]
 };
