@@ -113,6 +113,7 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                                             <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Explain the input being taken">Explain Input <BookOpenTextIcon className="w-4 ml-1 text-pink-600" /></button>
                                             <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Check if I am going in the right direction">Direction <ArrowDownRight className="w-4 ml-1 text-purple-600" /></button>
                                         </div>
+                                        <div className="text-xs mb-3 text-gray-300">💡Hover over the buttons for details!</div>
                                         <div className="flex-1 rounded-lg bg-black mt-auto text-sm p-4">
                                             {/* Quick Ai Reply */}
                                             <div>
