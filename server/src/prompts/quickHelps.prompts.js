@@ -150,9 +150,11 @@ ${workspace?.userCode}
 
 Analyze the user's code thoroughly to determine its time complexity.
 
-- State the overall time complexity in Big-O notation at top in bold.
-- Define all variables used (e.g., N, M, V, E).
 - Strictly analyze only the user's code for time complexity.
+- State the overall time complexity in Big-O notation at top in bold.
+- Define all variables used.
+- Do not explain anything else
+- Do not reveal expected time complexity, expected code, solution or implementation
 `;
 }
 
@@ -164,9 +166,11 @@ ${workspace?.userCode}
 
 Analyze the user's code thoroughly to determine its space complexity.
 
-- State the overall space complexity in Big-O notation at top in bold.
-- Define all variables used (e.g., N, M, V, E).
 - Strictly analyze only the user's code for space complexity.
+- State the overall space complexity in Big-O notation at top in bold.
+- Define all variables used.
+- Do not explain anything else
+- Do not reveal expected space complexity, expected code, solution or implementation
 `;
 }
 
@@ -202,7 +206,7 @@ ${workspace?.aiCode}
 
 Analyze the code template and infer the expected input format.
 
-Write the input description in the style of a competitive programming problem statement.
+Write the input description in the style of Codeforces.
 
 Instructions:
 - Describe the input from the user's perspective (e.g., "The first line contains...", "The next line contains...", "Each of the next N lines contains...").
