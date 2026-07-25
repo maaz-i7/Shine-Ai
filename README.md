@@ -24,6 +24,7 @@
 | `POST` | `api/workspace/ai-code/:problemId` | Generate and save AI-generated starter code for the specified problem. |
 | `GET` |  `/api/assistant/workspace/:workspaceId` | Load existing chat messages.
 | `POST` |  `/api/assistant/workspace/:workspaceId/chat` | Send a message and receive the AI response.
+| `POST` |  `/api/assistant/workspace/:workspaceId/quick-help` | Gets AI response for quick help functions
 
 ---
 
