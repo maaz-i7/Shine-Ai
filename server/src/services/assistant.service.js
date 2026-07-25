@@ -3,7 +3,7 @@ import Workspace from "../models/workspace.model.js";
 import getAiReplyPrompt from "../prompts/getAiReply.prompt.js";
 import { generateAiReply, updateConversationSummary, generateQuickHelpResponse } from "./gemini.service.js";
 
-import { getHintPrompt } from "../prompts/quickHelps.prompts.js";
+import { getHintPrompt, getDebugPrompt, getSummarizePrompt, getTestCasesPrompt, getEdgeCasesPrompt, getTimeComplexityPrompt, getSpaceComplexityPrompt, getDirectionPrompt, getExplainInputPrompt } from "../prompts/quickHelps.prompts.js";
 
 export async function getAssistant(workspaceId) {
     return await Assistant.findOne({ workspace: workspaceId });
@@ -88,14 +88,14 @@ export async function updateAssistant({ workspaceId, userMessage, assistantReply
 
 const QUICK_HELP_PROMPTS = {
     hint: getHintPrompt,
-    // debug: getDebugPrompt,
-    // test_case: getTestCasesPrompt,
-    // edge_case: getEdgeCasesPrompt,
-    // summarize: getSummarizePrompt,
-    // direction: getDirectionPrompt,
-    // time_complexity: getTimeComplexityPrompt,
-    // space_complexity: getSpaceComplexityPrompt,
-    // explain_input: getExplainInputPrompt,
+    debug: getDebugPrompt,
+    summarize: getSummarizePrompt,
+    test_case: getTestCasesPrompt,
+    edge_case: getEdgeCasesPrompt,
+    time_complexity: getTimeComplexityPrompt,
+    space_complexity: getSpaceComplexityPrompt,
+    direction: getDirectionPrompt,
+    explain_input: getExplainInputPrompt,
 };
 
 export async function generateQuickHelp({ workspace, workspaceId, type, userMessage }) {

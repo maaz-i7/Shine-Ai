@@ -1,3 +1,5 @@
+import useTestCasesStore from "@/stores/testcases.store";
+
 export async function handleQuickHelp({ accessToken, workspaceId, type, userMessage, setQuickHelp, setQuickHelpLoading, setMessages, messages }) {
 
     // Show the user's quick help request immediately
@@ -41,7 +43,17 @@ export async function handleQuickHelp({ accessToken, workspaceId, type, userMess
                 content: data.response,
             },
         ]);
-
+        
+        if (type === "test_case" || type === "edge_case") {
+            const { addTestCase } = useTestCasesStore.getState();
+            let testCase = String(data.response);
+            testCase = testCase.trim()
+            addTestCase(testCase)
+            testCase += "\n\nI have added the above test case"
+            setQuickHelp(testCase);
+            return testCase
+        }
+        
         setQuickHelp(data.response);
         return data.response;
 

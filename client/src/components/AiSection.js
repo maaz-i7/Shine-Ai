@@ -22,6 +22,63 @@ const QUICK_HELP_LABELS = {
     explain_input: "Explain how the input is being taken",
 };
 
+export const QUICK_HELP_BUTTONS = [
+    {
+        type: "hint",
+        label: "Hint",
+        icon: LightbulbIcon,
+        iconClass: "text-yellow-300",
+    },
+    {
+        type: "debug",
+        label: "Debug",
+        icon: Bug,
+        iconClass: "text-red-600",
+    },
+    {
+        type: "summarize",
+        label: "Summarize",
+        icon: BookOpenCheckIcon,
+        iconClass: "text-blue-500",
+    },
+    {
+        type: "test_case",
+        label: "Test Case",
+        icon: TestTube2,
+        iconClass: "text-green-300",
+    },
+    {
+        type: "edge_case",
+        label: "Edge Case",
+        icon: BookAlert,
+        iconClass: "text-yellow-700",
+    },
+    {
+        type: "time_complexity",
+        label: "Time Complexity",
+        icon: Timer,
+        iconClass: "text-blue-500",
+    },
+    {
+        type: "space_complexity",
+        label: "Space Complexity",
+        icon: MemoryStick,
+        iconClass: "text-green-600",
+    },
+    {
+        type: "explain_input",
+        label: "Explain Input",
+        icon: BookOpenTextIcon,
+        iconClass: "text-pink-600",
+    },
+    {
+        type: "direction",
+        label: "Direction",
+        icon: ArrowDownRight,
+        iconClass: "text-purple-600",
+    },
+];
+
 export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MINIMIZED_WIDTH, isDraggingRight, workspace, session }) {
     const [expanded, setExpanded] = useState("help");
     const [fetching, setFetching] = useState(false);
@@ -104,7 +161,7 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
 
                         {/* Quick Help */}
                         <div
-                            className={`relative flex flex-col rounded-lg border border-white/10 bg-white/5 overflow-hidden transition-all duration-500 ease-in-out ${expanded === "help"
+                            className={`relative flex flex-col pb-2 rounded-lg border border-white/10 bg-white/5 overflow-hidden transition-all duration-500 ease-in-out ${expanded === "help"
                                 ? "flex-1 min-h-0" // flex-1 resolves to flex: 1 1 0%
                                 : "flex-[0_0_40px] hover:bg-white/10" // strictly 40px, no growing, no shrinking
                                 }`}
@@ -116,30 +173,41 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
 
                             {/* Content wrapper - min-h-0 is critical here to stop content from pushing the height */}
                             <div className="flex-1 min-h-0 overflow-hidden w-full">
-                                <div className={`h-full overflow-y-auto p-3 transition-opacity duration-300 ${expanded === "help" ? "opacity-100 delay-200" : "opacity-0"}`}>
+                                <div className={`h-full minimal-scrollbar overflow-y-auto p-3 transition-opacity duration-300 ${expanded === "help" ? "opacity-100 delay-200" : "opacity-0"}`}>
                                     <div className={`h-full flex flex-col ${expanded !== "help" ? "hidden" : "block"}`}>
                                         <div className="flex flex-wrap pb-3 text-sm">
-                                            <button disabled={quickHelpLoading} className={`${quickHelpType==="hint" ? "bg-black" : "bg-primary"} ${quickHelpLoading ? "cursor-not-allowed" : "cursor-pointer"} active:scale-95 hover:bg-primary/80 w-fit p-2 m-1 rounded-lg flex items-center`}
-                                                title={QUICK_HELP_LABELS.hint}
-                                                onClick={() => {
-                                                    setQuickHelpType("hint")
-                                                    handleQuickHelp({ accessToken: session?.accessToken, workspaceId: workspace._id, type: "hint", userMessage: QUICK_HELP_LABELS.hint, setQuickHelp, setQuickHelpLoading, setMessages, messages })
-                                                }}>
-                                                Hint <LightbulbIcon className="w-4 ml-1 text-yellow-300" />
-                                            </button>
-                                            <button disabled={quickHelpLoading} className="bg-primary active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title={QUICK_HELP_LABELS.summarize}>Summarize <BookOpenCheckIcon className="w-4 ml-1 text-blue-500" /> </button>
-                                            <button disabled={quickHelpLoading} className="bg-primary active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title={QUICK_HELP_LABELS.test_case}>Test Case <TestTube2 className="w-4 ml-1 text-green-300" /> </button>
-                                            <button disabled={quickHelpLoading} className="bg-primary active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title={QUICK_HELP_LABELS.edge_case}>Edge Case <BookAlert className="w-4 ml-1 text-yellow-700" /></button>
-                                            <button disabled={quickHelpLoading} className="bg-primary active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title={QUICK_HELP_LABELS.debug}>Debug <Bug className="w-4 ml-1 text-red-600" /> </button>
-                                            <button disabled={quickHelpLoading} className="bg-primary active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title={QUICK_HELP_LABELS.time_complexity}>Time Complexity <Timer className="w-4 ml-1 text-blue-500" /></button>
-                                            <button disabled={quickHelpLoading} className="bg-primary active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title={QUICK_HELP_LABELS.space_complexity}>Space Complexity <MemoryStick className="w-4 ml-1 text-green-600" /></button>
-                                            <button disabled={quickHelpLoading} className="bg-primary active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title={QUICK_HELP_LABELS.explain_input}>Explain Input <BookOpenTextIcon className="w-4 ml-1 text-pink-600" /></button>
-                                            <button disabled={quickHelpLoading} className="bg-primary active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title={QUICK_HELP_LABELS.direction}>Direction <ArrowDownRight className="w-4 ml-1 text-purple-600" /></button>
+                                            {QUICK_HELP_BUTTONS.map(({ type, label, icon: Icon, iconClass }) => (
+                                                <button
+                                                    key={type}
+                                                    disabled={quickHelpLoading}
+                                                    className={`${quickHelpType === type ? "bg-black" : "bg-primary"}
+                                                                ${quickHelpLoading ? "cursor-not-allowed" : "cursor-pointer"}
+                                                                active:scale-95 hover:bg-black
+                                                                w-fit p-2 m-1 transition-colors rounded-lg flex items-center`}
+                                                    title={QUICK_HELP_LABELS[type]}
+                                                    onClick={() => {
+                                                        setQuickHelpType(type);
+                                                        handleQuickHelp({
+                                                            accessToken: session?.accessToken,
+                                                            workspaceId: workspace._id,
+                                                            type,
+                                                            userMessage: QUICK_HELP_LABELS[type],
+                                                            setQuickHelp,
+                                                            setQuickHelpLoading,
+                                                            setMessages,
+                                                            messages,
+                                                        });
+                                                    }}
+                                                >
+                                                    {label}
+                                                    <Icon className={`w-4 ml-1 ${iconClass}`} />
+                                                </button>
+                                            ))}
                                         </div>
                                         <div className="text-xs mb-3 text-gray-300">💡Hover over the buttons for details!</div>
-                                        <div className="flex-1 rounded-lg bg-black mt-auto text-sm p-4">
+                                        <div className="flex-1 rounded-lg bg-black select-text mt-auto text-sm p-4">
                                             {/* Quick Ai Reply */}
-                                            <div className="overflow-auto minimal-scrollbar">
+                                            <div>
                                                 {!quickHelpLoading ? <MarkdownRendererChat text={quickHelp} /> :
                                                     <div className="flex items-center gap-1 bg-secondary w-fit h-10 pt-1 px-3 rounded-lg m-1">
                                                         <div className="typing-dot"></div>

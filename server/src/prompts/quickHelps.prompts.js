@@ -37,3 +37,182 @@ The user requested for a hint.
 - Build upon previous hints if they exist.
 `;
 }
+
+export function getDebugPrompt({ workspace, summary }) {
+    return `
+
+User Code:
+${workspace?.userCode}
+
+## Task
+Find out all syntax errors in the user's code
+
+- Point out ONLY syntax and runtime errors, no logical errors
+- List out all errors pointwise with labels: "Error" and "Fix
+`;
+}
+
+export function getSummarizePrompt({ workspace, summary }) {
+    return `
+
+Problem:
+${workspace?.problem?.statement}
+
+Summarize the programming problem in a clear, concise, and beginner-friendly way.
+
+Instructions:
+- Preserve all essential details required to solve the problem.
+- Do not omit any important rules, conditions, or edge cases.
+- Organize the summary using clear bullet points.
+- Explain the objective first, then the input/output, followed by any special conditions.
+- Include one simple example. If the original statement has a good example, explain that. Otherwise, create a small example and walk through it step by step.
+- Clearly highlight the constraints in a separate **Constraints** section.
+- Mention any important observations implied by the constraints (e.g., why a brute-force approach may be too slow).
+- Keep the explanation concise while ensuring nothing important is lost.
+- Use Markdown headings, bullet points, and bold text for readability.
+- Do not include any solution approaches, hints, algorithms, or code.
+`;
+}
+
+export function getTestCasesPrompt({ workspace, summary }) {
+    return `
+
+Previous Conversation Summary:
+${summary || "Fresh Conversation"}
+
+Problem:
+${workspace?.problem?.summarizedStatement}
+
+Code:
+${workspace?.aiCode}
+
+Analyze the code thoroughly to determine:
+- The exact input format.
+- The meaning and data type of each input.
+- Any constraints implied by the code.
+- The required order and formatting of the input.
+
+Then generate one valid, random test case that strictly follows the detected input format.
+
+Rules:
+- Make sure the test case is different from past test cases given
+- The test case must be syntactically valid for the program.
+- Use realistic random values within the inferred constraints.
+- Preserve the exact whitespace, line breaks, and formatting expected by the program.
+- If there are multiple test cases 'T', generate a valid value of 'T' and the corresponding number of test cases.
+- Do not explain the test case.
+- Do not include Markdown, code fences, labels, or any extra text.
+- Return only the raw input string exactly as it should be provided to the program.
+`;
+}
+
+export function getEdgeCasesPrompt({ workspace, summary }) {
+    return `
+
+Previous Conversation Summary:
+${summary || "Fresh Conversation"}
+
+Problem:
+${workspace?.problem?.summarizedStatement}
+
+User's Code:
+${workspace?.userCode}
+
+Correct Code:
+${workspace?.aiCode}
+
+Analyze the code thoroughly to determine:
+- The exact input format.
+- The meaning and data type of each input.
+- Any constraints implied by the code.
+- The required order and formatting of the input.
+
+Then generate one valid, random test case that strictly follows the detected input format.
+
+Rules:
+- Make sure it is an edge case where the code might fail
+- Make sure the test case is different from past test cases given
+- The test case must be syntactically valid for the program.
+- Use realistic random values within the inferred constraints.
+- Preserve the exact whitespace, line breaks, and formatting expected by the program.
+- If there are multiple test cases 'T', generate a valid value of 'T' and the corresponding number of test cases.
+- Do not explain the test case.
+- Do not include Markdown, code fences, labels, or any extra text.
+- Return only the raw input string exactly as it should be provided to the program.
+`;
+}
+
+export function getTimeComplexityPrompt({ workspace, summary }) {
+    return `
+
+User's Code:
+${workspace?.userCode}
+
+Analyze the user's code thoroughly to determine its time complexity.
+
+- State the overall time complexity in Big-O notation at top in bold.
+- Define all variables used (e.g., N, M, V, E).
+- Strictly analyze only the user's code for time complexity.
+`;
+}
+
+export function getSpaceComplexityPrompt({ workspace, summary }) {
+    return `
+
+User's Code:
+${workspace?.userCode}
+
+Analyze the user's code thoroughly to determine its space complexity.
+
+- State the overall space complexity in Big-O notation at top in bold.
+- Define all variables used (e.g., N, M, V, E).
+- Strictly analyze only the user's code for space complexity.
+`;
+}
+
+export function getDirectionPrompt({ workspace, summary }) {
+    return `
+
+Problem:
+${workspace?.problem?.statement}
+
+User's Code:
+${workspace?.userCode}
+
+Reference Code:
+${workspace?.aiCode}
+
+Analyze the user's code to determine whether they are on the right track toward a correct solution.
+
+Instructions:
+- Evaluate the user's algorithm independently; do not assume the reference solution is the only correct approach.
+- Compare the user's approach with the reference solution only to verify correctness, not to judge similarity.
+- If the user's approach is valid, state that they are heading in the right direction and explain why in short.
+- If the approach is incorrect or incomplete, identify the key issue and provide only one small, subtle hint to guide them.
+- Do not reveal the full solution, code, or detailed implementation steps.
+- Keep the response concise and focused on guidance.
+`;
+}
+
+export function getExplainInputPrompt({ workspace, summary }) {
+    return `
+
+Code Template:
+${workspace?.aiCode}
+
+Analyze the code template and infer the expected input format.
+
+Write the input description in the style of a competitive programming problem statement.
+
+Instructions:
+- Describe the input from the user's perspective (e.g., "The first line contains...", "The next line contains...", "Each of the next N lines contains...").
+- Infer the meaning of each value from the code.
+- Mention multiple test cases if the code supports them.
+- Preserve the exact order in which the input is expected.
+- If the code reads arrays, matrices, strings, or graphs, describe them naturally.
+- Do not mention \`input()\`, \`cin\`, \`Scanner\`, \`sys.stdin.read()\`, parsing functions, variables, or implementation details.
+- Do not explain the algorithm or solution.
+- Do not use phrases like "the program reads", "the code parses", or "the variable stores".
+- Return only the input description.
+`;
+}
