@@ -103,19 +103,19 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                                 <div className={`h-full overflow-y-auto p-3 transition-opacity duration-300 ${expanded === "help" ? "opacity-100 delay-200" : "opacity-0"}`}>
                                     <div className={`h-full flex flex-col ${expanded !== "help" ? "hidden" : "block"}`}>
                                         <div className="flex flex-wrap pb-3 text-sm">
-                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Give a hint to solve the problem">Hint <LightbulbIcon className="w-4 ml-1 text-yellow-300" /> </button>
-                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Summarize the problem objective">Summarize <BookOpenCheckIcon className="w-4 ml-1 text-blue-500" /> </button>
-                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Add a new test case">Test Case <TestTube2 className="w-4 ml-1 text-green-300" /> </button>
-                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Add a new edge case">Edge Case <BookAlert className="w-4 ml-1 text-yellow-700" /></button>
-                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Debug syntax errors only">Debug <Bug className="w-4 ml-1 text-red-600" /> </button>
-                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Analyze the time complexity of code">Time Complexity <Timer className="w-4 ml-1 text-blue-500" /></button>
-                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Analyze the space complexity of code">Space Complexity <MemoryStick className="w-4 ml-1 text-green-600" /></button>
-                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Explain the input being taken">Explain Input <BookOpenTextIcon className="w-4 ml-1 text-pink-600" /></button>
-                                            <button className="bg-primary focus:border focus:border-white/30 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Check if I am going in the right direction">Direction <ArrowDownRight className="w-4 ml-1 text-purple-600" /></button>
+                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Give a hint to solve the problem">Hint <LightbulbIcon className="w-4 ml-1 text-yellow-300" /> </button>
+                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Summarize the problem objective">Summarize <BookOpenCheckIcon className="w-4 ml-1 text-blue-500" /> </button>
+                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Add a new test case">Test Case <TestTube2 className="w-4 ml-1 text-green-300" /> </button>
+                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Add a new edge case">Edge Case <BookAlert className="w-4 ml-1 text-yellow-700" /></button>
+                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Debug syntax errors only">Debug <Bug className="w-4 ml-1 text-red-600" /> </button>
+                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Analyze the time complexity of code">Time Complexity <Timer className="w-4 ml-1 text-blue-500" /></button>
+                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Analyze the space complexity of code">Space Complexity <MemoryStick className="w-4 ml-1 text-green-600" /></button>
+                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Explain the input being taken">Explain Input <BookOpenTextIcon className="w-4 ml-1 text-pink-600" /></button>
+                                            <button className="bg-primary focus:bg-black active:scale-95 hover:bg-primary/80 cursor-pointer w-fit p-2 m-1 rounded-lg flex items-center" title="Check if I am going in the right direction">Direction <ArrowDownRight className="w-4 ml-1 text-purple-600" /></button>
                                         </div>
                                         <div className="flex-1 rounded-lg bg-black mt-auto text-sm p-4">
+                                            {/* Quick Ai Reply */}
                                             <div>
-                                                I have thoroughly analysed your code and did not find any bug. I can think you can proceed to submit it. All the Best!
                                             </div>
                                         </div>
                                     </div>
@@ -174,9 +174,10 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                             </div>
                             <div className="mr-5">
                                 <input
+                                    disabled={fetching}
                                     className="active:outline-0 w-full p-3 focus:outline-0 text-sm bg-primary m-2"
                                     type="text"
-                                    placeholder="Ask Shine Ai"
+                                    placeholder={`${fetching ? "Almost there..." : "Ask Shine Ai"}`}
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
                                     onKeyDown={(e) => {
