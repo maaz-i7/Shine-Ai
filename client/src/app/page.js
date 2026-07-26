@@ -21,7 +21,7 @@ export default function Home() {
         <Link href={"/dashboard"}><button className="bg-yellow-500 text-[16px] w-50 font-bold max-[500px]:m-2 max-[500px]:p-2 p-4 px-6 m-5 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-yellow-600">Register</button></Link>
       </div>
 
-      <div className="flex flex-col max-[500px]:m-1 max-[500px]:mt-10 max-[500px]:p-5 ml-10 mr-10 p-10 mt-20">
+      <div className="flex flex-col max-[500px]:m-0 max-[500px]:mt-15 max-[500px]:p-5 ml-10 mr-10 p-10 mt-20">
         <div className="font-bold text-4xl mb-5 max-[500px]:text-2xl">What Exactly is Shine Ai?</div>
         <div className="text-wrap text-lg leading-10 text-justify max-[500px]:text-sm max-[500px]:leading-7">
           Shine AI is an AI-powered coding practice platform that combines an online coding workspace with an intelligent programming assistant. Instead of only solving problems, it helps users understand them, debug code, generate hints, analyze complexity, create custom test cases, and track their progress—all within a single workspace.

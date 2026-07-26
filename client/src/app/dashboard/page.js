@@ -50,7 +50,7 @@ function Page() {
 
   return (
     <div className="w-screen flex-1 flex bg-primary font-sans overflow-hidden">
-      <div className="w-1/4 border-r border-white/10 h-full">
+      <div className="w-1/4 border-r max-[1000px]:hidden border-white/10 h-full">
         <div className="p-10 flex flex-col">
           <div className="flex">
             <div>
@@ -77,12 +77,12 @@ function Page() {
       </div>
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="flex w-full justify-between items-center p-5 border-b border-white/10 sticky top-0 z-5 bg-primary">
-          <div className="text-3xl font-bold">Problems</div>
+          <div className="text-3xl max-[500px]:text-2xl font-bold">Problems</div>
           <div className="flex items-center justify-center">
             <Link href="/problems/new">
-              <button className="mr-5 border border-gray-500/40 hover:bg-secondary active:scale-98 transition-all px-6 py-3 text-xl rounded flex items-center gap-2 cursor-pointer">
+              <button className="mr-5 max-[500px]:mr-0 border max-[500px]:text-base max-[500px]:px-2 border-gray-500/40 hover:bg-secondary active:scale-98 transition-all px-6 py-3 text-xl rounded flex items-center gap-2 cursor-pointer">
                 New Problem
-                <Plus size={20} strokeWidth={2.5} />
+                <Plus className="max-[500px]:w-5" strokeWidth={2.5} />
               </button>
             </Link>
           </div>
