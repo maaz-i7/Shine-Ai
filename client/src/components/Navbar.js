@@ -20,7 +20,7 @@ export default function Navbar() {
                 </Link>
             </div>
             <div>
-                <ul className="flex w-80 justify-around items-center">
+                <ul className="flex w-80 max-[500px]:w-[65vw] max-[600px]:text-sm justify-around items-center">
                     <Link href="/"><li>Home</li></Link>
                     <li>About</li>
                     <li>Contact</li>
