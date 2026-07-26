@@ -199,7 +199,7 @@ export default function App() {
 
       {toast && (
         <div
-          className={`fixed top-20 right-10 z-50 max-w-md w-full bg-secondary shadow-2xl rounded-xl p-4 flex items-start gap-3 transition-all duration-300 ${toast.type === "error"
+          className={`fixed top-20 right-10 max-[500px]:right-1 max-[500px]:text-p-1 z-50 max-w-md w-full bg-secondary shadow-2xl rounded-xl p-4 flex items-start gap-3 transition-all duration-300 ${toast.type === "error"
             ? "border-red-500/40"
             : "border-green-500/30"
             }`}
@@ -280,7 +280,7 @@ export default function App() {
         className="w-full p-10 max-[800px]:p-0 max-[800px]:pt-5 max-[800px]:pb-5 flex items-center justify-center"
       >
         {/* Upload Problem Section */}
-        <div className="bg-secondary rounded-xl p-20 max-[500px]:px-10 max-[700px]:w-[90vw] space-y-6 w-4/5 shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+        <div className="bg-secondary rounded-xl p-20 max-[500px]:p-10 max-[500px]:px-10 max-[700px]:w-[90vw] space-y-6 w-4/5 shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
           <header className="mb-10">
             <h1 className="text-3xl max-[500px]:text-2xl font-bold text-white tracking-tight">
               Let's Prepare the Canvas!

@@ -216,7 +216,7 @@ export default function Layout() {
     return (
         <div
             ref={containerRef}
-            className="flex h-screen select-none overflow-hidden font-sans w-full"
+            className="flex h-screen select-text overflow-hidden font-sans w-full"
         >
             {/* Left Panel */}
             <div
