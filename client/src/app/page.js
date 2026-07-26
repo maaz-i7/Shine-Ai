@@ -18,7 +18,7 @@ export default function Home() {
 
       <div className="w-full flex justify-center mt-10 max-[700px]:-mt-5 max-[500px]:flex-col items-center">
         <Link href={"/problems/new"}><button className="bg-blue-500 text-[16px] w-50 font-bold max-[500px]:m-2 max-[500px]:text-sm max-[500px]:p-3 max-[500px]:w-40 p-4 px-6 m-5 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-blue-600">&lt;Canvas/&gt;</button></Link>
-        <Link href={"/dashboard"}><button className="bg-green-700 text-[16px] w-50 font-bold max-[500px]:m-2 max-[500px]:text-sm max-[500px]:p-3 max-[500px]:w-40 p-4 px-6 m-5 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-yellow-600">Register</button></Link>
+        <Link href={"/dashboard"}><button className="bg-green-700 text-[16px] w-50 font-bold max-[500px]:m-2 max-[500px]:text-sm max-[500px]:p-3 max-[500px]:w-40 p-4 px-6 m-5 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-green-800">Register</button></Link>
       </div>
 
       <div className="flex flex-col max-[500px]:m-0 max-[500px]:mt-15 max-[500px]:p-5 ml-10 mr-10 p-10 mt-20">
