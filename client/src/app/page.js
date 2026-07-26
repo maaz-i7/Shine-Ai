@@ -1,24 +1,24 @@
 import Link from "next/link";
-import ProgressJourney from "@/components/ProgressJourney";
+import Image from "next/image";
+import textLogo from "../../public/images/hero-logo-no-bg.png"
 
 export default function Home() {
   return (
     <main className="h-fit bg-primary font-sans">
 
       <div className="relative w-175 h-100 pt-15 mx-auto overflow-hidden max-[750px]:w-[90vw]">
-        <video
-          autoPlay
-          muted
-          playsInline
-          className="block w-full h-auto"
-        >
-          <source src="/videos/logo.mp4" type="video/mp4" />
-        </video>
+        <Image
+          src={textLogo}
+          alt={"logo"}
+          width={1000}
+          height={1000}
+          className="rounded-full max-[500px]:mt-20"
+        />
       </div>
 
       <div className="w-full flex justify-center mt-10 max-[700px]:-mt-5 max-[500px]:flex-col items-center">
-        <Link href={"/problems/new"}><button className="bg-blue-500 text-[16px] w-50 font-bold max-[500px]:m-2 max-[500px]:p-2 p-4 px-6 m-5 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-blue-600">&lt;Canvas/&gt;</button></Link>
-        <Link href={"/dashboard"}><button className="bg-yellow-500 text-[16px] w-50 font-bold max-[500px]:m-2 max-[500px]:p-2 p-4 px-6 m-5 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-yellow-600">Register</button></Link>
+        <Link href={"/problems/new"}><button className="bg-blue-500 text-[16px] w-50 font-bold max-[500px]:m-2 max-[500px]:text-sm max-[500px]:p-2 max-[500px]:w-40 p-4 px-6 m-5 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-blue-600">&lt;Canvas/&gt;</button></Link>
+        <Link href={"/dashboard"}><button className="bg-green-700 text-[16px] w-50 font-bold max-[500px]:m-2 max-[500px]:text-sm max-[500px]:p-2 max-[500px]:w-40 p-4 px-6 m-5 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-yellow-600">Register</button></Link>
       </div>
 
       <div className="flex flex-col max-[500px]:m-0 max-[500px]:mt-15 max-[500px]:p-5 ml-10 mr-10 p-10 mt-20">

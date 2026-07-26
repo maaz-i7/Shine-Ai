@@ -32,6 +32,7 @@ export default function Navbar() {
                                 width={40}
                                 height={40}
                                 className="rounded-full"
+                                loading="eager"
                             />
                         ) : (
                             <span>Sign In</span>

@@ -196,20 +196,10 @@ export default function App() {
 
   return (
     <div className="w-full font-sans relative transition-colors duration-300 bg-primary">
-      {/* Embedded Theme CSS variables */}
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-                .border-theme {
-                    border-color: rgba(255, 255, 255, 0.08) !important;
-                }
-              `,
-        }}
-      />
 
       {toast && (
         <div
-          className={`fixed top-20 right-10 z-50 max-w-md w-full bg-secondary border shadow-2xl rounded-xl p-4 flex items-start gap-3 transition-all duration-300 ${toast.type === "error"
+          className={`fixed top-20 right-10 z-50 max-w-md w-full bg-secondary shadow-2xl rounded-xl p-4 flex items-start gap-3 transition-all duration-300 ${toast.type === "error"
             ? "border-red-500/40"
             : "border-green-500/30"
             }`}
@@ -287,20 +277,20 @@ export default function App() {
 
       <form
         onSubmit={handleSubmit(onSubmit, onInvalidSubmit)}
-        className="w-full p-10 flex items-center justify-center"
+        className="w-full p-10 max-[800px]:p-0 max-[800px]:pt-5 max-[800px]:pb-5 flex items-center justify-center"
       >
         {/* Upload Problem Section */}
-        <div className="bg-secondary rounded-xl p-20 space-y-6 border border-theme w-4/5 shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+        <div className="bg-secondary rounded-xl p-20 max-[500px]:px-10 max-[700px]:w-[90vw] space-y-6 w-4/5 shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
           <header className="mb-10">
-            <h1 className="text-3xl font-bold text-white tracking-tight">
+            <h1 className="text-3xl max-[500px]:text-2xl font-bold text-white tracking-tight">
               Let's Prepare the Canvas!
             </h1>
-            <p className="text-slate-400 mt-1 text-sm">
+            <p className="text-slate-400 mt-1 max-[500px]:text-xs text-sm">
               Upload problem materials and we will create the canvas for you!
             </p>
           </header>
           <div>
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+            <h2 className="text-xl max-[500px]:text-lg font-bold text-white flex items-center gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 text-blue-500"
@@ -322,7 +312,7 @@ export default function App() {
                 </span>
               )}
             </h2>
-            <p className="text-slate-400 text-sm mt-1">
+            <p className="text-slate-400 max-[500px]:text-xs text-sm mt-1">
               Upload screenshots of problem statement, constraints, examples and explainations.
             </p>
           </div>
@@ -391,7 +381,7 @@ export default function App() {
               onClick={triggerFileInput}
               className="aspect-video sm:aspect-square flex flex-col items-center justify-center border-2 border-dashed border-slate-700 hover:border-slate-500 bg-primary hover:bg-[#202020] rounded-lg transition text-slate-400 hover:text-white group space-y-2 cursor-pointer"
             >
-              <div className="bg-secondary p-3 rounded-full group-hover:bg-[#323232] transition">
+              <div className="bg-secondary p-3 max-[800px]:p-1 rounded-full group-hover:bg-[#323232] transition">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-4 w-4 text-slate-300"
@@ -424,7 +414,7 @@ export default function App() {
 
           {/* Title */}
           <div>
-            <label className="block text-xl font-semibold text-white mb-2">
+            <label className="block text-xl max-[500px]:text-lg font-semibold text-white mb-2">
               Title <span className="text-red-500">*</span>
             </label>
 
@@ -446,7 +436,7 @@ export default function App() {
 
           {/* URL */}
           <div>
-            <label className="block text-xl font-semibold text-white mb-2">
+            <label className="block text-xl max-[500px]:text-lg font-semibold text-white mb-2">
               Problem Link
             </label>
 
@@ -460,7 +450,7 @@ export default function App() {
 
           {/* Platform */}
           <div>
-            <label className="block text-xl font-semibold text-white mb-2">
+            <label className="block text-xl max-[500px]:text-lg font-semibold text-white mb-2">
               Platform <span className="text-red-500">*</span>
             </label>
 
@@ -489,7 +479,7 @@ export default function App() {
 
           {/* Code Language */}
           <div>
-            <label className="block text-xl font-semibold text-white mb-2">
+            <label className="block text-xl max-[500px]:text-lg font-semibold text-white mb-2">
               Code Language <span className="text-red-500">*</span>
             </label>
 
@@ -518,7 +508,7 @@ export default function App() {
 
           {/* Starter Code */}
           <div>
-            <label className="block text-white mb-2 font-medium">
+            <label className="block text-white max-[500px]:text-lg mb-2 font-medium">
               Code Template
             </label>
 
@@ -526,7 +516,7 @@ export default function App() {
               rows={12}
               placeholder="Optional starter code..."
               {...register("starterCode")}
-              className="w-full min-h-75 resize-y rounded-lg bg-primary border border-slate-700/80 px-4 py-3 text-white font-mono outline-none focus:border-blue-500 transition-colors"
+              className="w-full min-h-75 resize-y max-[500px]:text-sm rounded-lg bg-primary border border-slate-700/80 px-4 py-3 text-white font-mono outline-none focus:border-blue-500 transition-colors"
             />
           </div>
           {/* Form Submission button */}

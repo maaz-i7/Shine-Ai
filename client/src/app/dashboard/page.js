@@ -50,7 +50,7 @@ function Page() {
 
   return (
     <div className="w-screen flex-1 flex bg-primary font-sans overflow-hidden">
-      <div className="w-1/4 border-r max-[1000px]:hidden border-white/10 h-full">
+      <div className="w-1/4 border-r max-[1400px]:hidden border-white/10 h-full">
         <div className="p-10 flex flex-col">
           <div className="flex">
             <div>
@@ -60,6 +60,7 @@ function Page() {
                 width={500}
                 height={500}
                 className="w-30 h-30 rounded-xl"
+                loading="eager"
               />
             </div>
             <div className="p-2 pl-5 flex-1 flex flex-col">
@@ -70,7 +71,7 @@ function Page() {
               <button className="w-full mt-auto p-2 rounded cursor-pointer text-sm bg-[#1b2d21] text-[#28a252]">Edit Profile</button>
             </div>
           </div>
-          <button onClick={handleLogout} className="text-white bg-red-700 hover:bg-red-800 transition-colors px-10 mt-5 p-1 rounded cursor-pointer">
+          <button onClick={handleLogout} className="text-white active:scale-99 bg-red-700 hover:bg-red-800 transition-colors px-10 mt-5 p-1 rounded cursor-pointer">
             Sign Out
           </button>
         </div>
