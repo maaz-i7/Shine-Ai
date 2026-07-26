@@ -14,6 +14,7 @@ import { getWorkspaceForProblem, getAiCodeForWorkspace } from "@/services/worksp
 import { getAssistant } from "@/services/assistant.service";
 import { useRouter } from "next/navigation";
 import { LoaderCircle } from "lucide-react"
+import MobileWorkspace from "@/components/MobileWorkspace";
 
 export default function Layout() {
 
@@ -197,6 +198,20 @@ export default function Layout() {
         window.addEventListener("mouseup", stop);
     };
 
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        handleResize();
+
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     if (loading || status === "loading") {
         return (
             <div className="flex h-screen w-screen flex-col items-center justify-center bg-primary">
@@ -210,6 +225,18 @@ export default function Layout() {
                     This won't take long
                 </p>
             </div>
+        );
+    }
+
+    if (isMobile) {
+        return (
+            <MobileWorkspace
+                workspace={workspace}
+                session={session}
+                consoleHeight={consoleHeight}
+                setIsConsoleOpen={setIsConsoleOpen}
+                setIsRightOpen={setIsRightOpen}
+            />
         );
     }
 
