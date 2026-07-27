@@ -28,7 +28,7 @@ function CopyButton({ text }) {
   );
 }
 
-export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGHT, MINIMIZED_CONSOLE_HEIGHT }) {
+export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGHT, MINIMIZED_CONSOLE_HEIGHT, isMobile=false }) {
 
   const testCases = useTestCasesStore((state) => state.testCases);
   const addTestCase = useTestCasesStore((state) => state.addTestCase);
@@ -56,7 +56,7 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
         <>
           <div onClick={() => setIsConsoleOpen(false)} className="h-10 cursor-pointer bg-[#202020] rounded-xl hover:bg-white/5 border-gray-700 flex items-center justify-between py-6 p-5">
             {verdict !== "Judging" ? <div className={`${verdict !== "Accepted" ? "text-red-600" : "text-green-600"} text-xl font-medium`}>{verdict}</div> : <Loader2 className="w-5 h-5 animate-spin" />}
-            <ChevronDown size={16} />
+            {isMobile ? "" : <ChevronDown size={16} />}
           </div>
 
           <div className="font-sans overflow-y-scroll minimal-scrollbar p-5 text-sm">

@@ -79,7 +79,7 @@ export const QUICK_HELP_BUTTONS = [
     },
 ];
 
-export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MINIMIZED_WIDTH, isDraggingRight, workspace, session }) {
+export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MINIMIZED_WIDTH, isDraggingRight, workspace, session, isMobile = false }) {
     const [expanded, setExpanded] = useState("help");
     const [fetching, setFetching] = useState(false);
     const [quickHelp, setQuickHelp] = useState("")
@@ -138,7 +138,7 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
     return (
         <div
             style={{ width: isRightOpen ? rightWidth : MINIMIZED_WIDTH }}
-            className={`bg-primary shrink-0 rounded-xl overflow-hidden font-sans flex flex-col ${!isDraggingRight ? "transition-[width] duration-300 ease-in-out" : ""
+            className={`bg-primary shrink-0 rounded-xl h-full overflow-hidden font-sans flex flex-col ${!isDraggingRight ? "transition-[width] duration-300 ease-in-out" : ""
                 }`}
             onClick={() => {
                 if (!isRightOpen) setIsRightOpen(true);
@@ -146,15 +146,18 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
         >
             {isRightOpen ? (
                 <div className="h-full min-w-50 flex flex-col">
-                    <div className="p-2 border-b border-gray-700/50 shrink-0">
-                        <X
-                            className="hover:bg-red-800 w-10 transition-all cursor-pointer rounded"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setIsRightOpen(false);
-                            }}
-                        />
-                    </div>
+                    {
+                        isMobile ? ""
+                            : <div className="p-2 border-b border-gray-700/50 shrink-0">
+                                <X
+                                    className="hover:bg-red-800 w-10 transition-all cursor-pointer rounded"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setIsRightOpen(false);
+                                    }}
+                                />
+                            </div>
+                    }
 
                     {/* Added min-h-0 here to ensure the parent can properly constrain the flexing children */}
                     <div className="flex-1 flex flex-col p-2 gap-2 overflow-hidden min-h-0">

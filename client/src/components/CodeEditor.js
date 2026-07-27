@@ -31,13 +31,13 @@ const THEMES = [
 
 const TAB_SIZES = [2, 4, 8];
 
-function App({ workspace }) {
+function App({ workspace, isMobile=false }) {
   const { data: session } = useSession();
   const user = session?.user
   const [language, setLanguage] = useState(workspace?.language);
   const [theme, setTheme] = useState('vs-dark');
   const [tabSize, setTabSize] = useState(4);
-  const [fontSize, setFontSize] = useState(14);
+  const [fontSize, setFontSize] = useState(isMobile ? 10 : 14);
   const [code, setCode] = useState(workspace?.userCode);
   const [idealCode, setIdealCode] = useState(workspace?.aiCode);
   const [idealLang, setIdealLang] = useState(workspace?.language);
@@ -189,14 +189,6 @@ function App({ workspace }) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const STATUS = {
-    NOT_TESTED: "not_tested",
-    RIGHT: "right",
-    WRONG: "wrong",
-    TLE: "tle",
-    RUNTIME_ERROR: "runtime_error",
-  };
 
   const handleRunCode = async () => {
     try {
@@ -367,7 +359,7 @@ function App({ workspace }) {
               onChange={handleFontSizeChange}
               className="bg-transparent text-sm text-gray-200 outline-none cursor-pointer"
             >
-              {[12, 14, 16, 18, 20, 22, 24].map((size) => (
+              {[8, 10, 12, 14, 16, 18, 20, 22, 24].map((size) => (
                 <option key={size} value={size} className="bg-[#252526]">
                   {size}px
                 </option>

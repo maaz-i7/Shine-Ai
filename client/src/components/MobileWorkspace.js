@@ -22,7 +22,7 @@ export default function MobileWorkspace({
 
             {/* Editor */}
             <section className="h-screen w-full">
-                <CodeEditor workspace={workspace} />
+                <CodeEditor workspace={workspace} isMobile={true} />
             </section>
 
             {/* Console */}
@@ -32,11 +32,12 @@ export default function MobileWorkspace({
                     setIsConsoleOpen={setIsConsoleOpen}
                     CONSOLE_HEIGHT={consoleHeight}
                     MINIMIZED_CONSOLE_HEIGHT={50}
+                    isMobile={true}
                 />
             </section>
 
             {/* AI */}
-            <section className="max-h-screen w-full overflow-y-scroll">
+            <section className="h-screen w-full overflow-hidden">
                 <AiSection
                     isRightOpen={true}
                     setIsRightOpen={setIsRightOpen}
@@ -45,6 +46,7 @@ export default function MobileWorkspace({
                     isDraggingRight={false}
                     workspace={workspace}
                     session={session}
+                    isMobile={true}
                 />
             </section>
         </div>
