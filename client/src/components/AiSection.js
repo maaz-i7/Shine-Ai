@@ -207,7 +207,7 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                                             ))}
                                         </div>
                                         <div className="text-xs mb-3 text-gray-300">💡Hover over the buttons for details!</div>
-                                        <div className="flex-1 rounded-lg bg-black select-text mt-auto text-sm p-4">
+                                        <div className="flex-1 overflow-auto minimal-scrollbar rounded-lg bg-black select-text mt-auto text-sm p-4">
                                             {/* Quick Ai Reply */}
                                             <div>
                                                 {!quickHelpLoading ? <MarkdownRendererChat text={quickHelp} /> :

@@ -16,12 +16,12 @@ export default function MobileWorkspace({
         <div className="w-full bg-primary overflow-y-auto">
 
             {/* Problem */}
-            <section className="min-h-screen w-full">
+            <section className="min-h-[90vh] w-full">
                 <ProblemSection workspace={workspace} />
             </section>
 
             {/* Editor */}
-            <section className="h-screen w-full">
+            <section className="h-[90vh] w-full">
                 <CodeEditor workspace={workspace} isMobile={true} />
             </section>
 
@@ -37,7 +37,7 @@ export default function MobileWorkspace({
             </section>
 
             {/* AI */}
-            <section className="h-screen w-full overflow-hidden">
+            <section className="h-[90vh] w-full overflow-hidden">
                 <AiSection
                     isRightOpen={true}
                     setIsRightOpen={setIsRightOpen}

@@ -69,7 +69,7 @@ export default function ProfileCard({
                     <Link
                         href="/dashboard"
                         onClick={onClose}
-                        className="rounded-lg bg-[#1d1d1d] py-2 text-center text-sm font-medium hover:bg-primary transition-colors"
+                        className="rounded-lg bg-blue-600 py-2 text-center text-sm font-medium hover:bg-blue-500 transition-colors"
                     >
                         Dashboard
                     </Link>
