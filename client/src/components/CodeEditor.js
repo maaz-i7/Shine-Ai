@@ -5,7 +5,7 @@ import { Settings, Code2, Moon, Sun, AlignLeft, Download, Copy, Check, Type, Pla
 import useTestCasesStore from '@/stores/testcases.store';
 import { checkCode, saveWorkspace } from '@/services/code.editor.service';
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
+import ProfileCard from './ProfileCard';
 import Image from 'next/image';
 
 export const LANGUAGES = [
@@ -31,7 +31,8 @@ const THEMES = [
 
 const TAB_SIZES = [2, 4, 8];
 
-function App({ workspace, isMobile=false }) {
+function App({ workspace, isMobile = false }) {
+
   const { data: session } = useSession();
   const user = session?.user
   const [language, setLanguage] = useState(workspace?.language);
@@ -50,6 +51,16 @@ function App({ workspace, isMobile=false }) {
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
   const editorInstanceRef = useRef(null);
+
+  const [showProfile, setShowProfile] = useState(false)
+  const avatarRef = useRef(null);
+
+  const handleLogout = () => {
+    signOut({
+      callbackUrl: '/',
+      redirect: true
+    });
+  };
 
   const lastSaved = useRef({
     code: "",
@@ -372,7 +383,7 @@ function App({ workspace, isMobile=false }) {
             className={`flex items-center gap-2 w-20 h-8 justify-center rounded-md transition-all duration-200 text-white
               ${running || cooldown > 0
                 ? "bg-yellow-600 cursor-not-allowed"
-                : "bg-green-600 hover:bg-green-700 cursor-pointer active:scale-98"
+                : "bg-green-700 hover:bg-green-800 cursor-pointer active:scale-98"
               }`}
           >
             {running ? (
@@ -395,7 +406,7 @@ function App({ workspace, isMobile=false }) {
 
         {/* Action Buttons */}
         <div className="flex items-center space-x-2">
-          <LucideListRestart className='w-5 h-5 text-gray-400 cursor-pointer' onClick={() => setCode(workspace?.runnerCode)}/>
+          <LucideListRestart className='w-5 h-5 text-gray-400 cursor-pointer' onClick={() => setCode(workspace?.runnerCode)} />
           <button
             onClick={handleCopyCode}
             className="flex items-center p-2 rounded-md hover:bg-[#333333] transition-colors text-gray-400 hover:text-gray-200"
@@ -411,19 +422,32 @@ function App({ workspace, isMobile=false }) {
             <Download className="w-4 h-4" />
           </button>
           <div>
-            <Link href={user ? "/dashboard" : "/login"}>
-              {user ? (
+            {user ? (
+              <>
                 <Image
+                  ref={avatarRef}
                   src={user?.image || "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"}
                   alt={user?.name || "User"}
                   width={40}
                   height={40}
-                  className="rounded-full"
+                  className="rounded-full cursor-pointer"
+                  loading="eager"
+                  onClick={() => setShowProfile(!showProfile)}
                 />
-              ) : (
-                <span>Sign In</span>
-              )}
-            </Link>
+
+                {showProfile && (
+                  <ProfileCard
+                    session={session}
+                    user={user}
+                    handleLogout={handleLogout}
+                    onClose={() => setShowProfile(false)}
+                    avatarRef={avatarRef}
+                  />
+                )}
+              </>
+            ) : (
+              <span>Sign In</span>
+            )}
           </div>
         </div>
       </div>

@@ -1,6 +1,5 @@
 "use client"
 import { useSession } from "next-auth/react"
-import { signOut } from "next-auth/react";
 import Image from "next/image";
 import WorkspaceCard from "@/components/WorkspaceCard.js"
 import Link from "next/link";
@@ -22,6 +21,7 @@ function Page() {
 
     async function loadWorkspaces() {
       try {
+        setLoading(true)
         const userWorkspaces = await getUserWorkspaces(session?.accessToken);
         setWorkspaces(userWorkspaces)
       } catch (error) {
@@ -35,16 +35,9 @@ function Page() {
 
   }, [status, session]);
 
-  const handleLogout = () => {
-    signOut({
-      callbackUrl: '/',
-      redirect: true
-    });
-  };
-
   if (loading || status == "loading") {
     return (
-      <div className="flex w-screen h-screen items-center justify-center">Loading...</div>
+      <div className="flex w-screen bg-primary h-screen items-center justify-center">Loading...</div>
     );
   }
 
@@ -71,9 +64,6 @@ function Page() {
               <button className="w-full mt-auto p-2 rounded cursor-pointer text-sm bg-[#1b2d21] text-[#28a252]">Edit Profile</button>
             </div>
           </div>
-          <button onClick={handleLogout} className="text-white active:scale-99 bg-red-700 hover:bg-red-800 transition-colors px-10 mt-5 p-1 rounded cursor-pointer">
-            Sign Out
-          </button>
         </div>
       </div>
       <div className="flex-1 flex flex-col overflow-hidden">

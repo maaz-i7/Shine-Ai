@@ -4,13 +4,23 @@ import Image from "next/image";
 import logo from "../../public/images/logo-no-bg.png";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useState, useRef } from "react";
+import ProfileCard from "./ProfileCard";
+import { signOut } from "next-auth/react";
 
 export default function Navbar() {
 
-    const obj = useSession()
-    const data = obj?.data
-    const user = data?.user
-    const avatar = user?.image
+    const { data: session } = useSession();
+    const user = session?.user
+    const [showProfile, setShowProfile] = useState(false)
+    const avatarRef = useRef(null);
+
+    const handleLogout = () => {
+        signOut({
+            callbackUrl: '/',
+            redirect: true
+        });
+    };
 
     return (
         <nav className="w-full bg-secondary font-sans z-10 flex items-center justify-between top-0 sticky p-2 border-b border-gray-100/10">
@@ -24,20 +34,35 @@ export default function Navbar() {
                     <Link href="/"><li>Home</li></Link>
                     <li>About</li>
                     <li>Contact</li>
-                    <Link href={user ? "/dashboard" : "/login"}>
+
+                    <li className="relative">
                         {user ? (
-                            <Image
-                                src={avatar || "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"}
-                                alt={user.name || "User"}
-                                width={40}
-                                height={40}
-                                className="rounded-full"
-                                loading="eager"
-                            />
+                            <>
+                                <Image
+                                    ref={avatarRef}
+                                    src={user?.image || "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"}
+                                    alt={user?.name || "User"}
+                                    width={40}
+                                    height={40}
+                                    className="rounded-full cursor-pointer"
+                                    loading="eager"
+                                    onClick={() => setShowProfile(!showProfile)}
+                                />
+
+                                {showProfile && (
+                                    <ProfileCard
+                                        session={session}
+                                        user={user}
+                                        handleLogout={handleLogout}
+                                        onClose={() => setShowProfile(false)}
+                                        avatarRef={avatarRef}
+                                    />
+                                )}
+                            </>
                         ) : (
                             <span>Sign In</span>
                         )}
-                    </Link>
+                    </li>
                 </ul>
             </div>
         </nav>
