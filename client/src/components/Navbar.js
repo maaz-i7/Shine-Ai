@@ -60,7 +60,9 @@ export default function Navbar() {
                                 )}
                             </>
                         ) : (
-                            <span>Sign In</span>
+                            <Link href={"/login"}>
+                                <span>Sign In</span>
+                            </Link>
                         )}
                     </li>
                 </ul>

@@ -89,7 +89,7 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="h-fit pb-100 font-sans flex justify-center bg-primary px-4 sm:px-6 lg:px-8">
+    <div className="h-fit pb-10 font-sans flex justify-center bg-primary px-4 sm:px-6 lg:px-8">
       <div className={`max-w-md w-full space-y-8 bg-secondary pb-10 pt-5 px-10 rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.5)] ${isLogin ? "mt-10" : "mt-5"}`}>
 
         {/* Header */}
@@ -106,7 +106,7 @@ export default function AuthPage() {
               <div>
                 <input
                   {...register("name", { required: "Name is required" })}
-                  className="w-full text-sm px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                  className="w-full text-sm px-4 py-2 border border-gray-300/20 rounded-lg outline-none transition-all"
                   placeholder="Full Name"
                 />
                 {errors.name && <span className="text-red-500 text-xs mt-1 block">{errors.name.message}</span>}
@@ -121,7 +121,7 @@ export default function AuthPage() {
                       message: "Only letters, numbers, underscores and dots are allowed"
                     }
                   })}
-                  className="w-full text-sm px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                  className="w-full text-sm px-4 py-2 border border-gray-300/20 rounded-lg outline-none transition-all"
                   placeholder="Create username"
                 />
                 {errors.username && <span className="text-red-500 text-xs mt-1 block">{errors.username.message}</span>}
@@ -137,7 +137,7 @@ export default function AuthPage() {
                       message: "Invalid email format"
                     }
                   })}
-                  className="w-full text-sm px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                  className="w-full text-sm px-4 py-2 border border-gray-300/20 rounded-lg outline-none transition-all"
                   placeholder="Email"
                 />
                 {errors.email && <span className="text-red-500 text-xs mt-1 block">{errors.email.message}</span>}
@@ -150,7 +150,7 @@ export default function AuthPage() {
             <div>
               <input
                 {...register("identifier", { required: "This field is required" })}
-                className="w-full p-3 border text-sm border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                className="w-full p-2.5 px-4 border text-sm border-gray-300/20 rounded-lg outline-none transition-all"
                 placeholder="Email or Username"
               />
               {errors.identifier && <span className="text-red-500 text-xs mt-1 block">{errors.identifier.message}</span>}
@@ -165,7 +165,7 @@ export default function AuthPage() {
                 required: "Password is required",
                 minLength: { value: 8, message: "Password must be at least 8 characters long" }
               })}
-              className="w-full p-3 border text-sm border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+              className="w-full p-2 px-4 border text-sm border-gray-300/20 rounded-lg outline-none transition-all"
               placeholder="Password"
             />
             {errors.password && <span className="text-red-500 text-xs mt-1 block">{errors.password.message}</span>}
@@ -192,10 +192,10 @@ export default function AuthPage() {
         <div className="mt-8">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200" />
+              <div className="w-full border-t border-gray-200/20" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-3 bg-secondary text-white font-medium">Or continue with</span>
+              <span className="px-3 bg-secondary text-white text-xs font-medium">Or continue with</span>
             </div>
           </div>
 
