@@ -159,7 +159,6 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                             </div>
                     }
 
-                    {/* Added min-h-0 here to ensure the parent can properly constrain the flexing children */}
                     <div className="flex-1 flex flex-col p-2 gap-2 overflow-hidden min-h-0">
 
                         {/* Quick Help */}
