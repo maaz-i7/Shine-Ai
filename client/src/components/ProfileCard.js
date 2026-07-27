@@ -32,11 +32,11 @@ export default function ProfileCard({
             ref={cardRef}
             className="
                 absolute right-0 top-14 z-50
-                w-72 sm:w-90
+                w-60 sm:w-70
                 max-w-[calc(100vw-1rem)]
                 origin-top-right
                 rounded-2xl border border-[#2b2b2b]
-                bg-[#181818]
+                bg-secondary
                 transition-all duration-150 ease-out
                 shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
         >
@@ -51,7 +51,7 @@ export default function ProfileCard({
                         alt={user?.name || "User"}
                         width={500}
                         height={500}
-                        className="w-16 h-16 sm:w-22 sm:h-22 rounded-full object-cover shrink-0"
+                        className="w-14 h-14 sm:w-15 sm:h-15 rounded-full object-cover shrink-0"
                     />
 
                     <div className="flex flex-1 flex-col min-w-0">
@@ -69,7 +69,7 @@ export default function ProfileCard({
                     <Link
                         href="/dashboard"
                         onClick={onClose}
-                        className="rounded-lg bg-[#242424] py-2 text-center text-sm font-medium hover:bg-[#2d2d2d] transition-colors"
+                        className="rounded-lg bg-[#1d1d1d] py-2 text-center text-sm font-medium hover:bg-primary transition-colors"
                     >
                         Dashboard
                     </Link>
