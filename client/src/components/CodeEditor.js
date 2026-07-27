@@ -406,10 +406,16 @@ function App({ workspace, isMobile = false }) {
 
         {/* Action Buttons */}
         <div className="flex items-center space-x-2">
-          <LucideListRestart className='w-5 h-5 text-gray-400 cursor-pointer' onClick={() => setCode(workspace?.runnerCode)} />
+          <button
+            onClick={() => setCode(workspace?.runnerCode)}
+            className="flex items-center cursor-pointer p-1 rounded-md hover:bg-[#333333] transition-colors text-gray-400 hover:text-gray-200"
+            title="Reset Code"
+          >
+            <LucideListRestart className="w-5 h-5" />
+          </button>
           <button
             onClick={handleCopyCode}
-            className="flex items-center p-2 rounded-md hover:bg-[#333333] transition-colors text-gray-400 hover:text-gray-200"
+            className="flex items-center cursor-pointer p-2 rounded-md hover:bg-[#333333] transition-colors text-gray-400 hover:text-gray-200"
             title="Copy Code"
           >
             {isCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
