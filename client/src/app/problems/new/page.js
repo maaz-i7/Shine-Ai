@@ -307,7 +307,7 @@ export default function App() {
               </svg>
               Problem Images <span className="text-red-500 text-sm">*</span>
               {uploadedImages.length > 0 && (
-                <span className="text-xs bg-blue-500/20 text-blue-400 px-2.5 py-0.5 rounded-full font-medium ml-2">
+                <span className="text-xs max-[600px]:ml-0 max-[600px]:p-2 bg-blue-500/20 text-blue-400 px-2.5 py-0.5 rounded-full font-medium ml-2">
                   {uploadedImages.length} uploaded
                 </span>
               )}
@@ -523,7 +523,7 @@ export default function App() {
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full py-4 rounded-lg text-white font-semibold text-lg transition-all duration-200 ${isLoading
+            className={`w-full max-[600px]:py-2 py-4 rounded-lg text-white font-semibold text-lg transition-all duration-200 ${isLoading
               ? "bg-blue-400 cursor-not-allowed"
               : "bg-blue-600 hover:bg-blue-700 cursor-pointer active:scale-[0.99]"
               }`}
