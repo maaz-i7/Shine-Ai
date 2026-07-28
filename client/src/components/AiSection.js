@@ -251,7 +251,7 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                                                 {messages.map((message, index) => (
                                                     <div
                                                         key={index}
-                                                        className={`w-3/4 text-sm overflow-scroll rounded-lg m-1 ${message.role === "assistant"
+                                                        className={`w-3/4 text-sm overflow-auto rounded-lg m-1 ${message.role === "assistant"
                                                             ? "bg-secondary px-4 pt-2"
                                                             : "bg-[#3d3d3d] ml-auto px-2"
                                                             }`}

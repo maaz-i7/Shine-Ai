@@ -422,7 +422,7 @@ function App({ workspace, isMobile = false }) {
           </button>
           <button
             onClick={downloadCode}
-            className="flex items-center p-2 rounded-md hover:bg-[#333333] transition-colors text-gray-400 hover:text-gray-200"
+            className="flex items-center cursor-pointer p-2 rounded-md hover:bg-[#333333] transition-colors text-gray-400 hover:text-gray-200"
             title="Download File"
           >
             <Download className="w-4 h-4" />
