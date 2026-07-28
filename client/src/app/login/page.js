@@ -182,7 +182,7 @@ export default function AuthPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm cursor-pointer font-medium text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-70 disabled:cursor-not-allowed transition-colors"
+            className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm cursor-pointer font-medium text-white bg-blue-600 hover:bg-blue-500 active:scale-99 disabled:opacity-70 disabled:cursor-not-allowed transition-colors"
           >
             {(isLogin ? 'Sign In' : 'Create Account')}
           </button>
@@ -202,7 +202,7 @@ export default function AuthPage() {
           <div className="mt-6 grid grid-cols-2 gap-4">
             <button
               onClick={() => handleOAuth('google')}
-              className="w-full inline-flex justify-center cursor-pointer items-center py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+              className="w-full inline-flex active:scale-99 justify-center cursor-pointer items-center py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
             >
               {/* Generic Google SVG Icon */}
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -216,7 +216,7 @@ export default function AuthPage() {
 
             <button
               onClick={() => handleOAuth('github')}
-              className="w-full inline-flex justify-center cursor-pointer items-center py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+              className="w-full inline-flex active:scale-99 justify-center cursor-pointer items-center py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
             >
               {/* Generic GitHub SVG Icon */}
               <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">

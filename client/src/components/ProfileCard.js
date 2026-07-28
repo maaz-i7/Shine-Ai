@@ -32,7 +32,7 @@ export default function ProfileCard({
             ref={cardRef}
             className="
                 absolute right-0 top-14 z-50
-                w-60 sm:w-70
+                w-50 sm:w-60
                 max-w-[calc(100vw-1rem)]
                 origin-top-right
                 rounded-2xl border border-[#2b2b2b]
@@ -69,14 +69,14 @@ export default function ProfileCard({
                     <Link
                         href="/dashboard"
                         onClick={onClose}
-                        className="rounded-lg bg-blue-600 py-2 text-center text-sm font-medium hover:bg-blue-500 transition-colors"
+                        className="rounded-lg bg-gray-700 py-2 active:scale-99 text-center text-sm font-medium hover:bg-gray-600 transition-colors"
                     >
                         Dashboard
                     </Link>
 
                     <button
                         onClick={handleLogout}
-                        className="rounded-lg bg-red-700 py-2 text-sm font-medium text-white hover:bg-red-800 transition-colors cursor-pointer"
+                        className="rounded-lg bg-red-700 py-2 active:scale-99 text-sm font-medium text-white hover:bg-red-800 transition-colors cursor-pointer"
                     >
                         Sign Out
                     </button>
