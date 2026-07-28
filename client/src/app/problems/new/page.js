@@ -280,7 +280,7 @@ export default function App() {
         className="w-full p-10 max-[800px]:p-0 max-[800px]:pt-5 max-[800px]:pb-5 flex items-center justify-center"
       >
         {/* Upload Problem Section */}
-        <div className="bg-secondary rounded-xl p-20 max-[500px]:p-10 max-[500px]:px-10 max-[700px]:w-[90vw] space-y-6 w-4/5 shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+        <div className="bg-secondary rounded-xl p-20 max-[500px]:p-10 max-[500px]:px-5 max-[700px]:w-[90vw] space-y-6 w-4/5 shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
           <header className="mb-10">
             <h1 className="text-3xl max-[500px]:text-2xl font-bold text-white tracking-tight">
               Let's Prepare the Canvas!
@@ -523,7 +523,7 @@ export default function App() {
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full max-[600px]:py-2 py-4 rounded-lg text-white font-semibold text-lg transition-all duration-200 ${isLoading
+            className={`w-full max-[600px]:text-sm max-[600px]:py-3 py-4 rounded-lg text-white font-semibold text-lg transition-all duration-200 ${isLoading
               ? "bg-blue-400 cursor-not-allowed"
               : "bg-blue-600 hover:bg-blue-700 cursor-pointer active:scale-[0.99]"
               }`}
