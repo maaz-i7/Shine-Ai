@@ -242,7 +242,7 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
 
                             {/* Content wrapper */}
                             <div className={`flex-1 min-h-0 overflow-hidden w-full ${expanded === "help" ? "hidden" : ""}`}>
-                                <div className={`h-full minimal-scrollbar overflow-y-auto p-2 transition-opacity duration-300 ${expanded === "ai" ? "opacity-100 delay-200" : "opacity-0"
+                                <div className={`h-full minimal-scrollbar overflow-auto p-2 transition-opacity duration-300 ${expanded === "ai" ? "opacity-100 delay-200" : "opacity-0"
                                     }`}>
                                     <div className="w-full h-full bg-black rounded-lg flex flex-col">
                                         <div className="flex-1 font-sans">
@@ -251,7 +251,7 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                                                 {messages.map((message, index) => (
                                                     <div
                                                         key={index}
-                                                        className={`w-3/4 text-sm rounded-lg m-1 ${message.role === "assistant"
+                                                        className={`w-3/4 text-sm overflow-scroll rounded-lg m-1 ${message.role === "assistant"
                                                             ? "bg-secondary px-4 pt-2"
                                                             : "bg-[#3d3d3d] ml-auto px-2"
                                                             }`}
