@@ -215,8 +215,6 @@ export default function Layout() {
     if (loading || status === "loading") {
         return (
             <div className="flex h-screen w-screen flex-col items-center justify-center bg-primary">
-                <LoaderCircle className="h-14 w-14 animate-spin text-blue-500" />
-
                 <h1 className="mt-8 text-2xl font-bold text-white">
                     Canvas almost ready
                 </h1>
@@ -224,6 +222,7 @@ export default function Layout() {
                 <p className="mt-2 text-center text-gray-400">
                     This won't take long
                 </p>
+                <LoaderCircle className="h-10 w-10 mt-2 animate-spin text-blue-500" />
             </div>
         );
     }

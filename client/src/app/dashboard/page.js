@@ -38,11 +38,10 @@ function Page() {
   if (loading || status === "loading") {
     return (
       <div className="flex h-screen w-screen flex-col items-center justify-center bg-primary">
-        <LoaderCircle className="h-14 w-14 animate-spin text-blue-500" />
-
-        <h1 className="mt-8 text-2xl font-bold text-white">
+        <h1 className="mt-8 text-2xl mb-3 font-medium text-white">
           Getting Workspaces
         </h1>
+        <LoaderCircle className="h-10 w-10 animate-spin text-blue-500" />
       </div>
     );
   }
