@@ -5,7 +5,7 @@ import WorkspaceCard from "@/components/WorkspaceCard.js"
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { getUserWorkspaces } from "@/services/workspace.service.js";
-import { Plus } from "lucide-react";
+import { Plus, LoaderCircle } from "lucide-react";
 
 function Page() {
 
@@ -35,9 +35,15 @@ function Page() {
 
   }, [status, session]);
 
-  if (loading || status == "loading") {
+  if (loading || status === "loading") {
     return (
-      <div className="flex w-screen bg-primary h-screen items-center justify-center">Loading...</div>
+      <div className="flex h-screen w-screen flex-col items-center justify-center bg-primary">
+        <LoaderCircle className="h-14 w-14 animate-spin text-blue-500" />
+
+        <h1 className="mt-8 text-2xl font-bold text-white">
+          Getting Workspaces
+        </h1>
+      </div>
     );
   }
 
