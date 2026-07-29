@@ -15,6 +15,25 @@ export async function handleQuickHelp({ accessToken, workspaceId, type, userMess
     setQuickHelpLoading(true);
 
     try {
+
+        const { testCases, selectedTestCase } = useTestCasesStore.getState();
+
+        if (type === "dry_run" && testCases.length === 0) {
+            const message =
+                "There are no test cases added. Please add at least one test case.";
+
+            setMessages((prev) => [
+                ...prev,
+                {
+                    role: "assistant",
+                    content: message,
+                },
+            ]);
+
+            setQuickHelp(message);
+            return message;
+        }
+
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/assistant/workspace/${workspaceId}/quick-help`,
             {
@@ -26,6 +45,7 @@ export async function handleQuickHelp({ accessToken, workspaceId, type, userMess
                 body: JSON.stringify({
                     type,
                     userMessage,
+                    selectedTestCase,
                 }),
             }
         );
@@ -43,7 +63,7 @@ export async function handleQuickHelp({ accessToken, workspaceId, type, userMess
                 content: data.response,
             },
         ]);
-        
+
         if (type === "test_case" || type === "edge_case") {
             const { addTestCase } = useTestCasesStore.getState();
             let testCase = String(data.response);
@@ -53,14 +73,14 @@ export async function handleQuickHelp({ accessToken, workspaceId, type, userMess
             setQuickHelp(testCase);
             return testCase
         }
-        
+
         setQuickHelp(data.response);
         return data.response;
 
     } catch (error) {
         console.error("Quick Help Error:", error);
-
         throw error;
+
     } finally {
         setQuickHelpLoading(false);
     }

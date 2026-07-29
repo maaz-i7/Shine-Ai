@@ -83,8 +83,7 @@ export async function quickHelp(req, res) {
 
     try {
         const { workspaceId } = req.params;
-        const { type } = req.body;
-        const { userMessage } = req.body;
+        const { type, userMessage, selectedTestCase } = req.body;
 
         const workspace = await Workspace.findById(workspaceId).populate("problem");
 
@@ -105,6 +104,7 @@ export async function quickHelp(req, res) {
             workspaceId,
             type,
             userMessage,
+            selectedTestCase,
         });
 
         return res.json({

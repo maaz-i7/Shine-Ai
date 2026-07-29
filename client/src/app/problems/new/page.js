@@ -168,8 +168,6 @@ export default function App() {
         starterCode: data.starterCode,
       });
 
-      console.log(session)
-
       useWorkspaceStore.getState().setWorkspace(workspace);
       router.push(`/problem/${problem._id}`);
     } catch (error) {

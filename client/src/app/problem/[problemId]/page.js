@@ -85,7 +85,6 @@ export default function Layout() {
                         },
                     }))
                 );
-                console.log(testCases)
 
                 const assistant = await getAssistant(
                     workspace._id,

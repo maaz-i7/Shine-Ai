@@ -16,7 +16,7 @@ ${summary || "Fresh Conversation"}
 `;
 }
 
-export function getHintPrompt({ workspace, summary }) {
+export function getHintPrompt({ workspace, selectedTestCase, summary }) {
     return `
     
 ${getCommonInstructions(summary)}
@@ -38,7 +38,7 @@ The user requested for a hint.
 `;
 }
 
-export function getDebugPrompt({ workspace, summary }) {
+export function getDebugPrompt({ workspace, selectedTestCase, summary }) {
     return `
 
 User Code:
@@ -52,7 +52,7 @@ Find out all syntax errors in the user's code
 `;
 }
 
-export function getSummarizePrompt({ workspace, summary }) {
+export function getSummarizePrompt({ workspace, selectedTestCase, summary }) {
     return `
 
 Problem:
@@ -74,7 +74,7 @@ Instructions:
 `;
 }
 
-export function getTestCasesPrompt({ workspace, summary }) {
+export function getTestCasesPrompt({ workspace, selectedTestCase, summary }) {
     return `
 
 Previous Conversation Summary:
@@ -106,7 +106,7 @@ Rules:
 `;
 }
 
-export function getEdgeCasesPrompt({ workspace, summary }) {
+export function getEdgeCasesPrompt({ workspace, selectedTestCase, summary }) {
     return `
 
 Previous Conversation Summary:
@@ -142,7 +142,7 @@ Rules:
 `;
 }
 
-export function getTimeComplexityPrompt({ workspace, summary }) {
+export function getTimeComplexityPrompt({ workspace, selectedTestCase, summary }) {
     return `
 
 User's Code:
@@ -158,7 +158,7 @@ Analyze the user's code thoroughly to determine its time complexity.
 `;
 }
 
-export function getSpaceComplexityPrompt({ workspace, summary }) {
+export function getSpaceComplexityPrompt({ workspace, selectedTestCase, summary }) {
     return `
 
 User's Code:
@@ -174,7 +174,7 @@ Analyze the user's code thoroughly to determine its space complexity.
 `;
 }
 
-export function getDirectionPrompt({ workspace, summary }) {
+export function getDirectionPrompt({ workspace, selectedTestCase, summary }) {
     return `
 
 Problem:
@@ -198,7 +198,7 @@ Instructions:
 `;
 }
 
-export function getExplainInputPrompt({ workspace, summary }) {
+export function getExplainInputPrompt({ workspace, selectedTestCase, summary }) {
     return `
 
 Code Template:
@@ -218,5 +218,47 @@ Instructions:
 - Do not explain the algorithm or solution.
 - Do not use phrases like "the program reads", "the code parses", or "the variable stores".
 - Return only the input description.
+`;
+}
+
+export function getDryRunPrompt({ workspace, selectedTestCase, summary }) {
+
+    const testCase = workspace?.testCases?.[selectedTestCase];
+
+    return `
+You are an expert programming tutor.
+
+Problem Summary:
+${summary}
+
+User Code:
+${workspace?.userCode}
+
+Selected Test Case Input:
+${testCase?.input}
+
+Instructions:
+
+- Mentally execute ONLY the user's solution.
+- Dry run ONLY the selected test case.
+- Start from the first line inside the solution function.
+- Ignore input parsing, main functions, object creation, library calls, printing, and other boilerplate unless they directly affect the algorithm.
+- Do NOT explain how stdin, stdout, class instantiation, or language-specific runtime works.
+- Do NOT describe obvious assignments unless they are important for understanding the algorithm.
+- Show only meaningful execution steps.
+
+For each meaningful step:
+- Show the current line or operation being executed.
+- Show any variables whose values changed.
+- Explain why a branch or loop was taken.
+- If inside a loop, show each iteration until completion. If a loop runs many times with repetitive behavior, summarize the repeated iterations.
+
+If the code contains:
+- A syntax/compilation error, state that the code cannot be executed and briefly explain the error.
+- A runtime error, stop exactly where it occurs and explain why.
+
+Finish with:
+
+## Final Output
 `;
 }

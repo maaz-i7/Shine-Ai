@@ -3,7 +3,7 @@ import Workspace from "../models/workspace.model.js";
 import getAiReplyPrompt from "../prompts/getAiReply.prompt.js";
 import { generateAiReply, updateConversationSummary, generateQuickHelpResponse } from "./gemini.service.js";
 
-import { getHintPrompt, getDebugPrompt, getSummarizePrompt, getTestCasesPrompt, getEdgeCasesPrompt, getTimeComplexityPrompt, getSpaceComplexityPrompt, getDirectionPrompt, getExplainInputPrompt } from "../prompts/quickHelps.prompts.js";
+import { getHintPrompt, getDebugPrompt, getSummarizePrompt, getTestCasesPrompt, getEdgeCasesPrompt, getTimeComplexityPrompt, getSpaceComplexityPrompt, getDirectionPrompt, getExplainInputPrompt, getDryRunPrompt } from "../prompts/quickHelps.prompts.js";
 
 export async function getAssistant(workspaceId) {
     return await Assistant.findOne({ workspace: workspaceId });
@@ -96,9 +96,10 @@ const QUICK_HELP_PROMPTS = {
     space_complexity: getSpaceComplexityPrompt,
     direction: getDirectionPrompt,
     explain_input: getExplainInputPrompt,
+    dry_run: getDryRunPrompt,
 };
 
-export async function generateQuickHelp({ workspace, workspaceId, type, userMessage }) {
+export async function generateQuickHelp({ workspace, workspaceId, type, userMessage, selectedTestCase }) {
 
     const assistant = await getOrCreateAssistant(workspaceId);
 
@@ -112,6 +113,7 @@ export async function generateQuickHelp({ workspace, workspaceId, type, userMess
 
     const prompt = promptBuilder({
         workspace,
+        selectedTestCase,
         summary: assistant.pastConversationSummary,
     });
 

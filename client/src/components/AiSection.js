@@ -7,7 +7,7 @@ import { handleQuickHelp } from "@/services/quick.help.service";
 import useAssistantStore from "@/stores/assistant.store";
 import { sendMessage } from "@/services/assistant.service";
 import { useRef, useEffect } from "react";
-import { X, Bug, Timer, MemoryStick, LightbulbIcon, TestTube2, BookOpenTextIcon, ArrowDownRight, BookAlert, BookOpenCheckIcon } from "lucide-react";
+import { X, Bug, Timer, MemoryStick, LightbulbIcon, TestTube2, BookOpenTextIcon, ArrowDownRight, BookAlert, BookOpenCheckIcon, FlaskRoundIcon } from "lucide-react";
 import { useState } from "react";
 
 const QUICK_HELP_LABELS = {
@@ -20,6 +20,7 @@ const QUICK_HELP_LABELS = {
     time_complexity: "Analyze the time complexity of my code",
     space_complexity: "Analyze the space complexity of my code",
     explain_input: "Explain how the input is being taken",
+    dry_run: "Dry run my code for the selected test case"
 };
 
 export const QUICK_HELP_BUTTONS = [
@@ -76,6 +77,12 @@ export const QUICK_HELP_BUTTONS = [
         label: "Direction",
         icon: ArrowDownRight,
         iconClass: "text-purple-600",
+    },
+    {
+        type: "dry_run",
+        label: "Dry Run",
+        icon: FlaskRoundIcon,
+        iconClass: "text-red-600",
     },
 ];
 
