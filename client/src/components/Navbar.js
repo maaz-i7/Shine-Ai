@@ -23,7 +23,7 @@ export default function Navbar() {
     };
 
     return (
-        <nav className="w-full bg-secondary font-sans z-10 flex items-center justify-between top-0 sticky p-2 border-b border-gray-100/10">
+        <nav className="w-full bg-secondary font-sans z-100 flex items-center justify-between top-0 sticky p-2 border-b border-gray-100/10">
             <div className="ml-2">
                 <Link href={"/"}>
                     <Image loading="eager" className="w-12" src={logo} alt="logo" />

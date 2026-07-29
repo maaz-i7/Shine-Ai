@@ -59,7 +59,7 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
             {isMobile ? "" : <ChevronDown size={16} />}
           </div>
 
-          <div className="font-sans overflow-y-scroll minimal-scrollbar p-5 text-sm">
+          <div className="font-sans overflow-y-auto minimal-scrollbar p-5 text-sm">
 
             {/* Test Cases  */}
             <div className="text-xl mb-3">Test Cases</div>
@@ -72,7 +72,7 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
                 </button>
               </div>
               {/* Test Cases Map */}
-              <div className="flex flex-wrap items-start max-h-40 overflow-y-scroll minimal-scrollbar">
+              <div className="flex flex-wrap items-start max-h-40 overflow-y-auto minimal-scrollbar">
                 {testCases.map((tc, i) => (
                   <TestCase
                     key={i}
