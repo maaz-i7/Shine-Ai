@@ -1,10 +1,83 @@
 # ✨ Shine Ai
 
-> **Seek. Shine. Solve. Succeed**
->
-> Shine Ai is an AI-powered platform that helps users learn, solve problems, and share knowledge through an intuitive and modern interface.
+> Seek. Shine. Solve. Succeed.
 
----
+Shine Ai is an AI-assisted coding workspace designed to reduce context switching while solving programming problems.
+
+Instead of constantly switching between coding platforms and AI tools, users can solve problems, run code, create test cases, receive hints, debug solutions, and interact with an AI assistant—all within a single workspace.
+
+Built to make problem solving faster, more focused, and more productive.
+
+## 🚀 Live Demo
+
+Experience Shine AI here:
+
+🔗 **Live Application:** https://shine-ai-assistant.vercel.app/
+
+> Sign in using Google or GitHub OAuth.
+
+## ❔ Why I Built Shine Ai
+
+While solving problems on platforms like LeetCode and Codeforces, I found myself repeatedly switching between:
+
+- Coding platform
+- ChatGPT / Gemini
+- Notes
+- Browser tabs
+
+Every time I got stuck, I had to copy problem statements, explain context, paste code, and repeat information.
+
+Shine Ai was built to eliminate this workflow and provide an integrated environment where the AI already understands the problem, code, and workspace context.
+
+## ⭐ Features
+### AI-Powered Assistance
+- Context-aware AI assistant
+- Debugging support
+- Hint generation
+- Edge case suggestions
+- Complexity analysis
+- Solution explanations
+
+### Coding Workspace
+- Monaco-powered code editor
+- Multi-language code execution
+- Custom test cases
+- Execution console
+- Workspace persistence
+
+### Problem Management
+- Create problems from screenshots
+- OCR-based problem extraction
+- Automatic problem formatting
+- Workspace generation
+
+### User Experience
+- Google & GitHub OAuth
+- Dashboard for tracking workspaces
+- Responsive interface
+- Real-time autosave
+
+## 🛠️ Architecture
+
+```text
+                 ┌────────────────────┐
+                 │     Frontend       │
+                 │      Next.js       │
+                 └─────────┬──────────┘
+                           │ HTTP/REST
+                           ▼
+                 ┌────────────────────┐
+                 │   Backend API      │
+                 │    Express.js      │
+                 └───┬──────┬───────┬─┘
+                     │      |       │
+        ┌────────────┘      |       └────────────────┐
+        ▼                   ▼                        ▼
+┌────────────────┐    ┌────────────────┐      ┌────────────────┐
+│    MongoDB     │    │  Compiler API  │      |    Gemini AI   │
+│   Database     │    |                |      │      API       │
+└────────────────┘    └────────────────┘      └────────────────┘
+```
 
 ## 🔗 API & Routes
 
@@ -53,40 +126,114 @@ These routes are automatically provided by **NextAuth** for OAuth authentication
 
 ---
 
-## 🛠️ Technologies Used
+## 🛠️ Tech Stack
 
 ### Frontend
-- **React** – Component-based UI library
 - **Next.js** – Full-stack React framework
-- **react-hook-form** – For handling forms
+- **React** – Component-based UI development
+- **Tailwind CSS** – Utility-first styling
+- **Zustand** – Global state management
+- **Monaco Editor** – Browser-based code editor
+- **React Hook Form** – Form handling and validation
 
 ### Backend
 - **Node.js** – JavaScript runtime
-- **Express.js** – Web application framework
+- **Express.js** – REST API development
 
 ### Database
 - **MongoDB** – NoSQL database
-- **Mongoose** – MongoDB object modeling (ODM)
+- **Mongoose** – Object data modeling (ODM)
 
-### Security & Authentication
+### AI & Problem Processing
+- **Google Gemini API** – AI-powered assistance and problem analysis
+- **Multer** – Image upload handling
+- **OCR Pipeline** – Problem extraction from screenshots
+
+### Authentication & Security
+- **NextAuth.js** – Authentication and session management
+- **Google OAuth** – Social authentication
+- **GitHub OAuth** – Social authentication
+- **JWT** – Secure authorization
 - **bcrypt** – Password hashing
-- **Helmet** – Secure HTTP headers
-- **CORS** – Cross-Origin Resource Sharing middleware
-- **crypto** – to generate secret strings
-- **next-auth** – to facilitate login sessions
+- **Helmet** – Security hardening
+- **CORS** – Cross-origin request management
 
-### Utilities
-- **Morgan** – HTTP request logger
-- **dotenv** – Environment variable management
-- **JSON Web Token (JWT)** – Stateless authentication using JSON Web Tokens
-- **Lucide React** – Modern customizable SVG icon library for React components and UI icons.
-- **Monaco editor** – for integrating an IDE
-- **react-markdown** – Markdown rendering in React components
-- **remark-gfm** – Support for GitHub Flavored Markdown (tables, task lists, strikethrough, etc.)
-- **remark-math** – Parses LaTeX math expressions in Markdown
-- **rehype-katex** – Renders LaTeX math using KaTeX
-- **rehype-raw** – Allows rendering of raw HTML inside Markdown
-- **KaTeX** – Fast rendering of mathematical expressions with CSS styling
-- **Multer** – Used to upload problem images from users so they can be processed by the AI for problem extraction.
-- **Zustand** – Lightweight state management library for global state management. Used to share application state such as generated problem data, workspace information, and UI state across components without prop drilling.
-- **jsonwebtoken** - for authenticating user in backend
+### Developer Experience
+- **React Markdown** – Markdown rendering
+- **KaTeX** – Mathematical expression rendering
+- **Morgan** – Request logging
+- **dotenv** – Environment configuration
+
+## ⚙️ Installation
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/maaz-i7/Shine-Ai
+cd Shine-Ai
+```
+
+### Install Dependencies
+
+```bash
+# Client
+cd client
+npm install
+
+# Server
+cd ../server
+npm install
+```
+
+### Configure Environment Variables
+
+Create `.env.local` file in the client directory and add the required credentials:
+
+```env
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=
+NEXT_PUBLIC_BACKEND_URL=http://localhost:5000
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+```
+
+Create `.env` file in the server directory and add the required credentials:
+
+```env
+PORT=5000
+MONGO_URI=
+NODE_ENV=development
+CLIENT_URL=http://localhost:3000
+JWT_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+CODE_EXECUTION_API_URL=https://api.onlinecompiler.io/api/run-code-sync/
+CODE_EXECUTION_API_KEY=
+GEMINI_API_KEY=
+```
+
+### Run the Application
+
+```bash
+# Client
+npm run dev
+
+# Server
+npm run dev
+```
+
+## 🚧 Future Improvements
+
+- Better AI context management
+- Contest mode
+- Support for additional programming languages
+- Collaborative workspaces
+- Submission analytics
+- Personalized learning insights
+- Improved code execution infrastructure
+- Profile Analytics
+- More refined and modern UI
