@@ -203,6 +203,10 @@ function App({ workspace, isMobile = false }) {
 
   const handleRunCode = async () => {
     try {
+      if(testCases.length===0) {
+        alert("Please add atleast one test case")
+        return;
+      }
       const idealCompiler = LANGUAGES.find(lang => lang.id === idealLang)?.compiler;
       const compiler = LANGUAGES.find(lang => lang.id === language)?.compiler;
       await checkCode(idealCompiler, idealCode, compiler, code)
@@ -379,7 +383,7 @@ function App({ workspace, isMobile = false }) {
           </div>
           <button
             onClick={handleRunCode}
-            disabled={running || cooldown > 0 || testCases.length === 0}
+            disabled={running || cooldown > 0}
             className={`flex items-center gap-2 w-20 h-8 justify-center rounded-md transition-all duration-200 text-white
               ${running || cooldown > 0
                 ? "bg-yellow-600 cursor-not-allowed"
