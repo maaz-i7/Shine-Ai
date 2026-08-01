@@ -54,9 +54,10 @@ export default function App() {
         <Image
           src={textLogo}
           alt={"logo"}
-          width={700}
-          height={700}
-          className="rounded-full max-[500px]:mt-20"
+          width={"auto"}
+          height={"auto"}
+          loading='eager'
+          className="rounded-full w-200 max-[500px]:mt-20"
         />
       </div>
 
@@ -299,13 +300,9 @@ export default function App() {
       <section id="inspiration" className="py-10 px-4 lg:px-8 max-w-7xl mx-auto border-t border-white/5 relative">
         <div className="bg-[#212121] rounded-3xl border border-white/10 p-8 sm:p-12 relative overflow-hidden">
 
-          <div className="absolute -right-20 -bottom-20 opacity-10 pointer-events-none">
-            <img src="hero-logo-no-bg.png" alt="Watermark" className="w-125" />
-          </div>
-
           <div className="max-w-3xl space-y-6 relative">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-              The Inspiration Behind Shine AI
+              The Inspiration Behind <span className="text-yellow-400">Shine Ai</span>
             </h2>
 
             <blockquote className="text-lg sm:text-xl text-gray-200 italic font-light border-l-4 border-yellow-400 pl-4 py-1">
