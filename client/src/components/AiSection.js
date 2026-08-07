@@ -191,7 +191,7 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                                                     disabled={quickHelpLoading}
                                                     className={`${quickHelpType === type ? "bg-black" : "bg-primary"}
                                                                 ${quickHelpLoading || fetching ? "cursor-not-allowed" : "cursor-pointer"}
-                                                                active:scale-95 hover:bg-black
+                                                                active:scale-98 hover:bg-black
                                                                 w-fit p-2 m-1 transition-colors rounded-lg flex items-center`}
                                                     title={QUICK_HELP_LABELS[type]}
                                                     onClick={() => {

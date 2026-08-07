@@ -31,9 +31,13 @@ export default function Navbar() {
             </div>
             <div>
                 <ul className="flex w-80 max-[500px]:w-[65vw] max-[600px]:text-sm justify-around items-center">
-                    <Link href="/"><li>Home</li></Link>
-                    <li>About</li>
-                    <li>Contact</li>
+                    <Link href="/" scroll={true}><li>Home</li></Link>
+                    <Link href="/#demo"><li>About</li></Link>
+                    <a href="mailto:maaz.khan.sdr@gmail.com">
+                        <li>
+                            Contact
+                        </li>
+                    </a>
 
                     <li className="relative">
                         {user ? (

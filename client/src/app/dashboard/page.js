@@ -33,7 +33,7 @@ function Page() {
 
     loadWorkspaces();
 
-  }, [status, session]);
+  }, [status, session?.accessToken]);
 
   if (loading || status === "loading") {
     return (
