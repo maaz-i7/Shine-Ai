@@ -3,7 +3,7 @@ import Image from "next/image"
 
 export default function Footer() {
     return (
-        <footer className="flex flex-col p-5 items-center justify-center w-full bg-secondary mt-auto">
+        <footer className="flex flex-col pb-3 items-center justify-center w-full bg-secondary mt-auto">
             <div>
                 <Image
                     src={fullLogo}
@@ -13,6 +13,7 @@ export default function Footer() {
                 />
             </div>
             <div className="flex gap-2">
+                <span className="text-sm text-gray-400 font-sans">Crafted and coded by Maaz</span>
                 <a target="_blank" href="https://github.com/maaz-i7/Shine-Ai" className="text-slate-500 hover:text-white transition-colors">
                     <span className="sr-only">GitHub</span>
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
