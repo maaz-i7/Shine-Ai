@@ -34,7 +34,7 @@ export default function ProblemSection({ workspace }) {
     const problem = workspace?.problem
     return (
 
-        <div className="w-full h-screen font-sans overflow-y-scroll minimal-scrollbar p-5">
+        <div className="w-full h-screen bg-primary text-foreground font-sans overflow-y-scroll minimal-scrollbar p-5">
             {/* Title */}
             <div className="text-2xl font-bold mt-5">{problem?.title}</div>
 

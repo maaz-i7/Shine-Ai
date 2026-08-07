@@ -14,83 +14,95 @@ export default function MarkdownRenderer({ text }) {
             rehypePlugins={[rehypeRaw, rehypeKatex]}
             components={{
                 h1: ({ children }) => (
-                    <h1 className="text-3xl font-bold mb-6">
+                    <h1 className="text-[24px] font-semibold mt-8 mb-4">
                         {children}
                     </h1>
                 ),
 
                 h2: ({ children }) => (
-                    <h2 className="text-2xl font-semibold mt-10 mb-4">
+                    <h2 className="text-[20px] font-semibold mt-8 mb-3">
                         {children}
                     </h2>
                 ),
 
                 h3: ({ children }) => (
-                    <h3 className="text-xl font-semibold mt-8 mb-3">
+                    <h3 className="text-[17px] font-semibold mt-15 mb-2">
                         {children}
                     </h3>
                 ),
 
                 p: ({ children }) => (
-                    <p className="mb-4 leading-8">
+                    <p className="mb-3 text-[14px] leading-7">
                         {children}
                     </p>
                 ),
 
+                strong: ({ children }) => (
+                    <strong className="font-semibold text-white">
+                        {children}
+                    </strong>
+                ),
+
+                em: ({ children }) => (
+                    <em className="italic">
+                        {children}
+                    </em>
+                ),
+
                 ul: ({ children }) => (
-                    <ul className="list-disc ml-7 mb-5 space-y-2">
+                    <ul className="list-disc ml-6 mb-4 space-y-1 text-[14px] leading-7">
                         {children}
                     </ul>
                 ),
 
                 ol: ({ children }) => (
-                    <ol className="list-decimal ml-7 mb-5 space-y-2">
+                    <ol className="list-decimal ml-6 mb-4 space-y-2 text-[14px] leading-7">
                         {children}
                     </ol>
                 ),
 
-                li: ({ children }) => <li>{children}</li>,
+                li: ({ children }) => (
+                    <li>{children}</li>
+                ),
+
+                hr: () => (
+                    <hr className="my-6 border-border" />
+                ),
 
                 blockquote: ({ children }) => (
-                    <blockquote className="border-l-4 border-gray-600 pl-4 italic text-gray-300 my-4">
+                    <blockquote className="border-l-4 border-border pl-4 italic opacity-80 my-4">
                         {children}
                     </blockquote>
                 ),
 
-                hr: () => (
-                    <hr className="my-8 border-0 h-px bg-gray-700" />
-                ),
-
                 table: ({ children }) => (
-                    <div className="overflow-x-auto minimal-scrollbar my-6">
-                        <table className="border-collapse border border-gray-700">
+                    <div className="overflow-x-auto my-5">
+                        <table className="w-full border-collapse text-[14px]">
                             {children}
                         </table>
                     </div>
                 ),
 
                 thead: ({ children }) => (
-                    <thead className="bg-[#202020]">
+                    <thead className="bg-secondary">
                         {children}
                     </thead>
                 ),
 
-                tbody: ({ children }) => <tbody>{children}</tbody>,
-
                 tr: ({ children }) => (
-                    <tr className="border-b border-gray-700">
+                    <tr className="border-b border-border">
                         {children}
                     </tr>
                 ),
 
                 th: ({ children }) => (
-                    <th className="border border-gray-700 px-4 py-2 text-left font-semibold">
+                    <th className="px-4 py-2 text-left font-medium border border-border">
                         {children}
                     </th>
                 ),
 
                 td: ({ children }) => (
-                    <td className="border border-gray-700 px-4 py-2">
+                    <td className="px-4 py-2 border border-border">
                         {children}
                     </td>
                 ),
@@ -99,7 +111,14 @@ export default function MarkdownRenderer({ text }) {
                     if (inline) {
                         return (
                             <code
-                                className="bg-[#2a2a2a] px-1.5 py-0.5 rounded text-red-300 font-mono text-[0.9em]"
+                                className="
+                                    rounded
+                                    bg-primary
+                                    px-1.5
+                                    py-0.5
+                                    font-mono
+                                    text-[13px]
+                                "
                                 {...props}
                             >
                                 {children}
@@ -114,25 +133,24 @@ export default function MarkdownRenderer({ text }) {
                     );
                 },
 
-                pre({ children }) {
-                    return (
-                        <pre
-                            className="
-                                bg-[#1e1e1e]
-                                border
-                                border-gray-700
-                                rounded-lg
-                                p-4
-                                overflow-x-auto
-                                minimal-scrollbar
-                                my-5
-                                text-sm
-                            "
-                        >
-                            {children}
-                        </pre>
-                    );
-                },
+                pre: ({ children }) => (
+                    <pre
+                        className="
+                            my-5
+                            overflow-x-auto
+                            rounded-lg
+                            border
+                            border-border
+                            bg-secondary
+                            p-4
+                            text-[13px]
+                            leading-6
+                            minimal-scrollbar
+                        "
+                    >
+                        {children}
+                    </pre>
+                ),
 
                 a: ({ href, children }) => (
                     <a
@@ -149,7 +167,7 @@ export default function MarkdownRenderer({ text }) {
                     <img
                         src={src}
                         alt={alt}
-                        className="rounded-lg my-4 max-w-full"
+                        className="my-5 rounded-lg max-w-full"
                     />
                 ),
             }}
