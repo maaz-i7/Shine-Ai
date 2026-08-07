@@ -107,6 +107,16 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
         });
     }, [messages, expanded]);
 
+    const textareaRef = useRef(null);
+
+    useEffect(() => {
+        if (textareaRef.current) {
+            textareaRef.current.style.height = "auto";
+            textareaRef.current.style.height =
+                `${textareaRef.current.scrollHeight}px`;
+        }
+    }, [input]);
+
     async function handleSend() {
 
         if (!input.trim()) return;
@@ -280,15 +290,22 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                                 </div>
                             </div>
                             <div className="mr-5">
-                                <input
+                                <textarea
                                     disabled={fetching || quickHelpLoading}
-                                    className="active:outline-0 w-full p-3 focus:outline-0 text-sm bg-primary m-2"
-                                    type="text"
+                                    className="w-full text-wrap p-3 focus:outline-0 text-sm bg-primary ml-2 mt-2 resize-none max-h-[30vh] minimal-scrollbar overflow-auto"
                                     placeholder={`${fetching ? "Almost there..." : "Ask Shine Ai"}`}
                                     value={input}
-                                    onChange={(e) => setInput(e.target.value)}
+                                    ref={textareaRef}
+                                    rows={1}
+                                    onChange={(e) => {
+                                        setInput(e.target.value);
+
+                                        e.target.style.height = "44px";
+                                        e.target.style.height = `${e.target.scrollHeight}px`;
+                                    }}
                                     onKeyDown={(e) => {
-                                        if (e.key === "Enter") {
+                                        if (e.key === "Enter" && !e.shiftKey) {
+                                            e.preventDefault();
                                             handleSend();
                                         }
                                     }}
