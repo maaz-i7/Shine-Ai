@@ -2,7 +2,7 @@
 import { ChevronDown, ChevronUp, Copy, Check, PlusIcon, Loader2 } from "lucide-react";
 import useTestCasesStore from "@/stores/testcases.store.js";
 import TestCase from "@/components/TestCase.js"
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false);
@@ -28,7 +28,7 @@ function CopyButton({ text }) {
   );
 }
 
-export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGHT, MINIMIZED_CONSOLE_HEIGHT, isMobile=false }) {
+export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGHT, MINIMIZED_CONSOLE_HEIGHT, isMobile = false }) {
 
   const testCases = useTestCasesStore((state) => state.testCases);
   const addTestCase = useTestCasesStore((state) => state.addTestCase);
@@ -125,7 +125,9 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
               <div className="text-xl mt-5 mb-3">Console</div>
               <div>
                 <div className="bg-black w-full font-mono text-base p-4">
-                  <CopyButton text={currentTestCase?.execution.error} />
+                  <div className="w-full flex justify-end">
+                    <CopyButton text={currentTestCase?.execution.error} />
+                  </div>
                   <div className={`${currentTestCase?.execution.message !== "Success" ? "text-red-600" : "text-green-600"}  font-bold`}>{currentTestCase?.execution.message}</div>
                   <div className={`text-red-600 text-sm ${currentTestCase?.execution.message === "Success" ? "text-yellow-400" : ""}`}>{currentTestCase?.execution.error}</div>
                 </div>

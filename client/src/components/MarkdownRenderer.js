@@ -139,8 +139,6 @@ export default function MarkdownRenderer({ text }) {
                             my-5
                             overflow-x-auto
                             rounded-lg
-                            border
-                            border-border
                             bg-secondary
                             p-4
                             text-[13px]

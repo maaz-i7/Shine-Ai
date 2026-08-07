@@ -203,7 +203,7 @@ function App({ workspace, isMobile = false }) {
 
   const handleRunCode = async () => {
     try {
-      if(testCases.length===0) {
+      if (testCases.length === 0) {
         alert("Please add atleast one test case")
         return;
       }
@@ -214,7 +214,8 @@ function App({ workspace, isMobile = false }) {
       console.log("Failed to run code: ", error.message)
     }
     finally {
-      setCooldown(10)
+      if (testCases.length !== 0)
+        setCooldown(10)
     }
   };
 
