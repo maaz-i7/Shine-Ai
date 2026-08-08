@@ -17,7 +17,7 @@ export default function MobileWorkspace({
 
             {/* Problem */}
             <section className="min-h-[90vh] w-full">
-                <ProblemSection workspace={workspace} />
+                <ProblemSection workspace={workspace} isProblemOpen={true} setIsProblemOpen={()=>{}} isMobile={true} />
             </section>
 
             {/* Editor */}

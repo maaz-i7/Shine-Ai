@@ -17,7 +17,8 @@ import { useState } from "react";
 export default function ProblemSection({
     workspace,
     isProblemOpen,
-    setIsProblemOpen
+    setIsProblemOpen,
+    isMobile
 }) {
 
     const [showTags, setShowTags] = useState(false);
@@ -59,12 +60,12 @@ export default function ProblemSection({
 
             {/* Header */}
             <div className="flex items-center justify-end">
-                <button
+                {!isMobile && <button
                     onClick={() => setIsProblemOpen(false)}
                     className="flex items-center justify-center w-10 h-10 rounded-lg text-gray-400 hover:text-white hover:bg-[#171717] transition-colors cursor-pointer"
                 >
                     <ChevronLeft size={20} />
-                </button>
+                </button>}
             </div>
 
             {/* Title */}

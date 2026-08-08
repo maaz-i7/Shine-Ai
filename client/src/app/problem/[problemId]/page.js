@@ -287,6 +287,7 @@ export default function Layout() {
                     workspace={workspace}
                     isProblemOpen={isProblemOpen}
                     setIsProblemOpen={setIsProblemOpen}
+                    isMobile={false}
                 />
             </div>
 
