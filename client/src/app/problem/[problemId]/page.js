@@ -10,16 +10,19 @@ import useTestCasesStore from "@/stores/testcases.store";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { getWorkspaceForProblem, getAiCodeForWorkspace } from "@/services/workspace.service.js";
+import {
+    getWorkspaceForProblem,
+    getAiCodeForWorkspace
+} from "@/services/workspace.service.js";
 import { getAssistant } from "@/services/assistant.service";
 import { useRouter } from "next/navigation";
-import { LoaderCircle } from "lucide-react"
+import { LoaderCircle } from "lucide-react";
 import MobileWorkspace from "@/components/MobileWorkspace";
 
 export default function Layout() {
 
     const { problemId } = useParams();
-    const router = useRouter()
+    const router = useRouter();
     const { data: session, status } = useSession();
 
     const workspace = useWorkspaceStore((state) => state.workspace);
@@ -31,7 +34,7 @@ export default function Layout() {
     const setTestCases = useTestCasesStore((state) => state.setTestCases);
 
     const [loading, setLoading] = useState(true);
-    let redirecting = false
+    let redirecting = false;
 
     const containerRef = useRef(null);
     const editorRef = useRef(null);
@@ -41,6 +44,7 @@ export default function Layout() {
     const [rightWidth, setRightWidth] = useState(400);
     const [consoleHeight, setConsoleHeight] = useState(300);
 
+    const [isProblemOpen, setIsProblemOpen] = useState(true);
     const [isRightOpen, setIsRightOpen] = useState(false);
     const [isConsoleOpen, setIsConsoleOpen] = useState(false);
 
@@ -59,9 +63,11 @@ export default function Layout() {
 
         async function loadWorkspace() {
             try {
-                const workspace = await getWorkspaceForProblem(problemId, session?.accessToken);
+                const workspace = await getWorkspaceForProblem(
+                    problemId,
+                    session?.accessToken
+                );
 
-                // Generate AI code only once
                 if (!workspace.aiCode || workspace.aiCode === "") {
                     const aiCode = await getAiCodeForWorkspace({
                         accessToken: session?.accessToken,
@@ -73,7 +79,9 @@ export default function Layout() {
 
                     workspace.aiCode = aiCode;
                 }
+
                 setWorkspace(workspace);
+
                 setTestCases(
                     workspace?.testCases?.map((testCase) => ({
                         ...testCase,
@@ -94,25 +102,33 @@ export default function Layout() {
                 setMessages(assistant.messages);
 
             } catch (error) {
+
                 if (error.message === "Failed to fetch workspace.") {
                     router.push("/problems/new");
-                    redirecting = true
+                    redirecting = true;
                     return;
                 }
+
                 console.error(error);
+
             } finally {
-                if (!redirecting)
+
+                if (!redirecting) {
                     setLoading(false);
+                }
             }
         }
+
         loadWorkspace();
 
     }, [problemId, session?.accessToken, status, setWorkspace]);
 
     const startConsoleDrag = () => {
+
         let latestHeight = consoleHeight;
 
         const handleMove = (e) => {
+
             const rect = containerRef.current.getBoundingClientRect();
 
             let height = rect.bottom - e.clientY;
@@ -120,16 +136,16 @@ export default function Layout() {
 
             latestHeight = height;
 
-            // Instant DOM resize
             consoleRef.current.style.height = `${height}px`;
-            editorRef.current.style.height = `calc(100% - ${height}px - 4px)`;
+            editorRef.current.style.height =
+                `calc(100% - ${height}px - 4px)`;
 
             const editor = document.querySelector(".monaco-editor");
+
             if (editor && window.monaco) {
                 window.monaco.editor.getEditors?.().forEach(e => e.layout());
             }
 
-            // React update at most once per frame
             if (!frame.current) {
                 frame.current = requestAnimationFrame(() => {
                     setConsoleHeight(latestHeight);
@@ -139,6 +155,7 @@ export default function Layout() {
         };
 
         const stop = () => {
+
             if (frame.current) {
                 cancelAnimationFrame(frame.current);
                 frame.current = null;
@@ -155,7 +172,13 @@ export default function Layout() {
     };
 
     const startLeftDrag = () => {
+
+        if (!isProblemOpen) {
+            return;
+        }
+
         const handleMove = (e) => {
+
             const rect = containerRef.current.getBoundingClientRect();
 
             let width = e.clientX - rect.left;
@@ -165,6 +188,7 @@ export default function Layout() {
         };
 
         const stop = () => {
+
             window.removeEventListener("mousemove", handleMove);
             window.removeEventListener("mouseup", stop);
         };
@@ -174,10 +198,12 @@ export default function Layout() {
     };
 
     const startRightDrag = () => {
+
         setIsDraggingRight(true);
         setIsRightOpen(true);
 
         const handleMove = (e) => {
+
             const rect = containerRef.current.getBoundingClientRect();
 
             let width = rect.right - e.clientX;
@@ -187,6 +213,7 @@ export default function Layout() {
         };
 
         const stop = () => {
+
             setIsDraggingRight(false);
 
             window.removeEventListener("mousemove", handleMove);
@@ -200,6 +227,7 @@ export default function Layout() {
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
+
         const handleResize = () => {
             setIsMobile(window.innerWidth < 768);
         };
@@ -209,6 +237,7 @@ export default function Layout() {
         window.addEventListener("resize", handleResize);
 
         return () => window.removeEventListener("resize", handleResize);
+
     }, []);
 
     if (loading || status === "loading") {
@@ -221,6 +250,7 @@ export default function Layout() {
                 <p className="mt-2 text-center text-gray-400">
                     This won't take long
                 </p>
+
                 <LoaderCircle className="h-10 w-10 mt-2 animate-spin text-blue-500" />
             </div>
         );
@@ -243,16 +273,30 @@ export default function Layout() {
             ref={containerRef}
             className="flex h-screen select-text overflow-hidden font-sans w-full"
         >
+
             {/* Left Panel */}
             <div
-                style={{ width: leftWidth }}
-                className="bg-primary shrink-0 overflow-hidden rounded-xl"
+                style={{
+                    width: isProblemOpen
+                        ? leftWidth
+                        : MINIMIZED_WIDTH
+                }}
+                className="bg-primary shrink-0 overflow-hidden rounded-xl transition-[width] duration-200"
             >
-                <ProblemSection workspace={workspace} />
+                <ProblemSection
+                    workspace={workspace}
+                    isProblemOpen={isProblemOpen}
+                    setIsProblemOpen={setIsProblemOpen}
+                />
             </div>
 
             {/* Left Divider */}
-            <div onMouseDown={startLeftDrag} className="w-1 cursor-ew-resize bg-black transition-colors hover:bg-gray-500 shrink-0" />
+            {isProblemOpen && (
+                <div
+                    onMouseDown={startLeftDrag}
+                    className="w-1 cursor-ew-resize bg-black transition-colors hover:bg-gray-500 shrink-0"
+                />
+            )}
 
             {/* Center */}
             <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
@@ -286,7 +330,9 @@ export default function Layout() {
                             ? consoleHeight
                             : MINIMIZED_CONSOLE_HEIGHT
                     }}
-                    className={`shrink-0 bg-primary rounded-xl ${isConsoleOpen ? "" : "mt-1"}`}
+                    className={`shrink-0 bg-primary rounded-xl ${
+                        isConsoleOpen ? "" : "mt-1"
+                    }`}
                 >
                     <Console
                         isConsoleOpen={isConsoleOpen}
@@ -298,7 +344,10 @@ export default function Layout() {
             </div>
 
             {/* Right Divider */}
-            <div onMouseDown={startRightDrag} className="w-1 cursor-ew-resize bg-black transition-colors hover:bg-gray-500 shrink-0" />
+            <div
+                onMouseDown={startRightDrag}
+                className="w-1 cursor-ew-resize bg-black transition-colors hover:bg-gray-500 shrink-0"
+            />
 
             {/* Right Panel */}
             <AiSection
@@ -310,6 +359,7 @@ export default function Layout() {
                 workspace={workspace}
                 session={session}
             />
+
         </div>
     );
 }

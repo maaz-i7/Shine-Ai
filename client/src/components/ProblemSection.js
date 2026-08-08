@@ -1,11 +1,24 @@
 "use client";
 
-import MarkdownRenderer from "./MarkdownRenderer.js"
-import { Circle, Clock3, CheckCircle2, RotateCcw } from "lucide-react";
+import MarkdownRenderer from "./MarkdownRenderer.js";
+import {
+    Circle,
+    Clock3,
+    CheckCircle2,
+    RotateCcw,
+    ChevronDown,
+    ChevronUp,
+    ChevronLeft,
+    TextInitialIcon,
+    Tag
+} from "lucide-react";
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Tag } from "lucide-react";
 
-export default function ProblemSection({ workspace }) {
+export default function ProblemSection({
+    workspace,
+    isProblemOpen,
+    setIsProblemOpen
+}) {
 
     const [showTags, setShowTags] = useState(false);
 
@@ -31,19 +44,48 @@ export default function ProblemSection({ workspace }) {
     const status = statusConfig[workspace?.status] || statusConfig.Todo;
     const Icon = status.icon;
 
-    const problem = workspace?.problem
-    return (
+    const problem = workspace?.problem;
 
+    if (!isProblemOpen) {
+        return (
+            <div title="Problem Statement" onClick={() => setIsProblemOpen(true)} className="w-full mr-10 cursor-pointer hover:bg-secondary transition-all h-screen bg-tertiary text-foreground font-sans flex items-start justify-center pt-5">
+                <TextInitialIcon />
+            </div>
+        );
+    }
+
+    return (
         <div className="w-full h-screen bg-primary text-foreground font-sans overflow-y-scroll minimal-scrollbar p-5">
+
+            {/* Header */}
+            <div className="flex items-center justify-end">
+                <button
+                    onClick={() => setIsProblemOpen(false)}
+                    className="flex items-center justify-center w-10 h-10 rounded-lg text-gray-400 hover:text-white hover:bg-[#171717] transition-colors cursor-pointer"
+                >
+                    <ChevronLeft size={20} />
+                </button>
+            </div>
+
             {/* Title */}
-            <div className="text-2xl font-bold mt-5">{problem?.title}</div>
+            <div className="text-2xl font-bold mt-2">
+                {problem?.title}
+            </div>
 
             <div className="w-full flex items-center justify-between mt-5 mb-5">
                 <div className="flex">
+
                     {/* Difficulty Tag */}
                     <div
                         className={`inline-flex items-center rounded-full px-2.5 py-1 text-[12px] font-semibold
-                        ${problem?.difficulty === "Easy" ? "bg-green-500/15 text-green-400" : problem?.difficulty === "Medium" ? "bg-yellow-500/15 text-yellow-400" : problem?.difficulty === "Hard" ? "bg-red-500/15 text-red-400" : "bg-purple-500/15 text-purple-400"}`}
+                        ${problem?.difficulty === "Easy"
+                                ? "bg-green-500/15 text-green-400"
+                                : problem?.difficulty === "Medium"
+                                    ? "bg-yellow-500/15 text-yellow-400"
+                                    : problem?.difficulty === "Hard"
+                                        ? "bg-red-500/15 text-red-400"
+                                        : "bg-purple-500/15 text-purple-400"
+                            }`}
                     >
                         {problem?.difficulty}
                     </div>
@@ -54,7 +96,10 @@ export default function ProblemSection({ workspace }) {
                     >
                         <Tag size={16} />
                         <span>Tags</span>
-                        {showTags ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                        {showTags
+                            ? <ChevronUp size={16} />
+                            : <ChevronDown size={16} />
+                        }
                     </button>
                 </div>
 
