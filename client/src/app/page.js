@@ -78,13 +78,13 @@ export default function App() {
           {/* Call to Actions */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link href={"/problems/new"}>
-              <button className="bg-yellow-400 text-black text-base font-bold max-[500px]:m-2 max-[500px]:text-sm px-12.5 py-3 m-5 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-yellow-500">
+              <button className="bg-yellow-400 text-black text-base font-bold max-[500px]:m-2 max-[500px]:text-sm px-12.5 py-4 m-5 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-yellow-500">
                 &lt;Canvas/&gt;
               </button>
             </Link>
             <a
               href="#demo"
-              className="w-fit sm:w-auto px-6 py-3 rounded-xl text-base font-semibold text-gray-200 bg-white/5 border border-white/10 hover:bg-white/10 hover:text-white transition-all flex items-center justify-center gap-2"
+              className="w-fit sm:w-auto px-6 py-4 rounded-xl text-base font-semibold text-gray-200 bg-white/5 border border-white/10 hover:bg-white/10 hover:text-white transition-all flex items-center justify-center gap-2"
             >
               <span className='w-fit'>Explore <span className="text-yellow-400">Shine Ai</span></span>
             </a>

@@ -33,11 +33,15 @@ export default function Navbar() {
                 <ul className="flex w-80 max-[500px]:w-[65vw] max-[600px]:text-sm justify-around items-center">
                     <Link href="/" scroll={true}><li>Home</li></Link>
                     <Link href="/#demo"><li>About</li></Link>
-                    <a href="mailto:maaz.khan.sdr@gmail.com">
-                        <li>
+                    <li>
+                        <a
+                            href="https://mail.google.com/mail/?view=cm&fs=1&to=maaz.khan.sdr@gmail.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             Contact
-                        </li>
-                    </a>
+                        </a>
+                    </li>
 
                     <li className="relative">
                         {user ? (

@@ -107,7 +107,7 @@ export default function Layout() {
         }
         loadWorkspace();
 
-    }, [problemId, session, status, setWorkspace]);
+    }, [problemId, session?.accessToken, status, setWorkspace]);
 
     const startConsoleDrag = () => {
         let latestHeight = consoleHeight;
