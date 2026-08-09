@@ -93,6 +93,7 @@ Shine Ai was built to eliminate this workflow and provide an integrated environm
 | `POST` | `/api/workspace/ensure` | Create a workspace if it doesn't exist, otherwise return the existing one. |
 | `GET` | `/api/workspace/:problemId` | Fetch session user's workspace for a specific problem. |
 | `PATCH` | `/api/workspace/:workspaceId` | checks and saves user code and test cases regularly. |
+| `DELETE` | `/api/workspace/:workspaceId` | deletes the workspace of the user. |
 | `GET` | `/api/workspace/all` | Fetch all workspaces belonging to the session user. |
 | `POST` | `api/workspace/ai-code/:problemId` | Generate and save AI-generated starter code for the specified problem. |
 | `GET` |  `/api/assistant/workspace/:workspaceId` | Load existing chat messages.
