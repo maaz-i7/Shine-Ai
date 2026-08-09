@@ -298,6 +298,12 @@ export default function Layout() {
                     className="w-1 cursor-ew-resize bg-black transition-colors hover:bg-gray-500 shrink-0"
                 />
             )}
+            {!isProblemOpen && (
+                <div
+                    onMouseDown={() => setIsProblemOpen(true)}
+                    className="w-1 cursor-ew-resize bg-black transition-colors hover:bg-gray-500 shrink-0"
+                />
+            )}
 
             {/* Center */}
             <div className="flex-1 min-w-0 flex flex-col overflow-hidden">

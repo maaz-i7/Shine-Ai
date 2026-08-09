@@ -49,7 +49,7 @@ export default function ProblemSection({
 
     if (!isProblemOpen) {
         return (
-            <div title="Problem Statement" onClick={() => setIsProblemOpen(true)} className="w-full mr-10 cursor-pointer hover:bg-secondary transition-all h-screen bg-tertiary text-foreground font-sans flex items-start justify-center pt-5">
+            <div title="Problem Statement" onClick={() => setIsProblemOpen(true)} className="w-full mr-10 cursor-pointer hover:bg-secondary transition-all h-screen bg-primary text-foreground font-sans flex items-start justify-center pt-5">
                 <TextInitialIcon />
             </div>
         );

@@ -114,7 +114,7 @@ export default function Component({ workspace, setWorkspaces, accessToken }) {
       <Link href={`/problem/${problem?._id}`}>
         <div className="w-full group h-fit flex items-center justify-between pb-5 pr-5 pt-5 hover:bg-[#1e1e1e] transition-colors border-b border-white/10">
           <div>
-            <Trash2 className="w-4 m-3 mr-5 text-gray-500 invisible transition-all hover:scale-110 hover:text-red-800 pointer-fine:group-hover:visible pointer-coarse:visible" onClick={(e) => {
+            <Trash2 className="w-4 m-3 mr-5 text-gray-500 invisible transition-colors hover:scale-110 hover:text-red-800 pointer-fine:group-hover:visible pointer-coarse:visible" onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()
               setShowDeleteModal(true)
