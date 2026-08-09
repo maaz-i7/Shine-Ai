@@ -55,7 +55,6 @@ export async function getUserWorkspaces(accessToken) {
     return data.workspaces;
 }
 
-// workspace.service.js
 export const getAiCodeForWorkspace = async ({ accessToken, problemId, summarizedStatement, runnerCode, language }) => {
     const response = await fetch(
         `${API_URL}/api/workspace/ai-code/${problemId}`,
@@ -81,3 +80,24 @@ export const getAiCodeForWorkspace = async ({ accessToken, problemId, summarized
 
     return data.generatedCode;
 };
+
+export async function deleteWorkspace({workspaceId, accessToken}) {
+    const response = await fetch(
+        `${API_URL}/api/workspace/${workspaceId}`,
+        {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+            },
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || "Failed to delete workspace");
+    }
+
+    return data;
+}

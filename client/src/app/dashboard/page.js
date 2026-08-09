@@ -86,7 +86,7 @@ function Page() {
         <div className="flex-1 overflow-y-auto minimal-scrollbar">
           {workspaces.length > 0 ? (
             workspaces.map((workspace, i) => (
-              <WorkspaceCard key={i} workspace={workspace} />
+              <WorkspaceCard key={i} workspace={workspace} setWorkspaces={setWorkspaces} accessToken={session?.accessToken} />
             ))
           ) : (
             <div className="h-full flex items-center justify-center text-gray-400 text-lg">

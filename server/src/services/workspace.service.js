@@ -1,8 +1,7 @@
 import Workspace from "../models/workspace.model.js";
 import Problem from "../models/problem.model.js";
-import { generateCode } from "./ai.service.js";
-
-import { generateWorkspace } from "./ai.service.js";
+import Assistant from "../models/assistant.model.js"
+import { generateCode, generateWorkspace } from "./ai.service.js";
 
 export const findWorkspace = async (userId, problemId) => {
     return await Workspace.findOne({
@@ -124,6 +123,19 @@ export const saveWorkspace = async ({ workspaceId, userId, userCode, testCases }
 
     if (!workspace)
         throw new Error("Workspace not found.");
+
+    return workspace;
+}
+
+export const deleteWorkspace = async ({ workspaceId, userId }) => {
+    const workspace = await Workspace.findOneAndDelete({
+        _id: workspaceId,
+        user: userId
+    });
+
+    await Assistant.findOneAndDelete({
+        workspace: workspaceId,
+    });
 
     return workspace;
 }
