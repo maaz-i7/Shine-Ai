@@ -66,12 +66,23 @@ export async function handleQuickHelp({ accessToken, workspaceId, type, userMess
 
         if (type === "test_case" || type === "edge_case") {
             const { addTestCase } = useTestCasesStore.getState();
-            let testCase = String(data.response);
-            testCase = testCase.trim()
-            addTestCase(testCase)
-            testCase += "\n\nI have added the above test case"
-            setQuickHelp(testCase);
-            return testCase
+
+            let testCase = String(data.response).trim();
+
+            // Remove existing Markdown fences if AI already added them
+            testCase = testCase.replace(/^```(?:\w+)?\s*\n?/, "").replace(/\n?```\s*$/, "").trim();
+
+            // Add only the raw test case to the store
+            addTestCase(testCase);
+
+            // Create display version with Markdown code fences
+            const displayTestCase = `\`\`\`\n${testCase}\n\`\`\``;
+
+            const message = `${displayTestCase}\n\nI have added the above test case`;
+
+            setQuickHelp(message);
+
+            return message;
         }
 
         setQuickHelp(data.response);

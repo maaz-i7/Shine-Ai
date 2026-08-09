@@ -119,7 +119,7 @@ export default function MarkdownRenderer({ text }) {
                     if (inline) {
                         return (
                             <code
-                                className="rounded bg-primary border border-border px-1.5 py-0.5 text-[13px] font-mono"
+                                className="rounded bg-primary px-1.5 py-0.5 text-[13px] font-mono"
                                 {...props}
                             >
                                 {children}
@@ -138,7 +138,7 @@ export default function MarkdownRenderer({ text }) {
                 },
 
                 pre: ({ children }) => (
-                    <pre className="my-5 overflow-x-auto rounded-xl border border-border bg-primary p-4 text-[13px] leading-6 minimal-scrollbar">
+                    <pre className="my-5 overflow-x-auto rounded-xl bg-primary p-4 text-[13px] leading-6 minimal-scrollbar">
                         {children}
                     </pre>
                 ),
