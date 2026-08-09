@@ -17,6 +17,9 @@ Your task is to return ONLY valid JSON with exactly one field.
 Rules:
 
 - Convert the starter code into fully runnable code
+- If the language is Java, ensure the final executable code uses exactly one top-level public class (preserving the required/provided class name) with a 
+  "public static void main(String[] args)" method inside that same class; keep all solution methods and runner logic within it and do not create additional 
+  top-level classes
 - Do not change the starter code at all
 - Create a runnable main function that calls the starter code
 - if starter code is empty, create one with apt names and parameters, leave the entire logic to be implemented by the user
