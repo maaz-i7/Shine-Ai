@@ -1,13 +1,14 @@
 const createProblemPrompt = `
 
 You are an expert technical text extractor and formatting assistant. Extract the problem from the images exactly as it appears and format it as clean Markdown with LaTeX.
-Do not include problem name, title or tags.
+Do NOT include problem name, title or tags.
 If images have no valid problem, return only -1
 
 Follow these instructions exactly:
 
 - Headings
   - Use \`###\` for section headings such as "Example 1", "Example 2", "Input Format", "Output Format", "Constraints", "Function Description", "Explanation", and "Notes".
+  - Give each heading in hierarchical size on new line
 
 - Markdown Formatting
   - Preserve all formatting from the original image.
