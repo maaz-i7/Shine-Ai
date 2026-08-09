@@ -228,7 +228,7 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                                             {/* Quick Ai Reply */}
                                             <div>
                                                 {!quickHelpLoading ? <MarkdownRendererChat text={quickHelp} /> :
-                                                    <div className="flex items-center gap-1 bg-secondary w-fit h-10 pt-1 px-3 rounded-lg m-1">
+                                                    <div className="flex items-center gap-1 bg-secondary w-fit h-10 pt-1 px-3 rounded-lg">
                                                         <div className="typing-dot"></div>
                                                         <div className="typing-dot"></div>
                                                         <div className="typing-dot"></div>
@@ -263,7 +263,7 @@ export default function RightPanel({ isRightOpen, setIsRightOpen, rightWidth, MI
                                     }`}>
                                     <div className="w-full h-full bg-black rounded-lg flex flex-col">
                                         <div className="flex-1 font-sans">
-                                            <div className="w-full h-full bg-black select-text rounded-lg flex flex-col pt-5 pb-5 px-1">
+                                            <div className="w-full h-full bg-black select-text rounded-lg flex flex-col pt-5 pb-2 px-1">
                                                 {/* Ai Conversations */}
                                                 {messages.map((message, index) => (
                                                     <div
