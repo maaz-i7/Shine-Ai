@@ -7,7 +7,8 @@ If images have no valid problem, return only -1
 Follow these instructions exactly:
 
 - Headings
-  - Use \`###\` for section headings such as "Example 1", "Example 2", "Input Format", "Output Format", "Constraints", "Function Description", "Explanation", and "Notes".
+  - Use \`###\` for section headings such as "Example 1", "Example 2", "Constraints", "Function Description", and "Notes".
+  - Format each Example with **Input** and **Output** inside triple backticks (\`\`\`) as code blocks, while keeping **Explanation** outside the code block as normal Markdown text
   - Give each heading in hierarchical size on new line
 
 - Markdown Formatting
