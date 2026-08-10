@@ -35,68 +35,68 @@ function Page() {
 
   }, [status, session?.accessToken]);
 
-  if (loading || status === "loading") {
+  if (!loading && status !== "loading") {
     return (
-      <div className="flex h-screen w-screen flex-col items-center justify-center bg-primary">
-        <h1 className="text-2xl mb-3 font-medium text-white">
-          Getting Workspaces
-        </h1>
-        <LoaderCircle className="h-10 w-10 animate-spin text-blue-500" />
+      <div className="w-screen flex-1 flex bg-primary font-sans overflow-hidden">
+        <div className="w-1/4 border-r max-[1400px]:hidden border-white/10 h-full">
+          <div className="p-10 flex flex-col">
+            <div className="flex">
+              <div>
+                <Image
+                  src={session?.user?.image ? session.user.image?.replace(/=s\d+-c$/, "=s400-c") : "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"}
+                  alt={user?.name || "User"}
+                  width={500}
+                  height={500}
+                  className="w-30 h-30 rounded-xl"
+                  loading="eager"
+                />
+              </div>
+              <div className="p-2 pl-5 flex-1 flex flex-col">
+                <div className="">
+                  <div>{user?.name}</div>
+                  <div className="text-sm text-gray-500">@{user?.username}</div>
+                </div>
+                <button className="w-full mt-auto p-2 rounded cursor-pointer text-sm bg-[#1b2d21] text-[#28a252]">Edit Profile</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="flex w-full justify-between items-center p-5 border-b border-white/10 sticky top-0 z-5 bg-primary">
+            <div className="text-3xl max-[500px]:text-2xl font-bold">Problems</div>
+            <div className="flex items-center justify-center">
+              <Link href="/problems/new">
+                <button className="mr-5 max-[500px]:mr-0 border max-[500px]:text-base max-[500px]:px-2 border-gray-500/40 hover:bg-secondary active:scale-98 transition-all px-6 py-3 text-xl rounded flex items-center gap-2 cursor-pointer">
+                  New Problem
+                  <Plus className="max-[500px]:w-5" strokeWidth={2.5} />
+                </button>
+              </Link>
+            </div>
+          </div>
+          <div className="flex-1 overflow-y-auto minimal-scrollbar">
+            {workspaces.length > 0 ? (
+              workspaces.map((workspace, i) => (
+                <WorkspaceCard key={i} workspace={workspace} setWorkspaces={setWorkspaces} accessToken={session?.accessToken} />
+              ))
+            ) : (
+              <div className="h-full flex items-center justify-center text-gray-400 text-lg">
+                Nothing to show here!
+              </div>
+            )}
+          </div>
+        </div>
       </div>
-    );
+    )
   }
 
   return (
-    <div className="w-screen flex-1 flex bg-primary font-sans overflow-hidden">
-      <div className="w-1/4 border-r max-[1400px]:hidden border-white/10 h-full">
-        <div className="p-10 flex flex-col">
-          <div className="flex">
-            <div>
-              <Image
-                src={session?.user?.image ? session.user.image?.replace(/=s\d+-c$/, "=s400-c") : "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"}
-                alt={user?.name || "User"}
-                width={500}
-                height={500}
-                className="w-30 h-30 rounded-xl"
-                loading="eager"
-              />
-            </div>
-            <div className="p-2 pl-5 flex-1 flex flex-col">
-              <div className="">
-                <div>{user?.name}</div>
-                <div className="text-sm text-gray-500">@{user?.username}</div>
-              </div>
-              <button className="w-full mt-auto p-2 rounded cursor-pointer text-sm bg-[#1b2d21] text-[#28a252]">Edit Profile</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="flex w-full justify-between items-center p-5 border-b border-white/10 sticky top-0 z-5 bg-primary">
-          <div className="text-3xl max-[500px]:text-2xl font-bold">Problems</div>
-          <div className="flex items-center justify-center">
-            <Link href="/problems/new">
-              <button className="mr-5 max-[500px]:mr-0 border max-[500px]:text-base max-[500px]:px-2 border-gray-500/40 hover:bg-secondary active:scale-98 transition-all px-6 py-3 text-xl rounded flex items-center gap-2 cursor-pointer">
-                New Problem
-                <Plus className="max-[500px]:w-5" strokeWidth={2.5} />
-              </button>
-            </Link>
-          </div>
-        </div>
-        <div className="flex-1 overflow-y-auto minimal-scrollbar">
-          {workspaces.length > 0 ? (
-            workspaces.map((workspace, i) => (
-              <WorkspaceCard key={i} workspace={workspace} setWorkspaces={setWorkspaces} accessToken={session?.accessToken} />
-            ))
-          ) : (
-            <div className="h-full flex items-center justify-center text-gray-400 text-lg">
-              Nothing to show here!
-            </div>
-          )}
-        </div>
-      </div>
+    <div className="flex h-screen w-screen flex-col items-center justify-center bg-primary">
+      <h1 className="text-2xl mb-3 font-medium text-white">
+        Getting Workspaces
+      </h1>
+      <LoaderCircle className="h-10 w-10 animate-spin text-blue-500" />
     </div>
-  )
+  );
 }
 
 export default Page
