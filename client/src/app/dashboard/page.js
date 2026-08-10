@@ -9,7 +9,7 @@ import { Plus, LoaderCircle } from "lucide-react";
 
 function Page() {
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [workspaces, setWorkspaces] = useState([])
   const { data: session, status } = useSession();
   const user = session?.user
