@@ -48,7 +48,7 @@ const COMPARISON_DATA = [
 export default function App() {
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] text-gray-100 pb-50 font-sans selection:bg-yellow-400 selection:text-black relative overflow-x-hidden">
+    <div id="top" className="min-h-screen bg-[#1a1a1a] text-gray-100 pb-50 font-sans selection:bg-yellow-400 selection:text-black relative overflow-x-hidden">
 
       <div className='w-full flex items-center -mt-10 justify-center'>
         <Image

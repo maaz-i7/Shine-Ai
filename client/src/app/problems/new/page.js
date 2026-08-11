@@ -193,7 +193,7 @@ export default function App() {
   };
 
   return (
-    <div className="w-full font-sans relative transition-colors duration-300 bg-primary">
+    <div className="w-full pb-50 font-sans relative transition-colors duration-300 bg-primary">
 
       {toast && (
         <div

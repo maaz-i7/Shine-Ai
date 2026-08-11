@@ -5,7 +5,7 @@ import WorkspaceCard from "@/components/WorkspaceCard.js"
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { getUserWorkspaces } from "@/services/workspace.service.js";
-import { Plus, LoaderCircle } from "lucide-react";
+import { Plus, LoaderCircle, CheckCircle } from "lucide-react";
 
 function Page() {
 
@@ -56,7 +56,7 @@ function Page() {
                   <div>{user?.name}</div>
                   <div className="text-sm text-gray-500">@{user?.username}</div>
                 </div>
-                <button className="w-full mt-auto p-2 rounded cursor-pointer text-sm bg-[#1b2d21] text-[#28a252]">Edit Profile</button>
+                <button className="w-full flex items-center justify-center mt-auto p-2 rounded cursor-pointer text-sm bg-[#1b2d21] text-[#28a252]">Verified <CheckCircle className="w-3 ml-1"/> </button>
               </div>
             </div>
           </div>

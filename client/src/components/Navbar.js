@@ -30,10 +30,12 @@ export default function Navbar() {
                 </Link>
             </div>
             <div>
-                <ul className="flex w-80 max-[500px]:w-[65vw] max-[600px]:text-sm justify-around items-center">
-                    <Link href="/" scroll={true}><li>Home</li></Link>
-                    <Link href="/#demo"><li>About</li></Link>
-                    <li>
+                <ul className="flex gap-4 max-[600px]:text-sm justify-around items-center">
+                    <Link href="/" scroll={true}><li className="text-gray-300 hover:text-white">Home</li></Link>
+                    <Link href="/dashboard"><li className="text-gray-300 hover:text-white">Problems</li></Link>
+                    <Link href="/problems/new"><li className="text-gray-300 hover:text-white">Canvas</li></Link>
+                    <Link href="/#demo"><li className="text-gray-300 hidden min-[500px]:block hover:text-white">About</li></Link>
+                    <li className="text-gray-300 hidden min-[500px]:block hover:text-white">
                         <a
                             href="https://mail.google.com/mail/?view=cm&fs=1&to=maaz.khan.sdr@gmail.com"
                             target="_blank"
@@ -69,7 +71,7 @@ export default function Navbar() {
                             </>
                         ) : (
                             <Link href={"/login"}>
-                                <span>Sign In</span>
+                                <span className="text-gray-300 hover:text-white">Sign In</span>
                             </Link>
                         )}
                     </li>
