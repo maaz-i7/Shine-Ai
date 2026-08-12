@@ -7,7 +7,7 @@ import { handleQuickHelp } from "@/services/quick.help.service";
 import useAssistantStore from "@/stores/assistant.store";
 import { sendMessage } from "@/services/assistant.service";
 import { useRef, useEffect } from "react";
-import { X, Bug, Timer, MemoryStick, LightbulbIcon, TestTube2, BookOpenTextIcon, ArrowDownRight, BookAlert, BookOpenCheckIcon, FlaskRoundIcon } from "lucide-react";
+import { X, Bug, Timer, MemoryStick, LightbulbIcon, TestTube2, BookOpenTextIcon, ArrowDownRight, BookAlert, BookOpenCheckIcon, FlaskRoundIcon, SwordsIcon } from "lucide-react";
 import { useState } from "react";
 
 const QUICK_HELP_LABELS = {
@@ -15,6 +15,7 @@ const QUICK_HELP_LABELS = {
     debug: "List out all syntax errors in my code and help fix them",
     test_case: "Add a new random test case",
     edge_case: "Add a new edge case",
+    challenge_case: "Add a challenge test case where my code might fail",
     summarize: "Summarize the problem for me",
     direction: "Check if i am going in the right direction",
     time_complexity: "Analyze the time complexity of my code",
@@ -53,6 +54,12 @@ export const QUICK_HELP_BUTTONS = [
         label: "Edge Case",
         icon: BookAlert,
         iconClass: "text-yellow-700",
+    },
+    {
+        type: "challenge_case",
+        label: "Challenge Case",
+        icon: SwordsIcon,
+        iconClass: "text-yellow-400",
     },
     {
         type: "time_complexity",

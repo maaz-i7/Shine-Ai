@@ -271,3 +271,44 @@ Finish with:
 ## Final Output
 `;
 }
+
+export function getChallengeCasesPrompt({ workspace, selectedTestCase, summary }) {
+
+    const testCase = workspace?.testCases?.[selectedTestCase];
+
+    return `
+
+Previous Conversation Summary:
+${summary || "Fresh Conversation"}
+
+Problem:
+${workspace?.problem?.summarizedStatement}
+
+User's Code:
+${workspace?.userCode}
+
+Correct Code:
+${workspace?.aiCode}
+
+Analyze the user's code thoroughly to determine:
+- The exact input format.
+- The meaning and data type of each input.
+- Any constraints implied by the code.
+- The required order and formatting of the input.
+
+Then generate one valid, random test case where the user's code might fail.
+
+Rules:
+- It should not be a stress test, total characters must be less than 500
+- Make sure it is a test case where the user's code might fail
+- Make sure the test case is different from past test cases given
+- The test case must be syntactically valid for the program.
+- Use realistic random values within the inferred constraints.
+- Preserve the exact whitespace, line breaks, and formatting expected by the program.
+- If there are multiple test cases 'T', generate a valid value of 'T' and the corresponding number of test cases.
+- Do not explain the test case.
+- Do not include Markdown, code fences, labels, or any extra text.
+- Return only the raw input string exactly as it should be provided to the program.
+- Reply as if you are talking to the user directly
+`;
+}

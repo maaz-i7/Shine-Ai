@@ -3,7 +3,7 @@ import Workspace from "../models/workspace.model.js";
 import getAiReplyPrompt from "../prompts/getAiReply.prompt.js";
 import { generateAiReply, updateConversationSummary, generateQuickHelpResponse } from "./gemini.service.js";
 
-import { getHintPrompt, getDebugPrompt, getSummarizePrompt, getTestCasesPrompt, getEdgeCasesPrompt, getTimeComplexityPrompt, getSpaceComplexityPrompt, getDirectionPrompt, getExplainInputPrompt, getDryRunPrompt } from "../prompts/quickHelps.prompts.js";
+import { getHintPrompt, getDebugPrompt, getSummarizePrompt, getTestCasesPrompt, getEdgeCasesPrompt, getTimeComplexityPrompt, getSpaceComplexityPrompt, getDirectionPrompt, getExplainInputPrompt, getDryRunPrompt, getChallengeCasesPrompt } from "../prompts/quickHelps.prompts.js";
 
 export async function getAssistant(workspaceId) {
     return await Assistant.findOne({ workspace: workspaceId });
@@ -92,6 +92,7 @@ const QUICK_HELP_PROMPTS = {
     summarize: getSummarizePrompt,
     test_case: getTestCasesPrompt,
     edge_case: getEdgeCasesPrompt,
+    challenge_case: getChallengeCasesPrompt,
     time_complexity: getTimeComplexityPrompt,
     space_complexity: getSpaceComplexityPrompt,
     direction: getDirectionPrompt,

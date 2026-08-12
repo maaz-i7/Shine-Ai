@@ -1,5 +1,11 @@
 import useTestCasesStore from "@/stores/testcases.store";
 
+const testCaseMessage = {
+    "test_case": "I have added the above test case",
+    "edge_case": "I have added the above edge case",
+    "challenge_case": "Your code might fail for the above test case",
+}
+
 export async function handleQuickHelp({ accessToken, workspaceId, type, userMessage, setQuickHelp, setQuickHelpLoading, setMessages, messages }) {
 
     // Show the user's quick help request immediately
@@ -64,7 +70,7 @@ export async function handleQuickHelp({ accessToken, workspaceId, type, userMess
             },
         ]);
 
-        if (type === "test_case" || type === "edge_case") {
+        if (type === "test_case" || type === "edge_case" || type === "challenge_case") {
             const { addTestCase } = useTestCasesStore.getState();
 
             let testCase = String(data.response).trim();
@@ -78,7 +84,7 @@ export async function handleQuickHelp({ accessToken, workspaceId, type, userMess
             // Create display version with Markdown code fences
             const displayTestCase = `\`\`\`\n${testCase}\n\`\`\``;
 
-            const message = `${displayTestCase}\n\nI have added the above test case`;
+            const message = `${displayTestCase}\n\n${testCaseMessage[type]}`;
 
             setQuickHelp(message);
 
