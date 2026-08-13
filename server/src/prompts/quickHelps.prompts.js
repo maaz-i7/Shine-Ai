@@ -41,16 +41,32 @@ The user requested for a hint.
 
 export function getDebugPrompt({ workspace, selectedTestCase, summary }) {
     return `
-
 User Code:
 ${workspace?.userCode}
 
 ## Task
-Find out all syntax errors in the user's code
+Analyze the code and identify only:
+1. Syntax Errors
+2. Runtime Errors: definite or very obvious runtime failures
+3. Warnings or Dangers: likely bugs, unsafe assumptions, or common traps
 
-- Point out ONLY syntax and runtime errors, no logical errors
-- List out all errors pointwise with labels: "Error" and "Fix
-- Reply as if you are talking to the user directly
+## Rules
+- Give the exact line number for every issue.
+- Do not report stylistic issues or minor code-quality suggestions.
+- Do not report hypothetical or unlikely problems.
+- Keep explanations concise and actionable.
+- Reply directly to the user.
+- For each category, use this exact format:
+
+Runtime Errors:
+1. Line 6
+Issue: You are accessing an array index outside its valid range.
+Fix: Change the loop condition from \`i <= n\` to \`i < n\`.
+
+- If a category has no issues, write:
+None
+
+- Return only the analysis. Do not add introductory or concluding text.
 `;
 }
 
