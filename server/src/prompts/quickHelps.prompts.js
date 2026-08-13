@@ -66,6 +66,7 @@ Fix: Change the loop condition from \`i <= n\` to \`i < n\`.
 - If a category has no issues, write:
 None
 
+- Write 'Issue' and 'Fix' in separate lines as sub headings of 'Line'
 - Return only the analysis. Do not add introductory or concluding text.
 `;
 }
