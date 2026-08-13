@@ -46,9 +46,9 @@ ${workspace?.userCode}
 
 ## Task
 Analyze the code and identify only:
-1. Syntax Errors
-2. Runtime Errors: definite or very obvious runtime failures
-3. Warnings: likely bugs, unsafe assumptions, or common traps
+**Syntax Errors:**
+**Runtime Errors:**: definite or very obvious runtime failures
+**Warnings:**: likely bugs, unsafe assumptions, or common traps
 
 ## Rules
 - Give the exact line number for every issue.
@@ -58,10 +58,21 @@ Analyze the code and identify only:
 - Reply directly to the user.
 - For each category, use this exact format:
 
-Runtime Errors:
-1. Line 6
-Issue: You are accessing an array index outside its valid range.
-Fix: Change the loop condition from \`i <= n\` to \`i < n\`.
+
+**Syntax Errors:**: None
+
+**Runtime Errors:**
+🐞 **Line Number:** 6
+* **Issue:** You are accessing an array index outside its valid range.
+* **Fix:** Change the loop condition from \`i <= n\` to \`i < n\`.
+
+🐞 **Line Number:** 12
+
+* **Issue:** You are dividing by a variable that can have a value of zero.
+* **Fix:** Check that the denominator is not \`0\` before performing the division.
+
+
+**Warnings:** None
 
 - If a category has no issues, write: None
 - Write 'Issue' and 'Fix' in separate lines as bold sub headings of 'Line'
