@@ -10,6 +10,6 @@ router.post("/ai-code/:problemId", authMiddleware, getAiCodeController);
 router.get("/:problemId", authMiddleware, getWorkspaceForProblemController);
 router.delete("/:workspaceId", authMiddleware, deleteWorkspaceController);
 router.patch("/:workspaceId", authMiddleware, saveWorkspaceController);
-router.post("/new-language-runner-code/:workspaceId", authMiddleware, getNewLanguageRunnerCodeController);
+router.post("/:workspaceId/new-language-runner-code", authMiddleware, getNewLanguageRunnerCodeController);
 
 export default router;

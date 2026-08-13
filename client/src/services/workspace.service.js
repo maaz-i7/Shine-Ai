@@ -104,7 +104,7 @@ export async function deleteWorkspace({workspaceId, accessToken}) {
 
 export async function getNewLanguageRunnerCode({workspaceId, language, accessToken}) {
     const response = await fetch(
-        `${API_URL}/api/workspace/new-language-runner-code/${workspaceId}`,
+        `${API_URL}/api/workspace/${workspaceId}/new-language-runner-code`,
         {
             method: "POST",
             headers: {
