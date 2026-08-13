@@ -99,6 +99,7 @@ Shine Ai was built to eliminate this workflow and provide an integrated environm
 | `GET` |  `/api/assistant/workspace/:workspaceId` | Load existing chat messages.
 | `POST` |  `/api/assistant/workspace/:workspaceId/chat` | Send a message and receive the AI response.
 | `POST` |  `/api/assistant/workspace/:workspaceId/quick-help` | Gets AI response for quick help functions
+| `POST` |  `/api/assistant/workspace/:workspaceId/new-language-runner-code` | gets AI generated runner code for the new code language
 
 ---
 

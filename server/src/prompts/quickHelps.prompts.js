@@ -48,7 +48,7 @@ ${workspace?.userCode}
 Analyze the code and identify only:
 1. Syntax Errors
 2. Runtime Errors: definite or very obvious runtime failures
-3. Warnings or Dangers: likely bugs, unsafe assumptions, or common traps
+3. Warnings: likely bugs, unsafe assumptions, or common traps
 
 ## Rules
 - Give the exact line number for every issue.
@@ -63,10 +63,8 @@ Runtime Errors:
 Issue: You are accessing an array index outside its valid range.
 Fix: Change the loop condition from \`i <= n\` to \`i < n\`.
 
-- If a category has no issues, write:
-None
-
-- Write 'Issue' and 'Fix' in separate lines as sub headings of 'Line'
+- If a category has no issues, write: None
+- Write 'Issue' and 'Fix' in separate lines as bold sub headings of 'Line'
 - Return only the analysis. Do not add introductory or concluding text.
 `;
 }
