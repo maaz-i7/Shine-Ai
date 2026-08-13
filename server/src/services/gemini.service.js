@@ -10,6 +10,7 @@ import getAiReplyForWorkspacePrompt from "../prompts/getAiReplyForWorkspace.prom
 import updateConversationSummaryPrompt from "../prompts/updateConversationSummary.prompt.js"
 
 import dotenv from "dotenv";
+import generateNewLanguageRunnerCodePrompt from "../prompts/generateNewLanguageRunnerCodePrompt.js";
 dotenv.config();
 
 const PRO_MODEL = "gemini-3.5-flash"
@@ -300,8 +301,8 @@ export async function generateAiReply({ workspace, message, summary }) {
         // Step 2: Build the appropriate prompt
         const prompt =
             intent === "workspace"
-                ? getAiReplyForWorkspacePrompt({workspace, message, summary})
-                : getAiReplyPrompt({message, summary});
+                ? getAiReplyForWorkspacePrompt({ workspace, message, summary })
+                : getAiReplyPrompt({ message, summary });
 
         // Step 3: Generate the final response
         const result = await codeModel.generateContent(prompt);
@@ -326,7 +327,7 @@ export async function updateConversationSummary({ summary, userMessage, assistan
 
         const result = await codeModel.generateContent(prompt);
         return result.response.text().trim();
-        
+
     } catch (error) {
         console.error("Error updating conversation summary:", error);
         throw new Error(
@@ -348,3 +349,27 @@ export async function generateQuickHelpResponse(prompt) {
         );
     }
 }
+
+export const generateNewLanguageRunnerCode = async ({ currentRunnerCode, language }) => {
+    try {
+        if (!currentRunnerCode || !language) {
+            throw new Error("Missing required fields.");
+        }
+
+        const prompt = generateNewLanguageRunnerCodePrompt({currentRunnerCode, language})
+        const result = await codeModel.generateContent(prompt);
+
+        const generatedCode = result.response.text()?.trim();
+
+        if (!generatedCode) {
+            throw new Error("Gemini returned an empty response.");
+        }
+        return generatedCode;
+    } catch (error) {
+        console.error("Error generating new language runner code:", error);
+
+        throw new Error(
+            error?.message || "Failed to generate new language runner code."
+        );
+    }
+};

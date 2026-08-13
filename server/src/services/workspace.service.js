@@ -2,6 +2,7 @@ import Workspace from "../models/workspace.model.js";
 import Problem from "../models/problem.model.js";
 import Assistant from "../models/assistant.model.js"
 import { generateCode, generateWorkspace } from "./ai.service.js";
+import { generateNewLanguageRunnerCode } from "./gemini.service.js"
 
 export const findWorkspace = async (userId, problemId) => {
     return await Workspace.findOne({
@@ -139,3 +140,39 @@ export const deleteWorkspace = async ({ workspaceId, userId }) => {
 
     return workspace;
 }
+
+export const getNewLanguageRunnerCodeForWorkspace = async ({ workspaceId, language }) => {
+    try {
+        const workspace = await Workspace.findById(workspaceId);
+
+        if (!workspace) {
+            throw new Error("Workspace not found.");
+        }
+
+        const runnerCode = await generateNewLanguageRunnerCode({
+            currentRunnerCode: workspace?.runnerCode,
+            language: language,
+        });
+
+        const updatedWorkspace = await Workspace.findByIdAndUpdate(
+            workspaceId,
+            {
+                runnerCode,
+                userCode: runnerCode,
+                language,
+            },
+            {
+                returnDocument: "after",
+            }
+        );
+
+        return runnerCode;
+
+    } catch (error) {
+        console.error("Error generating new language runner code:", error);
+
+        throw new Error(
+            error?.message || "Failed to generate new language runner code."
+        );
+    }
+};

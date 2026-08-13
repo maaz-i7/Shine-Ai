@@ -6,7 +6,9 @@ import useTestCasesStore from '@/stores/testcases.store';
 import { checkCode, saveWorkspace } from '@/services/code.editor.service';
 import { useSession } from 'next-auth/react';
 import ProfileCard from './ProfileCard';
+import ChangeLanguageModal from './ChangeLanguageModalBox';
 import Image from 'next/image';
+import { getNewLanguageRunnerCode } from '@/services/workspace.service';
 
 export const LANGUAGES = [
   { id: "cpp", name: "C++", compiler: "g++-15" },
@@ -36,6 +38,7 @@ function App({ workspace, isMobile = false }) {
   const { data: session } = useSession();
   const user = session?.user
   const [language, setLanguage] = useState(workspace?.language);
+  const [changedlanguage, setChangedLanguage] = useState(workspace?.language);
   const [theme, setTheme] = useState('vs-dark');
   const [tabSize, setTabSize] = useState(4);
   const [fontSize, setFontSize] = useState(isMobile ? 10 : 14);
@@ -44,6 +47,7 @@ function App({ workspace, isMobile = false }) {
   const [idealLang, setIdealLang] = useState(workspace?.language);
   const [isCopied, setIsCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showLanguageChangeModal, setShowLanguageChangeModal] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const testCases = useTestCasesStore((state) => state.testCases);
   const running = useTestCasesStore((state) => state.running);
@@ -219,16 +223,20 @@ function App({ workspace, isMobile = false }) {
     }
   };
 
-  const handleLanguageChange = (e) => {
-    const newLang = e.target.value;
+  const handleLanguageChange = async () => {
+    setShowLanguageChangeModal(false)
+    setIsLoading(true)
+    const newLang = changedlanguage;
     setLanguage(newLang);
-    const newCode = '';
+    const newCode = await getNewLanguageRunnerCode({ workspaceId: workspace?._id, language: newLang, accessToken: session?.accessToken });
     setCode(newCode);
 
     if (monacoRef.current && editorInstanceRef.current) {
       monacoRef.current.editor.setModelLanguage(editorInstanceRef.current.getModel(), newLang);
       editorInstanceRef.current.setValue(newCode);
     }
+
+    setIsLoading(false)
   };
 
   const handleThemeChange = (e) => {
@@ -309,188 +317,196 @@ function App({ workspace, isMobile = false }) {
   };
 
   return (
-    <div className="flex flex-col h-full w-full bg-[#1e1e1e] rounded-xl overflow-hidden">
+    <>
+      {
+        showLanguageChangeModal && <ChangeLanguageModal isOpen={true} onCancel={() => setShowLanguageChangeModal(false)} onConfirm={handleLanguageChange} />
+      }
+      <div className="flex flex-col h-full w-full bg-[#1e1e1e] rounded-xl overflow-hidden">
 
-      {/* Top Toolbar */}
-      <div className="flex flex-wrap items-center justify-between px-4 py-3 bg-[#252526] border-b border-[#333333] gap-y-3">
-        <div className="flex flex-wrap items-center gap-3">
+        {/* Top Toolbar */}
+        <div className="flex flex-wrap items-center justify-between px-4 py-3 bg-[#252526] border-b border-[#333333] gap-y-3">
+          <div className="flex flex-wrap items-center gap-3">
 
-          {/* Language Selector */}
-          <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5">
-            <Code2 className="w-4 h-4 text-gray-400 mr-2" />
-            <select
-              value={language}
-              onChange={handleLanguageChange}
-              className="bg-transparent text-sm text-gray-200 outline-none cursor-pointer"
-            >
-              {LANGUAGES.map((lang) => (
-                <option key={lang.id} value={lang.id} className="bg-[#252526]">
-                  {lang.name}
-                </option>
-              ))}
-            </select>
-          </div>
+            {/* Language Selector */}
+            <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5">
+              <Code2 className="w-4 h-4 text-gray-400 mr-2" />
+              <select
+                value={language}
+                onChange={(e) => {
+                  setChangedLanguage(e.target.value)
+                  setShowLanguageChangeModal(true)
+                }}
+                className="bg-transparent text-sm text-gray-200 outline-none cursor-pointer"
+              >
+                {LANGUAGES.map((lang) => (
+                  <option key={lang.id} value={lang.id} className="bg-[#252526]">
+                    {lang.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          {/* Theme Selector */}
-          <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5">
-            {theme === 'vs-dark' || theme === 'hc-black' ? (
-              <Moon className="w-4 h-4 text-gray-400 mr-2" />
-            ) : (
-              <Sun className="w-4 h-4 text-gray-400 mr-2" />
-            )}
-            <select
-              value={theme}
-              onChange={handleThemeChange}
-              className="bg-transparent text-sm text-gray-200 outline-none cursor-pointer"
-            >
-              {THEMES.map((t) => (
-                <option key={t.id} value={t.id} className="bg-[#252526]">
-                  {t.name}
-                </option>
-              ))}
-            </select>
-          </div>
+            {/* Theme Selector */}
+            <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5">
+              {theme === 'vs-dark' || theme === 'hc-black' ? (
+                <Moon className="w-4 h-4 text-gray-400 mr-2" />
+              ) : (
+                <Sun className="w-4 h-4 text-gray-400 mr-2" />
+              )}
+              <select
+                value={theme}
+                onChange={handleThemeChange}
+                className="bg-transparent text-sm text-gray-200 outline-none cursor-pointer"
+              >
+                {THEMES.map((t) => (
+                  <option key={t.id} value={t.id} className="bg-[#252526]">
+                    {t.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          {/* Indentation (Tab Size) Selector */}
-          <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5">
-            <AlignLeft className="w-4 h-4 text-gray-400 mr-2" />
-            <select
-              value={tabSize}
-              onChange={handleTabSizeChange}
-              className="bg-transparent text-sm text-gray-200 outline-none cursor-pointer"
-            >
-              {TAB_SIZES.map((size) => (
-                <option key={size} value={size} className="bg-[#252526]">
-                  Tab Size: {size}
-                </option>
-              ))}
-            </select>
-          </div>
+            {/* Indentation (Tab Size) Selector */}
+            <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5">
+              <AlignLeft className="w-4 h-4 text-gray-400 mr-2" />
+              <select
+                value={tabSize}
+                onChange={handleTabSizeChange}
+                className="bg-transparent text-sm text-gray-200 outline-none cursor-pointer"
+              >
+                {TAB_SIZES.map((size) => (
+                  <option key={size} value={size} className="bg-[#252526]">
+                    Tab Size: {size}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          {/* Font Size Selector */}
-          <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5">
-            <Type className="w-4 h-4 text-gray-400 mr-2" />
-            <select
-              value={fontSize}
-              onChange={handleFontSizeChange}
-              className="bg-transparent text-sm text-gray-200 outline-none cursor-pointer"
-            >
-              {[8, 10, 12, 14, 16, 18, 20, 22, 24].map((size) => (
-                <option key={size} value={size} className="bg-[#252526]">
-                  {size}px
-                </option>
-              ))}
-            </select>
-          </div>
-          <button
-            onClick={handleRunCode}
-            disabled={running || cooldown > 0}
-            className={`flex items-center gap-2 w-20 h-8 justify-center rounded-md transition-all duration-200 text-white
+            {/* Font Size Selector */}
+            <div className="flex items-center bg-[#333333] rounded-md px-2 py-1.5">
+              <Type className="w-4 h-4 text-gray-400 mr-2" />
+              <select
+                value={fontSize}
+                onChange={handleFontSizeChange}
+                className="bg-transparent text-sm text-gray-200 outline-none cursor-pointer"
+              >
+                {[8, 10, 12, 14, 16, 18, 20, 22, 24].map((size) => (
+                  <option key={size} value={size} className="bg-[#252526]">
+                    {size}px
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button
+              onClick={handleRunCode}
+              disabled={running || cooldown > 0}
+              className={`flex items-center gap-2 w-20 h-8 justify-center rounded-md transition-all duration-200 text-white
               ${running || cooldown > 0
-                ? "bg-yellow-600 cursor-not-allowed"
-                : "bg-green-700 hover:bg-green-800 cursor-pointer active:scale-98"
-              }`}
-          >
-            {running ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-              </>
-            ) : cooldown > 0 ? (
-              <>
-                <Play className="w-4 h-4" />
-                {cooldown}s
-              </>
-            ) : (
-              <>
-                <Play className="w-4 h-4" />
-                Run
-              </>
-            )}
-          </button>
-        </div>
+                  ? "bg-yellow-600 cursor-not-allowed"
+                  : "bg-green-700 hover:bg-green-800 cursor-pointer active:scale-98"
+                }`}
+            >
+              {running ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                </>
+              ) : cooldown > 0 ? (
+                <>
+                  <Play className="w-4 h-4" />
+                  {cooldown}s
+                </>
+              ) : (
+                <>
+                  <Play className="w-4 h-4" />
+                  Run
+                </>
+              )}
+            </button>
+          </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={() => setCode(workspace?.runnerCode)}
-            className="flex items-center cursor-pointer p-1 rounded-md hover:bg-[#333333] transition-colors text-gray-400 hover:text-gray-200"
-            title="Reset Code"
-          >
-            <LucideListRestart className="w-5 h-5" />
-          </button>
-          <button
-            onClick={handleCopyCode}
-            className="flex items-center cursor-pointer p-2 rounded-md hover:bg-[#333333] transition-colors text-gray-400 hover:text-gray-200"
-            title="Copy Code"
-          >
-            {isCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-          </button>
-          <button
-            onClick={downloadCode}
-            className="flex items-center cursor-pointer p-2 rounded-md hover:bg-[#333333] transition-colors text-gray-400 hover:text-gray-200"
-            title="Download File"
-          >
-            <Download className="w-4 h-4" />
-          </button>
-          <div>
-            {user ? (
-              <>
-                <Image
-                  ref={avatarRef}
-                  src={user?.image || "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"}
-                  alt={user?.name || "User"}
-                  width={40}
-                  height={40}
-                  className="rounded-full cursor-pointer"
-                  loading="eager"
-                  onClick={() => setShowProfile(!showProfile)}
-                />
-
-                {showProfile && (
-                  <ProfileCard
-                    session={session}
-                    user={user}
-                    handleLogout={handleLogout}
-                    onClose={() => setShowProfile(false)}
-                    avatarRef={avatarRef}
+          {/* Action Buttons */}
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => setCode(workspace?.runnerCode)}
+              className="flex items-center cursor-pointer p-1 rounded-md hover:bg-[#333333] transition-colors text-gray-400 hover:text-gray-200"
+              title="Reset Code"
+            >
+              <LucideListRestart className="w-5 h-5" />
+            </button>
+            <button
+              onClick={handleCopyCode}
+              className="flex items-center cursor-pointer p-2 rounded-md hover:bg-[#333333] transition-colors text-gray-400 hover:text-gray-200"
+              title="Copy Code"
+            >
+              {isCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+            </button>
+            <button
+              onClick={downloadCode}
+              className="flex items-center cursor-pointer p-2 rounded-md hover:bg-[#333333] transition-colors text-gray-400 hover:text-gray-200"
+              title="Download File"
+            >
+              <Download className="w-4 h-4" />
+            </button>
+            <div>
+              {user ? (
+                <>
+                  <Image
+                    ref={avatarRef}
+                    src={user?.image || "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png"}
+                    alt={user?.name || "User"}
+                    width={40}
+                    height={40}
+                    className="rounded-full cursor-pointer"
+                    loading="eager"
+                    onClick={() => setShowProfile(!showProfile)}
                   />
-                )}
-              </>
-            ) : (
-              <span>Sign In</span>
-            )}
+
+                  {showProfile && (
+                    <ProfileCard
+                      session={session}
+                      user={user}
+                      handleLogout={handleLogout}
+                      onClose={() => setShowProfile(false)}
+                      avatarRef={avatarRef}
+                    />
+                  )}
+                </>
+              ) : (
+                <span>Sign In</span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Editor Container */}
+        <div className="flex-1 min-h-0 relative bg-[#1e1e1e] pt-5">
+          {isLoading && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#1e1e1e] text-gray-400">
+              Preparing the Editor...
+            </div>
+          )}
+          <div
+            ref={editorRef}
+            className="w-full h-full min-h-0"
+          />
+        </div>
+
+        {/* Status Bar */}
+        <div className="flex items-center justify-between px-3 py-1 bg-primary text-white text-xs">
+          <div className="flex items-center space-x-3">
+            <span className="flex items-center">
+              <Settings className="w-3 h-3 mr-1" /> Ready
+            </span>
+          </div>
+          <div className="flex items-center space-x-4">
+            <span>Ln {code.split('\n').length}, Col {code.length - code.lastIndexOf('\n')}</span>
+            <span>Spaces: {tabSize}</span>
+            <span>UTF-8</span>
+            <span className="uppercase">{language}</span>
           </div>
         </div>
       </div>
-
-      {/* Editor Container */}
-      <div className="flex-1 min-h-0 relative bg-[#1e1e1e] pt-5">
-        {isLoading && (
-          <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#1e1e1e] text-gray-400">
-            Initializing Editor...
-          </div>
-        )}
-        <div
-          ref={editorRef}
-          className="w-full h-full min-h-0"
-        />
-      </div>
-
-      {/* Status Bar */}
-      <div className="flex items-center justify-between px-3 py-1 bg-primary text-white text-xs">
-        <div className="flex items-center space-x-3">
-          <span className="flex items-center">
-            <Settings className="w-3 h-3 mr-1" /> Ready
-          </span>
-        </div>
-        <div className="flex items-center space-x-4">
-          <span>Ln {code.split('\n').length}, Col {code.length - code.lastIndexOf('\n')}</span>
-          <span>Spaces: {tabSize}</span>
-          <span>UTF-8</span>
-          <span className="uppercase">{language}</span>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
 

@@ -15,7 +15,7 @@ export const ensureWorkspace = async (data) => {
     }
 
     return result.workspace;
-};
+}
 
 export async function getWorkspaceForProblem(problemId, accessToken) {
     const response = await fetch(`${API_URL}/api/workspace/${problemId}`,
@@ -79,7 +79,7 @@ export const getAiCodeForWorkspace = async ({ accessToken, problemId, summarized
     }
 
     return data.generatedCode;
-};
+}
 
 export async function deleteWorkspace({workspaceId, accessToken}) {
     const response = await fetch(
@@ -100,4 +100,27 @@ export async function deleteWorkspace({workspaceId, accessToken}) {
     }
 
     return data;
+}
+
+export async function getNewLanguageRunnerCode({workspaceId, language, accessToken}) {
+    const response = await fetch(
+        `${API_URL}/api/workspace/new-language-runner-code/${workspaceId}`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({
+                language,
+            }),
+        }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+        throw new Error("Failed to fetch new language runner code.");
+    }
+    return result.runnerCode;
 }

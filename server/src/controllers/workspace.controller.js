@@ -1,5 +1,5 @@
 import Workspace from "../models/workspace.model.js";
-import { ensureWorkspace, getWorkspaceByProblem, getAiCodeForWorkspace, saveWorkspace, deleteWorkspace } from "../services/workspace.service.js";
+import { ensureWorkspace, getWorkspaceByProblem, getAiCodeForWorkspace, saveWorkspace, deleteWorkspace, getNewLanguageRunnerCodeForWorkspace } from "../services/workspace.service.js";
 
 export const ensureWorkspaceController = async (req, res) => {
 
@@ -155,3 +155,23 @@ export async function deleteWorkspaceController(req, res) {
         });
     }
 }
+
+export const getNewLanguageRunnerCodeController = async (req, res) => {
+    try {
+        const { workspaceId } = req.params;
+        const { language } = req.body;
+
+        const runnerCode = await getNewLanguageRunnerCodeForWorkspace({ workspaceId, language });
+
+        res.status(200).json({
+            success: true,
+            runnerCode,
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
