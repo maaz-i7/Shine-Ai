@@ -30,7 +30,7 @@ export default function Navbar() {
                 </Link>
             </div>
             <div>
-                <ul className="flex gap-4 max-[600px]:text-sm justify-around items-center">
+                <ul className="flex gap-8 max-[800px]:gap-4 max-[600px]:text-sm justify-around items-center">
                     <Link href="/" scroll={true}><li className="text-gray-300 hover:text-white">Home</li></Link>
                     <Link href="/dashboard"><li className="text-gray-300 hover:text-white">Problems</li></Link>
                     <Link href="/problems/new"><li className="text-gray-300 hover:text-white">Canvas</li></Link>
