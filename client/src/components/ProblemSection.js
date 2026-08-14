@@ -56,83 +56,89 @@ export default function ProblemSection({
     }
 
     return (
-        <div className="w-full h-screen bg-primary text-foreground font-sans overflow-y-scroll minimal-scrollbar p-5">
+        <div className="w-full flex h-screen bg-primary text-foreground font-sans pl-5 pb-5 pt-5">
+            <div className="overflow-y-scroll minimal-scrollbar pr-5">
+                {/* Title */}
+                <div className="text-2xl font-bold mt-2">
+                    {problem?.title}
+                </div>
 
-            {/* Header */}
-            <div className="flex items-center justify-end">
-                {!isMobile && <button
-                    onClick={() => setIsProblemOpen(false)}
-                    className="flex items-center justify-center w-10 h-10 rounded-lg text-gray-400 hover:text-white hover:bg-[#171717] transition-colors cursor-pointer"
-                >
-                    <ChevronLeft size={20} />
-                </button>}
-            </div>
+                <div className="w-full flex items-center justify-between mt-5 mb-5">
+                    <div className="flex">
 
-            {/* Title */}
-            <div className="text-2xl font-bold mt-2">
-                {problem?.title}
-            </div>
-
-            <div className="w-full flex items-center justify-between mt-5 mb-5">
-                <div className="flex">
-
-                    {/* Difficulty Tag */}
-                    <div
-                        className={`inline-flex items-center rounded-full px-2.5 py-1 text-[12px] font-semibold
+                        {/* Difficulty Tag */}
+                        <div
+                            className={`inline-flex items-center rounded-full px-2.5 py-1 text-[12px] font-semibold
                         ${problem?.difficulty === "Easy"
-                                ? "bg-green-500/15 text-green-400"
-                                : problem?.difficulty === "Medium"
-                                    ? "bg-yellow-500/15 text-yellow-400"
-                                    : problem?.difficulty === "Hard"
-                                        ? "bg-red-500/15 text-red-400"
-                                        : "bg-purple-500/15 text-purple-400"
-                            }`}
-                    >
-                        {problem?.difficulty}
+                                    ? "bg-green-500/15 text-green-400"
+                                    : problem?.difficulty === "Medium"
+                                        ? "bg-yellow-500/15 text-yellow-400"
+                                        : problem?.difficulty === "Hard"
+                                            ? "bg-red-500/15 text-red-400"
+                                            : "bg-purple-500/15 text-purple-400"
+                                }`}
+                        >
+                            {problem?.difficulty}
+                        </div>
+
+                        <button
+                            onClick={() => setShowTags(!showTags)}
+                            className="flex ml-3 items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors cursor-pointer"
+                        >
+                            <Tag size={16} />
+                            <span>Tags</span>
+                            {showTags
+                                ? <ChevronUp size={16} />
+                                : <ChevronDown size={16} />
+                            }
+                        </button>
                     </div>
 
-                    <button
-                        onClick={() => setShowTags(!showTags)}
-                        className="flex ml-3 items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors cursor-pointer"
+                    {/* Solve Status */}
+                    <div
+                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${status.className}`}
                     >
-                        <Tag size={16} />
-                        <span>Tags</span>
-                        {showTags
-                            ? <ChevronUp size={16} />
-                            : <ChevronDown size={16} />
-                        }
-                    </button>
+                        <Icon size={14} strokeWidth={2.2} />
+                        <span>{workspace?.status}</span>
+                    </div>
                 </div>
 
-                {/* Solve Status */}
-                <div
-                    className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${status.className}`}
+                {/* Problem Tags */}
+                <div className="mt-7 mb-7">
+                    {showTags && (
+                        <div className="mt-3 flex bg-[#171717] flex-wrap gap-2 rounded-3xl p-5">
+                            {problem?.tags?.map((tag, index) => (
+                                <span
+                                    key={index}
+                                    className="rounded-full bg-[#2d2d2d] px-3 py-1 text-[12px] font-medium text-gray-300 hover:bg-[#3a3a3a] transition-colors"
+                                >
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Problem Statement */}
+                <div className="problem-markdown bg-primary text-white leading-8 text-[15px] h-fit">
+                    <MarkdownRenderer text={problem?.statement} />
+                </div>
+            </div>
+            {/* Header */}
+            {!isMobile && (
+                <button
+                    onClick={() => setIsProblemOpen(false)}
+                    aria-label="Close problem panel"
+                    className="group flex items-center justify-center w-13 h-full shrink-0
+                   bg-linear-to-r from-[#171717] via-[#171717]/40 to-transparent hover:bg-secondary
+                   text-gray-500 hover:text-white
+                   cursor-pointer"
                 >
-                    <Icon size={14} strokeWidth={2.2} />
-                    <span>{workspace?.status}</span>
-                </div>
-            </div>
-
-            {/* Problem Tags */}
-            <div className="mt-7 mb-7">
-                {showTags && (
-                    <div className="mt-3 flex bg-[#171717] flex-wrap gap-2 rounded-3xl p-5">
-                        {problem?.tags?.map((tag, index) => (
-                            <span
-                                key={index}
-                                className="rounded-full bg-[#2d2d2d] px-3 py-1 text-[12px] font-medium text-gray-300 hover:bg-[#3a3a3a] transition-colors"
-                            >
-                                {tag}
-                            </span>
-                        ))}
-                    </div>
-                )}
-            </div>
-
-            {/* Problem Statement */}
-            <div className="problem-markdown bg-primary text-white leading-8 text-[15px] h-fit">
-                <MarkdownRenderer text={problem?.statement} />
-            </div>
+                    <span className="text-xl opacity-60 group-hover:opacity-100">
+                        ‹
+                    </span>
+                </button>
+            )}
         </div>
     );
 }

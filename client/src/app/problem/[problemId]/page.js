@@ -281,7 +281,7 @@ export default function Layout() {
                         ? leftWidth
                         : MINIMIZED_WIDTH
                 }}
-                className="bg-primary shrink-0 overflow-hidden rounded-xl transition-[width] duration-200"
+                className="bg-primary shrink-0 overflow-hidden rounded-xl"
             >
                 <ProblemSection
                     workspace={workspace}
@@ -300,8 +300,7 @@ export default function Layout() {
             )}
             {!isProblemOpen && (
                 <div
-                    onMouseDown={() => setIsProblemOpen(true)}
-                    className="w-1 cursor-ew-resize bg-black transition-colors hover:bg-gray-500 shrink-0"
+                    className="w-1 bg-black"
                 />
             )}
 
@@ -337,9 +336,8 @@ export default function Layout() {
                             ? consoleHeight
                             : MINIMIZED_CONSOLE_HEIGHT
                     }}
-                    className={`shrink-0 bg-primary rounded-xl ${
-                        isConsoleOpen ? "" : "mt-1"
-                    }`}
+                    className={`shrink-0 bg-primary rounded-xl ${isConsoleOpen ? "" : "mt-1"
+                        }`}
                 >
                     <Console
                         isConsoleOpen={isConsoleOpen}
@@ -351,10 +349,17 @@ export default function Layout() {
             </div>
 
             {/* Right Divider */}
-            <div
-                onMouseDown={startRightDrag}
-                className="w-1 cursor-ew-resize bg-black transition-colors hover:bg-gray-500 shrink-0"
-            />
+            {isRightOpen &&
+                <div
+                    onMouseDown={startRightDrag}
+                    className="w-1 cursor-ew-resize bg-black transition-colors hover:bg-gray-500 shrink-0"
+                />
+            }
+            {!isRightOpen && (
+                <div
+                    className="w-1 bg-black"
+                />
+            )}
 
             {/* Right Panel */}
             <AiSection

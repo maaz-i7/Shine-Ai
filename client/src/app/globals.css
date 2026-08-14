@@ -26,27 +26,26 @@ body {
 }
 
 .minimal-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #5a5a5a transparent;
+    scrollbar-width: thin;
+    scrollbar-color: #333 transparent;
 }
 
-/* Chromium browsers */
 .minimal-scrollbar::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+    width: 5px;
+    height: 5px;
 }
 
 .minimal-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+    background: transparent;
 }
 
 .minimal-scrollbar::-webkit-scrollbar-thumb {
-  background: #5a5a5a;
-  border-radius: 9999px;
+    background: #333;
+    border-radius: 9999px;
 }
 
 .minimal-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #7a7a7a;
+    background: #444;
 }
 
 .prose code::before {
