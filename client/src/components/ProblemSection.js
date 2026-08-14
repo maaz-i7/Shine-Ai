@@ -56,10 +56,22 @@ export default function ProblemSection({
     }
 
     return (
-        <div className="w-full flex h-screen bg-primary text-foreground font-sans pl-5 pb-5 pt-5">
+        <div className="w-full flex flex-col h-screen bg-primary text-foreground font-sans pl-5 pb-5">
+            {/* Dragger */}
+            {!isMobile && (
+                <button
+                    onClick={() => setIsProblemOpen(false)}
+                    aria-label="Close problem panel"
+                    className="group flex items-center p-10 justify-end w-full h-10 shrink-0
+                   text-gray-500 transition-colors
+                   cursor-pointer"
+                >
+                    <ChevronLeft className="w-5 h-5 group-hover:scale-180 text-white transition-all" />
+                </button>
+            )}
             <div className="overflow-y-scroll minimal-scrollbar pr-5">
                 {/* Title */}
-                <div className="text-2xl font-bold mt-2">
+                <div className="text-2xl font-bold">
                     {problem?.title}
                 </div>
 
@@ -124,21 +136,6 @@ export default function ProblemSection({
                     <MarkdownRenderer text={problem?.statement} />
                 </div>
             </div>
-            {/* Header */}
-            {!isMobile && (
-                <button
-                    onClick={() => setIsProblemOpen(false)}
-                    aria-label="Close problem panel"
-                    className="group flex items-center justify-center w-13 h-full shrink-0
-                   bg-linear-to-r from-[#171717] via-[#171717]/40 to-transparent hover:bg-secondary
-                   text-gray-500 hover:text-white
-                   cursor-pointer"
-                >
-                    <span className="text-xl opacity-60 group-hover:opacity-100">
-                        ‹
-                    </span>
-                </button>
-            )}
         </div>
     );
 }
