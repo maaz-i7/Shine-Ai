@@ -4,7 +4,7 @@ import { ensureWorkspace, getWorkspaceByProblem, getAiCodeForWorkspace, saveWork
 export const ensureWorkspaceController = async (req, res) => {
 
     try {
-        const { userId, problemId, language, starterCode = "" } = req.body;
+        const { userId, problemId, language = "cpp", starterCode = "" } = req.body;
 
         if (!problemId || !language) {
             return res.status(400).json({
@@ -46,7 +46,7 @@ export const getWorkspaceForProblemController = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        return res.status(500).json({
+        return res.status(404).json({
             success: false,
             message: error.message,
         });

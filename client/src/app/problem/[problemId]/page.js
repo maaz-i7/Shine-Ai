@@ -64,6 +64,7 @@ export default function Layout() {
         async function loadWorkspace() {
             try {
                 const workspace = await getWorkspaceForProblem(
+                    session?.user?.id,
                     problemId,
                     session?.accessToken
                 );
@@ -104,7 +105,7 @@ export default function Layout() {
             } catch (error) {
 
                 if (error.message === "Failed to fetch workspace.") {
-                    router.push("/problems/new");
+                    router.push("/dashboard");
                     redirecting = true;
                     return;
                 }

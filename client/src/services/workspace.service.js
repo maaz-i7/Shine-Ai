@@ -17,7 +17,7 @@ export const ensureWorkspace = async (data) => {
     return result.workspace;
 }
 
-export async function getWorkspaceForProblem(problemId, accessToken) {
+export async function getWorkspaceForProblem(userId, problemId, accessToken) {
     const response = await fetch(`${API_URL}/api/workspace/${problemId}`,
         {
             headers: {
@@ -27,6 +27,10 @@ export async function getWorkspaceForProblem(problemId, accessToken) {
     );
 
     const result = await response.json();
+
+    if(response.status === 404) {
+        return await ensureWorkspace({ userId, problemId })
+    }
 
     if (!response.ok || !result.success) {
         throw new Error("Failed to fetch workspace.");
