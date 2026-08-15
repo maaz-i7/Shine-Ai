@@ -4,7 +4,7 @@ import { ensureWorkspaceController, getWorkspaceForProblemController, getUserWor
 
 const router = express.Router();
 
-router.post("/ensure", ensureWorkspaceController);
+router.post("/ensure", authMiddleware, ensureWorkspaceController);
 router.get("/all", authMiddleware, getUserWorkspacesController);
 router.post("/ai-code/:problemId", authMiddleware, getAiCodeController);
 router.get("/:problemId", authMiddleware, getWorkspaceForProblemController);

@@ -155,18 +155,19 @@ export default function App() {
       formData.append("platform", data.platform);
       formData.append("url", data.url?.trim() ?? "");
 
-      const problem = await ensureProblem(formData);
+      const problem = await ensureProblem(formData, session?.accessToken);
 
       if (status !== "authenticated") {
         return;
       }
 
-      const workspace = await ensureWorkspace({
+      const objData = {
         userId,
         problemId: problem._id,
         language: data.language,
-        starterCode: data.starterCode,
-      });
+        starterCode: data.starterCode
+      }
+      const workspace = await ensureWorkspace(objData, session?.accessToken);
 
       useWorkspaceStore.getState().setWorkspace(workspace);
       router.push(`/problem/${problem._id}`);
@@ -527,9 +528,9 @@ export default function App() {
               }`}
           >
             {isLoading ? <div className="flex items-center justify-center">
-              <div>Preparing the Canvas</div> 
+              <div>Preparing the Canvas</div>
               <Loader strokeWidth={2} className="h-5 w-5 ml-2 animate-spin text-white" />
-              </div> : "Create Canvas"}
+            </div> : "Create Canvas"}
           </button>
         </div>
       </form>

@@ -1,8 +1,11 @@
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export const ensureProblem = async (formData) => {
+export const ensureProblem = async (formData, accessToken) => {
     const response = await fetch(`${API_URL}/api/problem/ensure`, {
         method: "POST",
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
         body: formData,
     });
 

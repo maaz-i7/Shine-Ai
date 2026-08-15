@@ -1,8 +1,10 @@
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-export const ensureWorkspace = async (data) => {
+
+export const ensureWorkspace = async (data, accessToken) => {
     const response = await fetch(`${API_URL}/api/workspace/ensure`, {
         method: "POST",
         headers: {
+            Authorization: `Bearer ${accessToken}`,
             "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
@@ -29,7 +31,7 @@ export async function getWorkspaceForProblem(userId, problemId, accessToken) {
     const result = await response.json();
 
     if(response.status === 404) {
-        return await ensureWorkspace({ userId, problemId })
+        return await ensureWorkspace({ userId, problemId }, accessToken)
     }
 
     if (!response.ok || !result.success) {
