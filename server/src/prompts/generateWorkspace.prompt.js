@@ -19,6 +19,19 @@ Rules:
 - Convert the starter code into fully runnable code
 - If the starter code is empty, generate a main() function that handles all input/output and a solve() function containing only the problem-solving logic, 
   with solve() accepting exactly the required input parameters and returning the required output, following LeetCode-style function conventions.
+  eg:
+
+  void solve(int n) {
+      //Code here
+  }
+  int main() {
+      int n;
+      cin >> n;
+      solve(n);
+      return 0;
+  }
+
+- Do NOT solve the problem at all. Just take the input and output and create a runnable code
 - If the language is Java, ensure the final executable code uses exactly one top-level public class (preserving the required/provided class name) with a 
   "public static void main(String[] args)" method inside that same class; keep all solution methods and runner logic within it and do not create additional 
   top-level classes
@@ -34,7 +47,6 @@ Rules:
 - Import all necessary libraries
 - Preserve the original starter code completely
 - Add only the minimum code required to compile and execute locally
-- Do NOT solve the problem here
 - Do NOT remove placeholders left for the user
 - Do NOT add explanations
 
