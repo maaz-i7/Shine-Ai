@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react';
 import ProfileCard from './ProfileCard';
 import ChangeLanguageModal from './ChangeLanguageModalBox';
 import Image from 'next/image';
-import { getNewLanguageRunnerCode } from '@/services/workspace.service';
+import { getNewLanguageRunnerCode } from '@/services/code.editor.service';
 
 export const LANGUAGES = [
   { id: "cpp", name: "C++", compiler: "g++-15" },

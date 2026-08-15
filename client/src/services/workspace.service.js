@@ -107,26 +107,3 @@ export async function deleteWorkspace({workspaceId, accessToken}) {
 
     return data;
 }
-
-export async function getNewLanguageRunnerCode({workspaceId, language, accessToken}) {
-    const response = await fetch(
-        `${API_URL}/api/workspace/${workspaceId}/new-language-runner-code`,
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify({
-                language,
-            }),
-        }
-    );
-
-    const result = await response.json();
-
-    if (!response.ok || !result.success) {
-        throw new Error("Failed to fetch new language runner code.");
-    }
-    return result.runnerCode;
-}
