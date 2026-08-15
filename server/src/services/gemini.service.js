@@ -350,13 +350,13 @@ export async function generateQuickHelpResponse(prompt) {
     }
 }
 
-export const generateNewLanguageRunnerCode = async ({ currentRunnerCode, language }) => {
+export const generateNewLanguageRunnerCode = async ({ currentUserCode, language }) => {
     try {
-        if (!currentRunnerCode || !language) {
+        if (!currentUserCode || !language) {
             throw new Error("Missing required fields.");
         }
 
-        const prompt = generateNewLanguageRunnerCodePrompt({currentRunnerCode, language})
+        const prompt = generateNewLanguageRunnerCodePrompt({currentUserCode, language})
         const result = await codeModel.generateContent(prompt);
 
         const generatedCode = result.response.text()?.trim();

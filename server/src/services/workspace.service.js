@@ -149,16 +149,15 @@ export const getNewLanguageRunnerCodeForWorkspace = async ({ workspaceId, langua
             throw new Error("Workspace not found.");
         }
 
-        const runnerCode = await generateNewLanguageRunnerCode({
-            currentRunnerCode: workspace?.runnerCode,
+        const userCode = await generateNewLanguageRunnerCode({
+            currentUserCode: workspace?.userCode,
             language: language,
         });
 
         const updatedWorkspace = await Workspace.findByIdAndUpdate(
             workspaceId,
             {
-                runnerCode,
-                userCode: runnerCode,
+                userCode,
                 language,
             },
             {
@@ -166,8 +165,8 @@ export const getNewLanguageRunnerCodeForWorkspace = async ({ workspaceId, langua
             }
         );
 
-        return runnerCode;
-
+        return userCode;
+        
     } catch (error) {
         console.error("Error generating new language runner code:", error);
 

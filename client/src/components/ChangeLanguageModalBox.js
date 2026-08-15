@@ -16,8 +16,8 @@ export default function ChangeLanguageModal({
                 </h2>
 
                 <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                    Are you sure you want to change the code language?
-                    Your current code will be lost.
+                    Your current code will be translated to the new language.
+                    Are you sure you want to continue?
                 </p>
 
                 <div className="mt-6 flex justify-end gap-3">
