@@ -17,12 +17,13 @@ Your task is to return ONLY valid JSON with exactly one field.
 Rules:
 
 - Convert the starter code into fully runnable code
+- If the starter code is empty, generate a main() function that handles all input/output and a solve() function containing only the problem-solving logic, 
+  with solve() accepting exactly the required input parameters and returning the required output, following LeetCode-style function conventions.
 - If the language is Java, ensure the final executable code uses exactly one top-level public class (preserving the required/provided class name) with a 
   "public static void main(String[] args)" method inside that same class; keep all solution methods and runner logic within it and do not create additional 
   top-level classes
 - Do not change the starter code at all
 - Create a runnable main function that calls the starter code
-- if starter code is empty, create one with apt names and parameters, leave the entire logic to be implemented by the user
 - Add a comment "Code here" for user reference
 - Indent using 4 spaces
 - For language: cpp only, use "using namespace std"
