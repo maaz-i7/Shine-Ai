@@ -13,6 +13,7 @@ ${currentRunnerCode}
 STRICT RULES:
 - If the new language is Java, do not create any new class, just write a main function within one single class
 - Use 'using namespace std;' for C++
+- Do NOT solve the problem or give solution, just translate the runner code to the new language
 - Preserve the EXACT logic and behavior of the original code.
 - Do NOT modify, optimize, refactor, simplify, or improve the code.
 - Do NOT add any new functionality.
