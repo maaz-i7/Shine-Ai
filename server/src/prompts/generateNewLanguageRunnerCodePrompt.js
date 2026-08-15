@@ -1,5 +1,5 @@
 export default function generateNewLanguageRunnerCodePrompt({
-    currentRunnerCode,
+    currentUserCode,
     language,
 }) {
     return `
@@ -8,7 +8,7 @@ You are an expert code translation engine.
 Translate the given source code from its current programming language to ${language}.
 
 Code:
-${currentRunnerCode}
+${currentUserCode}
 
 STRICT RULES:
 1. Output ONLY the translated code. No explanations, comments about the translation, Markdown, code fences, or extra text.
