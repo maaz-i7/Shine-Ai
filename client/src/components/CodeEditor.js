@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Settings, Code2, Moon, Sun, AlignLeft, Download, Copy, Check, Type, Play, Loader2, LucideListRestart } from 'lucide-react';
+import { Settings, Code2, Moon, Sun, AlignLeft, Download, Copy, Check, Type, Loader2, LucideListRestart, PlayIcon, Square } from 'lucide-react';
 import useTestCasesStore from '@/stores/testcases.store';
 import { checkCode, saveWorkspace } from '@/services/code.editor.service';
 import { useSession } from 'next-auth/react';
@@ -400,7 +400,7 @@ function App({ workspace, isMobile = false }) {
             <button
               onClick={handleRunCode}
               disabled={running || cooldown > 0}
-              className={`flex items-center gap-2 w-20 h-8 justify-center rounded-md transition-all duration-200 text-white
+              className={`flex items-center gap-2 px-2 py-1 justify-center rounded-md transition-all duration-200 text-white
               ${running || cooldown > 0
                   ? "bg-yellow-600 cursor-not-allowed"
                   : "bg-green-700 hover:bg-green-800 cursor-pointer active:scale-98"
@@ -408,17 +408,15 @@ function App({ workspace, isMobile = false }) {
             >
               {running ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-5.5 h-5.5 animate-spin" />
                 </>
               ) : cooldown > 0 ? (
                 <>
-                  <Play className="w-4 h-4" />
-                  {cooldown}s
+                  <Square className='w-5 fill-white'/>
                 </>
               ) : (
                 <>
-                  <Play className="w-4 h-4" />
-                  Run
+                  <PlayIcon className='w-5 fill-white'/>
                 </>
               )}
             </button>

@@ -16,7 +16,7 @@ export default function MobileWorkspace({
         <div className="w-full bg-primary overflow-y-auto">
 
             {/* Problem */}
-            <section className="min-h-[90vh] w-full">
+            <section className="min-h-[90vh] w-full mt-10">
                 <ProblemSection workspace={workspace} isProblemOpen={true} setIsProblemOpen={()=>{}} isMobile={true} />
             </section>
 
