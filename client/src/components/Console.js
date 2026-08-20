@@ -64,13 +64,7 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
             {/* Test Cases  */}
             <div className="text-xl mb-3">Test Cases</div>
             <div className="flex flex-col">
-              <div className="flex flex-col">
-                <textarea placeholder="Add test case here" ref={textareaRef} className="bg-black minimal-scrollbar h-30 font-mono p-3 resize-y focus:outline-0 mb-3" name="" id=""></textarea>
-                <button onClick={handleAddTestCase} className="flex rounded items-center justify-center w-26 m-1 p-1 active:scale-99 border mb-3 transition-all bg-tertiary border-white/10 hover:bg-[#313131] cursor-pointer mt-auto">
-                  <PlusIcon className="w-3 mr-1" />
-                  Test Case
-                </button>
-              </div>
+
               {/* Test Cases Map */}
               <div className="flex flex-wrap items-start max-h-40 overflow-y-auto minimal-scrollbar">
                 {testCases.map((tc, i) => (
@@ -117,6 +111,13 @@ export default function Console({ isConsoleOpen, setIsConsoleOpen, CONSOLE_HEIGH
                     </pre>
                   </div>
                 </div>
+              </div>
+              <div className="flex flex-col mt-5">
+                <textarea placeholder="Add test case here" ref={textareaRef} className="bg-black minimal-scrollbar h-30 font-mono p-3 resize-y focus:outline-0 mb-3" name="" id=""></textarea>
+                <button onClick={handleAddTestCase} className="flex rounded items-center justify-center w-26 m-1 p-1 active:scale-99 border mb-3 transition-all bg-tertiary border-white/10 hover:bg-[#313131] cursor-pointer mt-auto">
+                  <PlusIcon className="w-3 mr-1" />
+                  Test Case
+                </button>
               </div>
             </div>
 
