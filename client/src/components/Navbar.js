@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { useState, useRef } from "react";
 import ProfileCard from "./ProfileCard";
 import { signOut } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
 
@@ -14,6 +15,7 @@ export default function Navbar() {
     const user = session?.user
     const [showProfile, setShowProfile] = useState(false)
     const avatarRef = useRef(null);
+    const path = usePathname()
 
     const handleLogout = () => {
         signOut({
@@ -30,12 +32,12 @@ export default function Navbar() {
                 </Link>
             </div>
             <div>
-                <ul className="flex gap-8 max-[800px]:gap-4 max-[600px]:text-sm justify-around items-center">
-                    <Link href="/" scroll={true}><li className="text-gray-300 hover:text-white">Home</li></Link>
-                    <Link href="/dashboard"><li className="text-gray-300 hover:text-white">Problems</li></Link>
-                    <Link href="/problems/new"><li className="text-gray-300 hover:text-white">Canvas</li></Link>
-                    <Link href="/#demo"><li className="text-gray-300 hidden min-[500px]:block hover:text-white">About</li></Link>
-                    <li className="text-gray-300 hidden min-[500px]:block hover:text-white">
+                <ul className="flex gap-6 max-[800px]:gap-3 max-[600px]:text-sm justify-around items-center">
+                    <Link href="/" scroll={true}><li className={`${path === "/" ? "text-white" : "text-gray-400"} hover:text-white`}>Home</li></Link>
+                    <Link href="/dashboard"><li className={`${path === "/dashboard" ? "text-white" : "text-gray-400"} hover:text-white`}>Problems</li></Link>
+                    <Link href="/problems/new"><li className={`${path === "/problems/new" ? "text-white" : "text-gray-400"} hover:text-white`}>Canvas</li></Link>
+                    <Link href="/#demo"><li className={`${path === "/#demo" ? "text-white" : "text-gray-400"} hover:text-white`}>About</li></Link>
+                    <li className="text-gray-400 hidden min-[500px]:block hover:text-white">
                         <a
                             href="https://mail.google.com/mail/?view=cm&fs=1&to=maaz.khan.sdr@gmail.com"
                             target="_blank"
